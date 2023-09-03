@@ -1,22 +1,22 @@
 import React from 'react';
+import { FilterValues } from '../interfaces/interfaces';
 
 interface RowProps {
   label: string;
-  value: string;
-  filterValues: any;
+  value: keyof FilterValues;
+  filterValues: FilterValues;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  stocksList: any[];
-  select?: boolean;
+  options?: string[];
 }
 
-const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange, stocksList, select }) => {
+const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange, options }) => {
   return (
     <div className="flex items-center input-select-wrapper">
       <label htmlFor={value} className="mr-2 w-20 text-left">
         {label}
       </label>
       <div className={`flex-1`}>
-        {select ? (
+        {options ? (
           <select
             id={value}
             name={value}
@@ -24,10 +24,9 @@ const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange
             value={filterValues[value] as string}
             onChange={handleInputChange}
           >
-            <option value="all">Всички</option>
-            {stocksList.map((stock: any) => (
-              <option key={stock.id} value={stock[value]}>
-                {stock[value]}
+            {options?.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
