@@ -9,7 +9,7 @@ interface OfferProps {
 
 const Offer: React.FC<OfferProps> = ({ good, place, cost, image }) => {
   return (
-    <div className="flex flex-col sm:flex-row mx-10 border mt-5">
+    <div className="flex flex-col sm:flex-row border mt-5 pb-2">
         <div>
             <img
                 src={image}
@@ -17,8 +17,8 @@ const Offer: React.FC<OfferProps> = ({ good, place, cost, image }) => {
                 className='w-full h-56'
             />
         </div>
-        <div className='mx-2'>
-            <div className="flex justify-between sm:pl-4 mt-4 sm:mt-0">
+        <div className='mx-2 mt-2'>
+            <div className="flex justify-between sm:pl-4 sm:mt-0">
                 <h1>{good}</h1>
                 <h1>{place}</h1>
             </div>
