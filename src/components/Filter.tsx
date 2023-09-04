@@ -5,13 +5,13 @@ import { FilterValues } from '../interfaces/interfaces';
 interface FilterProps {
   filterValues: FilterValues;
   setFilterValues: (object: any) => void;
-  stockFilters: {
-    goods: string[];
-    place: string[];
+  productFilters: {
+    names: string[];
+    places: string[];
   };
 }
 
-const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, stockFilters }) => {
+const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productFilters }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilterValues({
@@ -24,17 +24,17 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, stockFil
     <div className="grid grid-cols-1 gap-4 mt-5">
       <Row
         label="Име"
-        value="good"
+        value="name"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={['Всички', ...stockFilters.goods]}
+        options={['Всички', ...productFilters.names]}
       />
       <Row
         label="Място"
         value="place"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={['Всички', ...stockFilters.place]}
+        options={['Всички', ...productFilters.places]}
       />
       <Row
         label="Цена мин"
