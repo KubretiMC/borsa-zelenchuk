@@ -3,25 +3,26 @@ import { FilterValues } from '../interfaces/interfaces';
 
 interface RowProps {
   label: string;
-  value: keyof FilterValues;
-  filterValues: FilterValues;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  options?: string[];
+  value: keyof FilterValues | string | number;
+  type: 'select' | 'input' | 'label';
+  filterValues?: FilterValues;
+  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  options?: string[] | null;
 }
 
-const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange, options }) => {
+const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange, options, type }) => {
   return (
     <div className="flex items-center input-select-wrapper">
-      <label htmlFor={value} className="mr-2 w-20 text-left">
+      <label className="mr-2 w-20 text-left">
         {label}
       </label>
       <div className={`flex-1`}>
-        {options ? (
+        {type === 'select' ? (
           <select
-            id={value}
-            name={value}
+            id={value as string}
+            name={value as string}
             className="border p-2 rounded-md w-full input-select"
-            value={filterValues[value] as string}
+            value={filterValues?.[value as keyof FilterValues] ?? ''}
             onChange={handleInputChange}
           >
             {options?.map((option) => (
@@ -30,17 +31,19 @@ const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange
               </option>
             ))}
           </select>
-        ) : (
+        ) : type === 'input' ? (
           <input
             type="number"
-            id={value}
-            name={value}
+            id={value as string}
+            name={value as string}
             step="0.01"
             className="border p-2 rounded-md w-full input-select"
             placeholder="0.00"
-            value={filterValues[value]}
+            value={filterValues?.[value as keyof FilterValues] ?? ''}
             onChange={handleInputChange}
           />
+        ) : (
+          <label className='text-left flex ml-14'>{value}</label>
         )}
       </div>
     </div>

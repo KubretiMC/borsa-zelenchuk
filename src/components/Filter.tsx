@@ -28,6 +28,7 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
         filterValues={filterValues}
         handleInputChange={handleInputChange}
         options={['Всички', ...productFilters.names]}
+        type={'select'}
       />
       <Row
         label="Място"
@@ -35,18 +36,21 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
         filterValues={filterValues}
         handleInputChange={handleInputChange}
         options={['Всички', ...productFilters.places]}
+        type={'select'}
       />
       <Row
         label="Цена мин"
         value="minCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
+        type={'input'}
       />
       <Row
         label="Цена макс"
         value="maxCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
+        type={'input'}
       />
     </div>
   );

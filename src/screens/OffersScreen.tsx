@@ -30,11 +30,11 @@ const OffersScreen: React.FC = () => {
     });
 
     const offerList = filteredProductsList.map((product: Product) => (
-        <Offer key={product.id} name={product.name} place={product.place} cost={product.cost} image={product.image} />
+        <Offer key={product.id} id={product.id} name={product.name} place={product.place} cost={product.cost} image={product.image} />
     ));
 
     return (
-        <ScreenContainer subtitle='Random Randomov'>
+        <ScreenContainer subtitle='Random Randomov' backButton>
            <Filter filterValues={filterValues} setFilterValues={setFilterValues} productFilters={productFilters} />
             {offerList}
         </ScreenContainer>
