@@ -11,6 +11,9 @@ export interface Product {
   place: string;
   cost: number;
   image: string;
+  availability: number;
+  minOrder: number;
+  additionalInformation?: string;
 }
 
 export interface ProductFilter {
