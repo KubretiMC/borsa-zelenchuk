@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Product, ProductFilter } from '../interfaces/interfaces';
-import { RESERVE_PRODUCT } from './actions';
+import { ADD_PRODUCT, RESERVE_PRODUCT } from './actions';
 
 interface RootState {
   products: Product[];
@@ -74,6 +74,38 @@ const initialState: RootState = {
 
 const rootReducer = (state: RootState = initialState, action: any): RootState => {
   switch (action.type) {
+    case ADD_PRODUCT:
+    const { product } = action.payload;
+    const { 
+      name = '', 
+      cost = 0, 
+      availability = 0, 
+      minOrder = 0, 
+      place = '', 
+      image = '', 
+      additionalInformation = '' 
+    } = product;
+
+    const newProduct: Product = {
+      id: uuidv4(),
+      name: name,
+      cost: parseFloat(cost),
+      availability: parseFloat(availability),
+      minOrder: parseFloat(minOrder),
+      place: place,
+      image: image || 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
+      // phoneNumber: offer.phoneNumber,
+      additionalInformation: additionalInformation,
+      enoughQuantity: true,
+      reserved: false,
+    };
+
+    const newProducts = [...state.products, newProduct];
+
+    return {
+      ...state,
+      products: newProducts,
+    };
     case RESERVE_PRODUCT:
       const { productId, orderQuantity } = action.payload;
 
