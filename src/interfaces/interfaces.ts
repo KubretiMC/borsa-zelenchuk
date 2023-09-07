@@ -1,3 +1,14 @@
+export interface OfferValues {
+    name: string,
+    cost?: number,
+    availability?: number,
+    minOrder?: number,
+    place: string,
+    image: string,
+    phoneNumber?: number,
+    additionalInformation: string
+}
+
 export type FilterValues = {
     name: string;
     place: string;

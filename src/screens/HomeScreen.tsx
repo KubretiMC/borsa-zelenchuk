@@ -17,7 +17,7 @@ const HomeScreen: React.FC = () => {
           title='Търси оферта'
           onClick={() => handleNavigateButtonClick('offers')}
         />
-        <Button title='Направи оферта' onClick={undefined} />
+        <Button title='Направи оферта' onClick={() => handleNavigateButtonClick('add-offer')} />
         <Button title='Излез оферта' onClick={undefined} />
       </div>
     </ScreenContainer>
