@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
 import { Product } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import Button from '../components/Buttons';
+import ProductHeader from '../components/ProductHeader';
 
 const OfferDetailsScreen = () => {
   const { id } = useParams();
@@ -21,18 +22,17 @@ const OfferDetailsScreen = () => {
     additionalInformation = ''
   } = selectedProduct || {};
 
+  const navigate = useNavigate();
+
+  const handleReserveClick = () => {
+      navigate(`/offer/${id}/reserve`);
+  };
+
   return (
     <ScreenContainer subtitle='Random Randomov' backButton>
       {selectedProduct ? (
         <div className='mt-2'>
-          <div className="my-2">
-            <label className="text-center font-bold">{name}</label>
-          </div>
-          <img
-                src={image}
-                alt='Image Description'
-                className='w-full h-56'
-          />
+          <ProductHeader name={name} image={image} />
           <div className="grid grid-cols-1 gap-4 mt-5">
             <Row
               label="Име"
@@ -75,7 +75,7 @@ const OfferDetailsScreen = () => {
               </div>
             )}
           </div>
-          <Button title='Резервирай' onClick={undefined} />
+          <Button title='Резервирай' onClick={() => handleReserveClick()} />
         </div>
       ) : (
         <p>Проблем с показването на продукта</p>

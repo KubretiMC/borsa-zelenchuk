@@ -13,6 +13,8 @@ export interface Product {
   image: string;
   availability: number;
   minOrder: number;
+  reserved: boolean;
+  enoughQuantity: boolean;
   additionalInformation?: string;
 }
 
