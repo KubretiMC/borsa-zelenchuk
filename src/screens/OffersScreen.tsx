@@ -8,8 +8,7 @@ import { useSelector } from 'react-redux';
 const OffersScreen: React.FC = () => {
     const products = useSelector((state: any) => state.products);
     const productFilters = useSelector((state: any) => state.productFilters);
-    // const state = useSelector((state:any) => state);
-    // console.log('state', state);
+
     const initialFilterValues: FilterValues = {
         name: 'Всички',
         place: 'Всички',
@@ -29,9 +28,11 @@ const OffersScreen: React.FC = () => {
         return nameMatch && placeMatch && costMatch;
     });
 
-    const offerList = filteredProductsList.map((product: Product) => (
-        <Offer key={product.id} id={product.id} name={product.name} place={product.place} cost={product.cost} image={product.image} />
-    ));
+    const offerList = filteredProductsList
+        .filter((product: Product) => !product.reserved) 
+        .map((product: Product) => (
+            <Offer key={product.id} id={product.id} name={product.name} place={product.place} cost={product.cost} image={product.image} />
+        ));
 
     return (
         <ScreenContainer subtitle='Random Randomov' backButton>

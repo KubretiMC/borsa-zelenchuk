@@ -25,7 +25,6 @@ export interface Product {
   availability: number;
   minOrder: number;
   reserved: boolean;
-  enoughQuantity: boolean;
   additionalInformation?: string;
 }
 
