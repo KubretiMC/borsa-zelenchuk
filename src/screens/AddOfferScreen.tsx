@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,15 +7,16 @@ import { addProduct } from '../redux/actions';
 import { OfferValues } from '../interfaces/interfaces';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
+import Modal from '../components/Modal';
 
 const AddOfferScreen: React.FC = () => {
     const productFilters = useSelector((state: any) => state.productFilters);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleAddOfferClick = (offer: OfferValues) => {
-        dispatch(addProduct(offer));
-    };
-    
+    const [offerAdded, setOfferAdded] = useState(false);
+
     const initialOfferValues: OfferValues = {
         name: 'Изберете продукт',
         cost: undefined,
@@ -28,6 +29,19 @@ const AddOfferScreen: React.FC = () => {
     };
 
     const [offerValues, setOfferValues] = useState(initialOfferValues);
+
+    const handleAddOfferClick = (offer: OfferValues) => {
+        dispatch(addProduct(offer));
+        setOfferAdded(true);
+    };
+
+    useEffect(() => {
+        if (offerAdded) {
+            setTimeout(() => {
+                navigate(-1);
+            }, 2000);
+        }
+    }, [offerAdded]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -130,6 +144,7 @@ const AddOfferScreen: React.FC = () => {
                 }
             </div>
             <Button title='Добави оферта' onClick={() => handleAddOfferClick(offerValues)} />
+            <Modal isOpen={offerAdded} />
         </ScreenContainer>
     );
 };
