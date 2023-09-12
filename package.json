@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/cordova": "^11.0.1",
     "@types/uuid": "^9.0.3"
   }
 }

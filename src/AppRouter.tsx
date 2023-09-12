@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import OffersScreen from './screens/OffersScreen';
 import OfferDetailsScreen from './screens/OfferDetailsScreen';
