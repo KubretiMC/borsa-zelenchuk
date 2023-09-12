@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
-import { useDispatch, useSelector } from 'react-redux';
 import Button from '../components/Buttons';
 import { addProduct } from '../redux/actions';
 import { OfferValues } from '../interfaces/interfaces';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
 
 const AddOfferScreen: React.FC = () => {
     const productFilters = useSelector((state: any) => state.productFilters);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [offerAdded, setOfferAdded] = useState(false);
+    const [isModalOpened, setIsModalOpened] = useState(false);
 
     const initialOfferValues: OfferValues = {
         name: 'Изберете продукт',
@@ -32,16 +33,16 @@ const AddOfferScreen: React.FC = () => {
 
     const handleAddOfferClick = (offer: OfferValues) => {
         dispatch(addProduct(offer));
-        setOfferAdded(true);
+        setIsModalOpened(true);
     };
 
     useEffect(() => {
-        if (offerAdded) {
+        if (isModalOpened) {
             setTimeout(() => {
                 navigate(-1);
             }, 2000);
         }
-    }, [offerAdded]);
+    }, [isModalOpened]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -144,7 +145,7 @@ const AddOfferScreen: React.FC = () => {
                 }
             </div>
             <Button title='Добави оферта' onClick={() => handleAddOfferClick(offerValues)} />
-            <Modal isOpen={offerAdded} />
+            <Modal isOpen={isModalOpened} text={"Офертата е добавена успешно!"}/>
         </ScreenContainer>
     );
 };

@@ -8,7 +8,7 @@ export const addProduct = (product: OfferValues) => ({
   payload: { product },
 });
 
-export const reserveProduct = (productId: string, orderQuantity: number) => ({
+export const reserveProduct = (productId: string, orderQuantity: number, minOrder: number) => ({
     type: RESERVE_PRODUCT,
-    payload: { productId, orderQuantity },
+    payload: { productId, orderQuantity, minOrder },
 });

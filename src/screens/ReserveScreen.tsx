@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import ScreenContainer from '../components/ScreenContainer';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import ScreenContainer from '../components/ScreenContainer';
 import { Product } from '../interfaces/interfaces';
 import ProductHeader from '../components/ProductHeader';
 import Row from '../components/Row';
 import RangeSlider from '../components/RangeSlider';
 import Button from '../components/Buttons';
 import { reserveProduct } from '../redux/actions';
+import Modal from '../components/Modal';
 
 
 const ReserveScreen = () => {
   const { id = '' } = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const products = useSelector((state: any) => state.products);
-  const state = useSelector((state: any) => state);
-  console.log('state', state);
 
   const selectedProduct: Product = products.find((product: Product) => product.id === id);
   const { 
@@ -29,13 +30,23 @@ const ReserveScreen = () => {
 
   const [orderQuantity, setOrderQuantity] = useState<number>(minOrder);
   const [orderCost, setOrderCost] = useState<number>(cost*minOrder);
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
     setOrderCost(orderQuantity*cost);
   }, [cost, minOrder, orderQuantity]);
 
-  const handleReserveClick = (productId: string, orderQuantity: number) => {
-    dispatch(reserveProduct(productId, orderQuantity));
+  useEffect(() => {
+      if (isModalOpened) {
+          setTimeout(() => {
+              navigate(-3);
+          }, 2000);
+      }
+  }, [isModalOpened]);
+
+  const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number) => {
+    dispatch(reserveProduct(productId, orderQuantity, minOrder));
+    setIsModalOpened(true);
   };
 
   return (
@@ -47,7 +58,8 @@ const ReserveScreen = () => {
           value={`${orderCost} лв.`}
           type={'label'}
         />
-        <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity)} />
+        <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder)} />
+        <Modal isOpen={isModalOpened} text="Продукта е резервиран успешно!" />
     </ScreenContainer>
   );
 };
