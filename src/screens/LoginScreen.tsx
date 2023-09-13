@@ -1,7 +1,5 @@
 import React from 'react';
 import LoginForm from '../components/LoginForm';
-import loginIcon from '../images/loginIcon.svg';
-import loginIcon2 from '../images/loginIcon2.svg';
 
 const LoginScreen: React.FC = () => {
   return (
@@ -15,11 +13,6 @@ const LoginScreen: React.FC = () => {
         </div>
       </div>
       <LoginForm />
-      <img
-        src={loginIcon}
-        alt="Login Icon"
-        className="mx-auto mt-4 z-0"
-      />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
 import { addProduct } from '../redux/actions';
 import { OfferValues } from '../interfaces/interfaces';
 import Modal from '../components/Modal';

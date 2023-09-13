@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
 
 const HomeScreen: React.FC = () => {
   const navigate = useNavigate();

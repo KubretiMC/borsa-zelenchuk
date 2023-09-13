@@ -3,7 +3,7 @@ import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
 import { Product } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
 import ProductHeader from '../components/ProductHeader';
 
 const OfferDetailsScreen = () => {
