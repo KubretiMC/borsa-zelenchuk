@@ -6,7 +6,7 @@ import { Product } from '../interfaces/interfaces';
 import ProductHeader from '../components/ProductHeader';
 import Row from '../components/Row';
 import RangeSlider from '../components/RangeSlider';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
 import { reserveProduct } from '../redux/actions';
 import Modal from '../components/Modal';
 

@@ -1,17 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
-import { Product } from '../interfaces/interfaces';
+import { Product, RootState } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
 import ProductHeader from '../components/ProductHeader';
 
 const OfferDetailsScreen = () => {
   const { id } = useParams();
   
-  const products = useSelector((state: any) => state.products);
+  const products = useSelector((state: RootState) => state.products);
   
-  const selectedProduct: Product = products.find((product: Product) => product.id === id);
+  const selectedProduct: Product | undefined = products.find((product: Product) => product.id === id);
   const { 
     name = '', 
     cost = 0, 

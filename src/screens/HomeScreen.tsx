@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
+import { useSelector } from 'react-redux';
+import { RootState, User } from '../interfaces/interfaces';
 
 const HomeScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -10,14 +12,16 @@ const HomeScreen: React.FC = () => {
     navigate(path);
   };
 
+  const loggedUser = useSelector((state: RootState) => state.loggedUser);
+
   return (
-    <ScreenContainer subtitle='Random Randomov'>
+    <ScreenContainer subtitle={loggedUser?.username || 'Random Randomov'}>
       <div className="flex flex-col justify-center items-center h-full">
         <Button
           title='Търси оферта'
-          onClick={() => handleNavigateButtonClick('offers')}
+          onClick={() => handleNavigateButtonClick('/offers')}
         />
-        <Button title='Направи оферта' onClick={() => handleNavigateButtonClick('add-offer')} />
+        <Button title='Направи оферта' onClick={() => handleNavigateButtonClick('/add-offer')} />
         <Button title='Излез оферта' onClick={undefined} />
       </div>
     </ScreenContainer>

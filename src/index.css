@@ -5,7 +5,7 @@
 @import 'tailwindcss/utilities';
 
 .mainWrapper {
-  @apply flex justify-center align-middle w-full h-screen items-center
+  @apply flex justify-center align-middle w-full h-screen items-center flex-col
 }
 
 .wrapper {

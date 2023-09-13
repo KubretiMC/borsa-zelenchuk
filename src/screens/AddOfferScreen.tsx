@@ -5,13 +5,14 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
-import Button from '../components/Buttons';
+import Button from '../components/Button';
 import { addProduct } from '../redux/actions';
-import { OfferValues } from '../interfaces/interfaces';
+import { OfferValues, RootState } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
 
 const AddOfferScreen: React.FC = () => {
-    const productFilters = useSelector((state: any) => state.productFilters);
+    const productFilters = useSelector((state: RootState) => state.productFilters);
+    const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -31,9 +32,11 @@ const AddOfferScreen: React.FC = () => {
 
     const [offerValues, setOfferValues] = useState(initialOfferValues);
 
-    const handleAddOfferClick = (offer: OfferValues) => {
-        dispatch(addProduct(offer));
-        setIsModalOpened(true);
+    const handleAddOfferClick = (offer: OfferValues, userId?: string) => {
+        if(userId){
+            dispatch(addProduct(userId, offer));
+            setIsModalOpened(true);
+        }
     };
 
     useEffect(() => {
@@ -144,7 +147,7 @@ const AddOfferScreen: React.FC = () => {
                     <img src={offerValues.image} alt=''/>
                 }
             </div>
-            <Button title='Добави оферта' onClick={() => handleAddOfferClick(offerValues)} />
+            <Button title='Добави оферта' onClick={() => handleAddOfferClick(offerValues, loggedUser?.id)} />
             <Modal isOpen={isModalOpened} text={"Офертата е добавена успешно!"}/>
         </ScreenContainer>
     );
