@@ -1,3 +1,11 @@
+export interface User {
+  id: string;
+  username: string;
+  password: string;
+  offers?: string[];
+  reserves?: string[];
+}
+
 export interface OfferValues {
     name: string,
     cost?: number,
@@ -31,4 +39,11 @@ export interface Product {
 export interface ProductFilter {
   names: string[];
   places: string[];
+}
+
+export interface RootState {
+  products: Product[];
+  productFilters: ProductFilter;
+  loggedUser?: User;
+  users: User[];
 }

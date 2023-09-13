@@ -1,16 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Product, ProductFilter } from '../interfaces/interfaces';
-import { ADD_PRODUCT, RESERVE_PRODUCT } from './actions';
+import { Product, RootState, User } from '../interfaces/interfaces';
+import { ADD_PRODUCT, LOG_USER, RESERVE_PRODUCT } from './actions';
 
-interface RootState {
-  products: Product[];
-  productFilters: ProductFilter;
-}
+export const mockUsers: User[] = [
+  { id: uuidv4(), username: 'admin', password: 'admin', offers: ['9cc32e6a-76a9-49a4-9372-4d541d534404', "7d24b41c-fae0-4843-a380-05ae3ea14048"] },
+  { id: uuidv4(), username: 'admin2', password: 'admin2' },
+];
 
 const initialState: RootState = {
+    users: mockUsers,
     products: [
         { 
-          id: uuidv4(), 
+          id: '9cc32e6a-76a9-49a4-9372-4d541d534404', 
           name:'Диня', 
           place: 'Огняново', 
           cost: 1.2,
@@ -21,7 +22,7 @@ const initialState: RootState = {
           image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
         },
         { 
-          id: uuidv4(), 
+          id: "d554aeaa-5854-4656-8865-d30fa2b85b1c", 
           name:'Череша', 
           place: 'Мало Конаре', 
           cost: 4, 
@@ -30,7 +31,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' },
         { 
-          id: uuidv4(), 
+          id: "409808fc-05d7-486a-8eae-d611eb75c2b8", 
           name:'Диня', 
           place: 'Огняново', 
           cost: 1.5,
@@ -40,7 +41,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg' },
         { 
-          id: uuidv4(), 
+          id: "7d24b41c-fae0-4843-a380-05ae3ea14048", 
           name:'Череша', 
           place: 'Динката', 
           cost: 2.5, 
@@ -50,7 +51,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' },
         { 
-          id: uuidv4(), 
+          id: "f9c1520b-fd8a-4eef-be07-d3a0448b5641", 
           name:'Праскова', 
           place: 'Мало Конаре', 
           cost: 4,
@@ -69,18 +70,31 @@ const initialState: RootState = {
 
 const rootReducer = (state: RootState = initialState, action: any): RootState => {
   switch (action.type) {
-    case ADD_PRODUCT:
-      const { product } = action.payload;
-      const { 
-        name = '', 
-        cost = 0, 
-        availability = 0, 
-        minOrder = 0, 
-        place = '', 
-        image = '', 
-        additionalInformation = '' 
-      } = product;
+    case LOG_USER:
+      const { username, password } = action.payload;
+      const foundUser = state.users.find(
+        (user) => user.username === username && user.password === password
+      );
 
+      if (foundUser) {
+        return {
+          ...state,
+          loggedUser: foundUser,
+        };
+      }
+      return state;
+    case ADD_PRODUCT:
+      const { userId, product } = action.payload;
+      const {
+        name = '',
+        cost = 0,
+        availability = 0,
+        minOrder = 0,
+        place = '',
+        image = '',
+        additionalInformation = '',
+      } = product;
+    
       const newProduct: Product = {
         id: uuidv4(),
         name: name,
@@ -89,16 +103,41 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         minOrder: parseFloat(minOrder),
         place: place,
         image: image || 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
-        // phoneNumber: offer.phoneNumber,
         additionalInformation: additionalInformation,
         reserved: false,
       };
-
+    
       const newProducts = [...state.products, newProduct];
+    
+      const updatedUsers = state.users.map((user) => {
+        if (user.id === userId) {
+          const updatedOffers = user.offers ? [...user.offers, newProduct.id] : [newProduct.id];
+    
+          return {
+            ...user,
+            offers: updatedOffers,
+          };
+        }
+        return user;
+      });
+
+      let updatedLoggedUser = state.loggedUser;
+      if (updatedLoggedUser && updatedLoggedUser.id === userId) {
+        const updatedLoggedUserOffers = updatedLoggedUser.offers
+          ? [...updatedLoggedUser.offers, newProduct.id]
+          : [newProduct.id];
+
+        updatedLoggedUser = {
+          ...updatedLoggedUser,
+          offers: updatedLoggedUserOffers,
+        };
+      }
 
       return {
         ...state,
         products: newProducts,
+        users: updatedUsers,
+        loggedUser: updatedLoggedUser,
     };
     case RESERVE_PRODUCT:
       const { productId, orderQuantity, minOrder: minimumOrder } = action.payload;
