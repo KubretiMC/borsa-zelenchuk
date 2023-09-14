@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import ScreenContainer from '../components/ScreenContainer';
 import Offer from '../components/Offer';
 import Filter from '../components/Filter';
-import { FilterValues, Product } from '../interfaces/interfaces';
+import { FilterValues, Product, RootState } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 
 const OffersScreen: React.FC = () => {
-    const products = useSelector((state: any) => state.products);
-    const productFilters = useSelector((state: any) => state.productFilters);
+    const loggedUser = useSelector((state: RootState) => state.loggedUser);
+    const products = useSelector((state: RootState) => state.products);
+    const productFilters = useSelector((state: RootState) => state.productFilters);
 
     const initialFilterValues: FilterValues = {
         name: 'Всички',
@@ -24,8 +25,8 @@ const OffersScreen: React.FC = () => {
         const nameMatch = name === 'Всички' || product.name === name;
         const placeMatch = place === 'Всички' || product.place === place;
         const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
-
-        return nameMatch && placeMatch && costMatch;
+        const notInOffers = !loggedUser?.offers?.includes(product.id);
+        return nameMatch && placeMatch && costMatch && notInOffers;
     });
 
     const offerList = filteredProductsList

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
-import { Product } from '../interfaces/interfaces';
+import { Product, RootState } from '../interfaces/interfaces';
 import ProductHeader from '../components/ProductHeader';
 import Row from '../components/Row';
 import RangeSlider from '../components/RangeSlider';
@@ -17,9 +17,10 @@ const ReserveScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const products = useSelector((state: any) => state.products);
+  const loggedUser = useSelector((state: RootState) => state.loggedUser);
+  const products = useSelector((state: RootState) => state.products);
 
-  const selectedProduct: Product = products.find((product: Product) => product.id === id);
+  const selectedProduct: Product | undefined = products.find((product: Product) => product.id === id);
   const { 
     name = '', 
     cost = 0,  
@@ -44,9 +45,11 @@ const ReserveScreen = () => {
       }
   }, [isModalOpened]);
 
-  const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number) => {
-    dispatch(reserveProduct(productId, orderQuantity, minOrder));
-    setIsModalOpened(true);
+  const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number, userId?: string) => {
+    if(userId) {
+      dispatch(reserveProduct(userId, productId, orderQuantity, minOrder));
+      setIsModalOpened(true);
+    }
   };
 
   return (
@@ -58,7 +61,7 @@ const ReserveScreen = () => {
           value={`${orderCost} лв.`}
           type={'label'}
         />
-        <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder)} />
+        <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder, loggedUser?.id)} />
         <Modal isOpen={isModalOpened} text="Продукта е резервиран успешно!" />
     </ScreenContainer>
   );
