@@ -14,7 +14,7 @@ export const addProduct = (userId: string, product: OfferValues) => ({
   payload: { userId, product },
 });
 
-export const reserveProduct = (productId: string, orderQuantity: number, minOrder: number) => ({
+export const reserveProduct = (userId: string, productId: string, orderQuantity: number, minOrder: number) => ({
     type: RESERVE_PRODUCT,
-    payload: { productId, orderQuantity, minOrder },
+    payload: { userId, productId, orderQuantity, minOrder },
 });

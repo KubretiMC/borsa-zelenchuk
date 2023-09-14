@@ -84,7 +84,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
       }
       return state;
     case ADD_PRODUCT:
-      const { userId, product } = action.payload;
+      const { userId: userIdAddProduct, product } = action.payload;
       const {
         name = '',
         cost = 0,
@@ -109,8 +109,8 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
     
       const newProducts = [...state.products, newProduct];
     
-      const updatedUsers = state.users.map((user) => {
-        if (user.id === userId) {
+      const updatedUsersAddProducts = state.users.map((user) => {
+        if (user.id === userIdAddProduct) {
           const updatedOffers = user.offers ? [...user.offers, newProduct.id] : [newProduct.id];
     
           return {
@@ -122,7 +122,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
       });
 
       let updatedLoggedUser = state.loggedUser;
-      if (updatedLoggedUser && updatedLoggedUser.id === userId) {
+      if (updatedLoggedUser && updatedLoggedUser.id === userIdAddProduct) {
         const updatedLoggedUserOffers = updatedLoggedUser.offers
           ? [...updatedLoggedUser.offers, newProduct.id]
           : [newProduct.id];
@@ -136,34 +136,86 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
       return {
         ...state,
         products: newProducts,
-        users: updatedUsers,
+        users: updatedUsersAddProducts,
         loggedUser: updatedLoggedUser,
     };
     case RESERVE_PRODUCT:
-      const { productId, orderQuantity, minOrder: minimumOrder } = action.payload;
-    
+      const { userId, productId, orderQuantity, minOrder: minimumOrder } = action.payload;
+
+      let updatedUsers = state.users.map((user) => ({ ...user })); // Create a copy of users array
+
       const updatedProducts = state.products.map((product: Product) => {
         if (product.id === productId) {
           const newAvailability = product.availability - orderQuantity;
-          console.log('newAvailability', newAvailability);
-          console.log('product.availability', product.availability);
-          console.log('orderQuantity', orderQuantity);
-          // mark the product as reserved and the quantity reservered
+
+          // Find the user based on userId and add the productId to their reserves
+          updatedUsers = updatedUsers.map((user) => {
+            if (user.id === userId) {
+              const updatedReserves = user.reserves ? [...user.reserves, productId] : [productId];
+
+              return {
+                ...user,
+                reserves: updatedReserves,
+              };
+            }
+            return user;
+          });
+
+          // Find the original user who offered the product
+          const originalUser = updatedUsers.find((user) => user.offers?.includes(productId));
+
+          if (originalUser) {
+            // Remove the productId from the original user's offers array
+            const updatedOffers = originalUser.offers?.filter((offerId) => offerId !== productId);
+
+            // Update the original user
+            updatedUsers = updatedUsers.map((user) => {
+              if (user.id === originalUser.id) {
+                return {
+                  ...user,
+                  offers: updatedOffers,
+                };
+              }
+              return user;
+            });
+          }
+
+          // mark the product as reserved and the quantity reserved
           const updatedProduct: Product = {
             ...product,
             reserved: true,
             availability: orderQuantity,
           };
-    
+
           // if newAvailability >= minOrder a new product should be created, because there is enough quantity for potential buyers
           if (newAvailability >= minimumOrder) {
+            const newProductId = uuidv4();
             const newProduct: Product = {
               ...product,
-              id: uuidv4(),
+              id: newProductId,
               reserved: false,
               availability: newAvailability,
             };
-    
+
+            // Find the original user who offered the product
+            if (originalUser) {
+              // Remove the productId from the original user's offers array
+              const updatedOffers = originalUser.offers?.filter((offerId) => offerId !== productId);
+
+              // Update the original user and add the new offer
+              updatedUsers = updatedUsers.map((user) => {
+                if (user.id === originalUser.id) {
+                  const updatedOffersArray = updatedOffers ? [...updatedOffers, newProductId] : [newProductId];
+          
+                  return {
+                    ...user,
+                    offers: updatedOffersArray,
+                  };
+                }
+                return user;
+              });
+            }
+
             return [updatedProduct, newProduct];
           }
 
@@ -171,14 +223,15 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         }
         return product;
       });
-    
-      // Flatten the arra
+
+      // Flatten the array
       const newProductsReserve = updatedProducts.flat().filter((product) => product);
-    
+
       return {
         ...state,
         products: newProductsReserve,
-    };    
+        users: updatedUsers, // Update the users with the modified reserves and offers arrays
+    };
 
     default:
       return state;
