@@ -4,17 +4,17 @@ import { ADD_PRODUCT, LOG_USER, RESERVE_PRODUCT } from './actions';
 
 export const mockUsers: User[] = [
   { 
-    id: uuidv4(), 
+    id: '602483be-2be2-4905-a728-e4ffcae8eff6', 
     username: 'admin', 
     password: 'admin', 
     offers: ['9cc32e6a-76a9-49a4-9372-4d541d534404', "7d24b41c-fae0-4843-a380-05ae3ea14048"],
-    reservedYour: [],
+    userReserved: [],
    },
   { 
-    id: uuidv4(), 
+    id: '8b015b4b-dc26-4253-9cd7-305dd733c841',
     username: 'admin2', 
     password: 'admin2',
-    reservedYour: [],
+    userReserved: [],
   },
 ];
 
@@ -132,28 +132,21 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         return user;
       });
 
-      let updatedLoggedUser = state.loggedUser;
-      if (updatedLoggedUser && updatedLoggedUser.id === userIdAddProduct) {
-        const updatedLoggedUserOffers = updatedLoggedUser.offers
-          ? [...updatedLoggedUser.offers, newProduct.id]
-          : [newProduct.id];
-
-        updatedLoggedUser = {
-          ...updatedLoggedUser,
-          offers: updatedLoggedUserOffers,
-        };
-      }
+      const loggedUserUpdatedAddProduct = updatedUsersAddProducts.find(
+        (user) => user.id === userIdAddProduct
+      )
 
       return {
         ...state,
         products: newProducts,
         users: updatedUsersAddProducts,
-        loggedUser: updatedLoggedUser,
-    };
+        loggedUser: loggedUserUpdatedAddProduct,
+      };
+
     case RESERVE_PRODUCT:
-      const { userId, productId, orderQuantity, minOrder: minimumOrder } = action.payload;
-      console.log('action.payload', action.payload);
-      let updatedUsers = state.users.map((user) => ({ ...user })); // Create a copy of users array
+      const { userId: userIdReserveProduct, productId, orderQuantity, minOrder: minimumOrder } = action.payload;
+
+      let updatedUsers = state.users.map((user) => ({ ...user }));
 
       const updatedProducts = state.products.map((product: Product) => {
         if (product.id === productId) {
@@ -161,7 +154,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
 
           // Find the user based on userId and add the productId to their reserves
           updatedUsers = updatedUsers.map((user) => {
-            if (user.id === userId) {
+            if (user.id === userIdReserveProduct) {
               const updatedReserves = user.reserves ? [...user.reserves, productId] : [productId];
 
               return {
@@ -185,7 +178,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
                 return {
                   ...user,
                   offers: updatedOffers,
-                  reservedYour: [...user.reservedYour, productId]
+                  userReserved: [...(user.userReserved ?? []), productId],
                 };
               }
               return user;
@@ -218,7 +211,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
               updatedUsers = updatedUsers.map((user) => {
                 if (user.id === originalUser.id) {
                   const updatedOffersArray = updatedOffers ? [...updatedOffers, newProductId] : [newProductId];
-          
+
                   return {
                     ...user,
                     offers: updatedOffersArray,
@@ -239,11 +232,16 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
       // Flatten the array
       const newProductsReserve = updatedProducts.flat().filter((product) => product);
 
+      const loggedUserUpdated = updatedUsers.find(
+        (user) => user.id === userIdReserveProduct
+      )
+
       return {
         ...state,
         products: newProductsReserve,
-        users: updatedUsers, // Update the users with the modified reserves and offers arrays
-    };
+        users: updatedUsers,
+        loggedUser: loggedUserUpdated
+      };
 
     default:
       return state;
