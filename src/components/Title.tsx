@@ -14,6 +14,10 @@ const Title: React.FC<TitleProps> = ({ subTitle, backButton }) => {
     navigate(-1);
   };
 
+  const handleProfileNavigation = () => {
+    navigate('/profile');
+  }
+
   return (
     <div className="bg-customGray border-b rounded-b-2xl">
       <div className="flex items-center py-2 px-5">
@@ -21,7 +25,7 @@ const Title: React.FC<TitleProps> = ({ subTitle, backButton }) => {
         <h1 className="title mx-auto">Зеленчукова борса</h1>
       </div>
       <div className="flex items-center justify-center pb-5 px-5">
-        <FontAwesomeIcon icon={faUser} className="text-white mr-2"/>
+        <FontAwesomeIcon icon={faUser} className="text-white mr-2" onClick={() => handleProfileNavigation()}/>
         <h1 className="title">{subTitle}</h1>
       </div>
     </div>

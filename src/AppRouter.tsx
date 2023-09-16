@@ -6,6 +6,7 @@ import OffersScreen from './screens/OffersScreen';
 import OfferDetailsScreen from './screens/OfferDetailsScreen';
 import ReserveScreen from './screens/ReserveScreen';
 import AddOfferScreen from './screens/AddOfferScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const AppRouter: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const AppRouter: React.FC = () => {
       <Routes>
         <Route path="/" element={<LoginScreen />} />
         <Route path="/home" element={<HomeScreen />} />
+        <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/offers" element={<OffersScreen />} />
         <Route path="/offer/:id" element={<OfferDetailsScreen />} />
         <Route path="/offer/:id/reserve" element={<ReserveScreen />} />
