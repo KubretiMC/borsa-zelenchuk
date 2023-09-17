@@ -2,8 +2,10 @@ export interface User {
   id: string;
   username: string;
   password: string;
+  // phoneNumber: string;
   offers?: string[];
   reserves?: string[];
+  userReserved?: string[];
 }
 
 export interface OfferValues {
@@ -34,6 +36,7 @@ export interface Product {
   minOrder: number;
   reserved: boolean;
   additionalInformation?: string;
+  finished: boolean;
 }
 
 export interface ProductFilter {
