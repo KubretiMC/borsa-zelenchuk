@@ -24,9 +24,11 @@ const Title: React.FC<TitleProps> = ({ subTitle, backButton }) => {
         {backButton && <FontAwesomeIcon icon={faArrowLeft} className="text-white mr-2 mt-1" onClick={() => handleGoBack()}/>}
         <h1 className="title mx-auto">Зеленчукова борса</h1>
       </div>
-      <div className="flex items-center justify-center pb-5 px-5">
-        <FontAwesomeIcon icon={faUser} className="text-white mr-2" onClick={() => handleProfileNavigation()}/>
-        <h1 className="title">{subTitle}</h1>
+      <div className="flex justify-center pb-5 px-5">
+        <button className='flex items-center' onClick={() => handleProfileNavigation()}>
+          <FontAwesomeIcon icon={faUser} className="text-white mr-2" />
+          <h1 className="title">{subTitle}</h1>
+        </button>
       </div>
     </div>
   );

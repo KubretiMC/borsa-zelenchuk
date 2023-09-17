@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from './Button';
 
 interface OfferProps {
     id: string;
@@ -7,9 +8,13 @@ interface OfferProps {
     place: string;
     image: string;
     cost: number;
+    profileOffer?: boolean;
+    reserved?: boolean;
+    buttonName?: string;
+    buttonClick?: () => void;
 }
 
-const Offer: React.FC<OfferProps> = ({ id, name, place, cost, image }) => {
+const Offer: React.FC<OfferProps> = ({ id, name, place, cost, image, profileOffer, reserved, buttonName, buttonClick }) => {
     const navigate = useNavigate();
 
     const handleViewDetailsClick = () => {
@@ -17,7 +22,7 @@ const Offer: React.FC<OfferProps> = ({ id, name, place, cost, image }) => {
     };
 
     return (
-        <div className="border mt-5 pb-2">
+        <div className="border mt-5 bg-gray-400">
             <button onClick={handleViewDetailsClick}>
                 <img
                     src={image}
@@ -28,11 +33,21 @@ const Offer: React.FC<OfferProps> = ({ id, name, place, cost, image }) => {
             <div className='mx-2 mt-2'>
                 <div className="flex justify-between sm:pl-4 sm:mt-0">
                     <h1>{name}</h1>
-                    <h1>{place}</h1>
+                    {!profileOffer && <h1>{place}</h1>}
                 </div>
                 <div className="flex items-start">
-                    <h1>{cost} лв/кг.</h1>
+                    {
+                        <h1>{cost} {profileOffer ? "лв." : "лв/кг."}</h1> 
+                    }
                 </div>
+                {reserved && 
+                    <div className="flex items-start">
+                        <h1>Резервирана</h1>
+                    </div>
+                }
+                {profileOffer && buttonName &&
+                    <Button title={buttonName} onClick={buttonClick} />
+                }
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Product, RootState, User } from '../interfaces/interfaces';
-import { ADD_PRODUCT, LOG_USER, RESERVE_PRODUCT } from './actions';
+import { ADD_PRODUCT, FINISH_PRODUCT, LOG_USER, RESERVE_PRODUCT } from './actions';
 
 export const mockUsers: User[] = [
   { 
@@ -31,6 +31,7 @@ const initialState: RootState = {
           additionalInformation: 'Най-доброто на пазара',
           reserved: false,
           image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
+          finished: false,
         },
         { 
           id: "d554aeaa-5854-4656-8865-d30fa2b85b1c", 
@@ -40,7 +41,9 @@ const initialState: RootState = {
           availability: 800,
           minOrder: 40,
           reserved: false,
-          image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' },
+          image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' ,
+          finished: false,
+        },
         { 
           id: "409808fc-05d7-486a-8eae-d611eb75c2b8", 
           name:'Диня', 
@@ -50,7 +53,9 @@ const initialState: RootState = {
           minOrder:150, 
           additionalInformation: 'Купена от Турция',
           reserved: false,
-          image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg' },
+          image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
+          finished: false,
+        },
         { 
           id: "7d24b41c-fae0-4843-a380-05ae3ea14048", 
           name:'Череша', 
@@ -60,7 +65,9 @@ const initialState: RootState = {
           minOrder:10,
           additionalInformation: 'Петъка няма да ме има',
           reserved: false,
-          image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' },
+          image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg',
+          finished: false,
+        },
         { 
           id: "f9c1520b-fd8a-4eef-be07-d3a0448b5641", 
           name:'Праскова', 
@@ -70,7 +77,8 @@ const initialState: RootState = {
           minOrder:500, 
           reserved: false,
           additionalInformation: 'Петъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме има',
-          image: 'https://agri.bg/media/2019/08/03/409961/740x500.jpg' 
+          image: 'https://agri.bg/media/2019/08/03/409961/740x500.jpg',
+          finished: false,
         },
     ],
     productFilters: {
@@ -116,6 +124,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         image: image || 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
         additionalInformation: additionalInformation,
         reserved: false,
+        finished: false
       };
     
       const newProducts = [...state.products, newProduct];
@@ -142,20 +151,38 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         users: updatedUsersAddProducts,
         loggedUser: loggedUserUpdatedAddProduct,
       };
+    case FINISH_PRODUCT:
+      const { productId: productIdFinishProduct } = action.payload;
+
+      const updatedProductsFinishProduct = state.products.map((product: Product) => {
+        if (product.id === productIdFinishProduct) {
+          return {
+            ...product,
+            finished: true,
+          };
+        }
+        return product;
+      });
+
+      return {
+        ...state,
+        products: updatedProductsFinishProduct,
+      };
+
 
     case RESERVE_PRODUCT:
-      const { userId: userIdReserveProduct, productId, orderQuantity, minOrder: minimumOrder } = action.payload;
+      const { userId: userIdReserveProduct, productId: productIdReserveProduct, orderQuantity, minOrder: minimumOrder } = action.payload;
 
       let updatedUsers = state.users.map((user) => ({ ...user }));
 
-      const updatedProducts = state.products.map((product: Product) => {
-        if (product.id === productId) {
+      const updatedProductsReserveProduct = state.products.map((product: Product) => {
+        if (product.id === productIdReserveProduct) {
           const newAvailability = product.availability - orderQuantity;
 
           // Find the user based on userId and add the productId to their reserves
           updatedUsers = updatedUsers.map((user) => {
             if (user.id === userIdReserveProduct) {
-              const updatedReserves = user.reserves ? [...user.reserves, productId] : [productId];
+              const updatedReserves = user.reserves ? [...user.reserves, productIdReserveProduct] : [productIdReserveProduct];
 
               return {
                 ...user,
@@ -166,11 +193,11 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
           });
 
           // Find the original user who offered the product
-          const originalUser = updatedUsers.find((user) => user.offers?.includes(productId));
+          const originalUser = updatedUsers.find((user) => user.offers?.includes(productIdReserveProduct));
 
           if (originalUser) {
             // Remove the productId from the original user's offers array
-            const updatedOffers = originalUser.offers?.filter((offerId) => offerId !== productId);
+            const updatedOffers = originalUser.offers?.filter((offerId) => offerId !== productIdReserveProduct);
 
             // Update the original user
             updatedUsers = updatedUsers.map((user) => {
@@ -178,7 +205,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
                 return {
                   ...user,
                   offers: updatedOffers,
-                  userReserved: [...(user.userReserved ?? []), productId],
+                  userReserved: [...(user.userReserved ?? []), productIdReserveProduct],
                 };
               }
               return user;
@@ -205,7 +232,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
             // Find the original user who offered the product
             if (originalUser) {
               // Remove the productId from the original user's offers array
-              const updatedOffers = originalUser.offers?.filter((offerId) => offerId !== productId);
+              const updatedOffers = originalUser.offers?.filter((offerId) => offerId !== productIdReserveProduct);
 
               // Update the original user and add the new offer
               updatedUsers = updatedUsers.map((user) => {
@@ -230,7 +257,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
       });
 
       // Flatten the array
-      const newProductsReserve = updatedProducts.flat().filter((product) => product);
+      const newProductsReserve = updatedProductsReserveProduct.flat().filter((product) => product);
 
       const loggedUserUpdated = updatedUsers.find(
         (user) => user.id === userIdReserveProduct

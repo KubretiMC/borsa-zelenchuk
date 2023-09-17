@@ -20,6 +20,10 @@
   @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-4 rounded w-full
 }
 
+.btn2 {
+  @apply border rounded-t-lg border-gray-300 py-2 px-4 bg-gray-500 text-white font-bold
+}
+
 .image {
   @apply hover:bg-white text-black py-2 px-4 my-4 rounded w-full border
 }

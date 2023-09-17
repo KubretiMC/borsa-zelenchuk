@@ -36,6 +36,7 @@ export interface Product {
   minOrder: number;
   reserved: boolean;
   additionalInformation?: string;
+  finished: boolean;
 }
 
 export interface ProductFilter {
