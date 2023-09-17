@@ -2,13 +2,13 @@ import React from 'react';
 import LoginForm from '../components/LoginForm';
 import DefaultScreenTitle from '../components/DefaultScreenTitle';
 
-const LoginScreen: React.FC = () => {
+const RegistrationScreen: React.FC = () => {
   return (
     <div className="mainWrapper">
-      <DefaultScreenTitle text={'Влезте за да продължите'} />
-      <LoginForm registration={false} />
+      <DefaultScreenTitle text={'Регистрация'} />
+      <LoginForm registration={true} />
     </div>
   );
 };
 
-export default LoginScreen;
+export default RegistrationScreen;

@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logUser } from '../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, registerUser } from '../redux/actions';
+import { RootState, User } from '../interfaces/interfaces';
 
-const LoginForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+interface LoginFormProps {
+  registration: boolean;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
+  const initialFormData = {
     username: '',
     password: '',
-  });
+    ...(registration ? { passwordConfirm: '' } : {}),
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const users = useSelector((state: RootState) => state.users);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSuccessfulLogin = () => {
     navigate(`/home`);
+  };
+
+  const handleNavigateButtonClick = (registration: boolean) => {
+    navigate(registration ? `/` : 'registration');
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,13 +39,31 @@ const LoginForm: React.FC = () => {
     });
   };
 
-  const handleLogin = () => {
-    if (formData.username === 'admin' || 'admin2' && formData.password === 'admin' || 'admin2') {
-        dispatch(logUser(formData.username, formData.password));
+  const handleLogin = (username: string, password: string, users: User[]) => {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].username === username && users[i].password === password) {
+        dispatch(loginUser(username, password));
         handleSuccessfulLogin();
-    } else {
-        alert('Невалидно име или парола. Моля опитайте отново');
+        return;
+      }
     }
+    alert('Невалидно име или парола. Моля опитайте отново');
+  };
+
+  const handleRegistration = (username: string, password: string, passwordConfirm: string, users: User[]) => {
+    if(password !== passwordConfirm) {
+      alert('Паролите не съвпадат!');
+      return;
+    }
+
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].username === username) {
+        alert('Потребителскто име е заето!');
+        return;
+      }
+    }
+    dispatch(registerUser(username, password));
+    handleSuccessfulLogin();
   };
 
   return (
@@ -58,11 +90,24 @@ const LoginForm: React.FC = () => {
                 onChange={handleInputChange}
             />
         </div>
-        <Button title={'Влез'} onClick={handleLogin} />
+        {registration &&
+          <div className="mb-4">
+              <input
+                  type="password"
+                  id="passwordConfirm"
+                  name="passwordConfirm"
+                  className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Повторете паролата"
+                  value={formData.passwordConfirm}
+                  onChange={handleInputChange}
+              />
+          </div>
+        }
+        <Button title={registration ? 'Регистрация' : 'Влез'} onClick={() => registration ? handleRegistration(formData.username, formData.password, formData.passwordConfirm ?? '', users) : handleLogin(formData.username, formData.password, users)} />
         <div className="mt-4 text-right">
-            <label className="text-gray-400 text-sm">
-                Забравена парола?
-            </label>
+            <button className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
+                {registration ? 'Имате акаунт? Влезте!' : 'Нямате акаунт? Регистрация!'}
+            </button>
         </div>
     </div>
   );

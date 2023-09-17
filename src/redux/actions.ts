@@ -1,12 +1,24 @@
 import { OfferValues } from "../interfaces/interfaces";
 
-export const LOG_USER = 'LOG_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const REGISTER_USER = 'REGISTER_USER';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const RESERVE_PRODUCT = 'RESERVE_PRODUCT';
 export const FINISH_PRODUCT = 'REMOVE_PRODUCT';
 
-export const logUser = (username: string, password: string) => ({
-  type: LOG_USER,
+export const loginUser = (username: string, password: string) => ({
+  type: LOGIN_USER,
+  payload: { username, password },
+})
+
+export const logOutUser = () => ({
+  type: LOGOUT_USER,
+  payload: {},
+})
+
+export const registerUser = (username: string, password: string) => ({
+  type: REGISTER_USER,
   payload: { username, password },
 })
 
