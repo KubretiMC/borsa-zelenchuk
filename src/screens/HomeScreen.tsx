@@ -2,10 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
-import { useSelector } from 'react-redux';
-import { RootState, User } from '../interfaces/interfaces';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../interfaces/interfaces';
+import { logOutUser } from '../redux/actions';
 
 const HomeScreen: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleNavigateButtonClick = (path: string) => {
@@ -13,6 +15,11 @@ const HomeScreen: React.FC = () => {
   };
 
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
+
+  const handleLogout = () => {
+    dispatch(logOutUser())
+    handleNavigateButtonClick('/');
+  }
 
   return (
     <ScreenContainer subtitle={loggedUser?.username || 'Random Randomov'}>
@@ -22,7 +29,7 @@ const HomeScreen: React.FC = () => {
           onClick={() => handleNavigateButtonClick('/offers')}
         />
         <Button title='Направи оферта' onClick={() => handleNavigateButtonClick('/add-offer')} />
-        <Button title='Излез оферта' onClick={undefined} />
+        <Button title='Излез' onClick={() => handleLogout()} />
       </div>
     </ScreenContainer>
   );
