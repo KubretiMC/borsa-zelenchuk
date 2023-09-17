@@ -19,7 +19,8 @@ const OfferDetailsScreen = () => {
     image = '', 
     availability = 0, 
     minOrder = 0, 
-    additionalInformation = ''
+    additionalInformation = '',
+    dateAdded = ''
   } = selectedProduct || {};
 
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const OfferDetailsScreen = () => {
           <ProductHeader name={name} image={image} />
           <div className="grid grid-cols-1 gap-4 mt-5">
             <Row
-              label="Име"
+              label="Стока"
               value={name}
               type={'label'}
             />
@@ -62,6 +63,11 @@ const OfferDetailsScreen = () => {
             <Row
               label="Телефонен номер"
               value={'012346789'}
+              type={'label'}
+            />
+            <Row
+              label="Дата на добавяне"
+              value={dateAdded}
               type={'label'}
             />
             {additionalInformation && (

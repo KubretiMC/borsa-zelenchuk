@@ -37,6 +37,7 @@ export interface Product {
   reserved: boolean;
   additionalInformation?: string;
   finished: boolean;
+  dateAdded: string;
 }
 
 export interface ProductFilter {

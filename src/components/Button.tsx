@@ -11,7 +11,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ title, icon, onClick, clasName }) => {
   return (
-    <button className={`${clasName ? clasName : 'btn1'}`} onClick={() => onClick()}>
+    <button className={`${clasName ? 'clasName' : 'btn'}`} onClick={() => onClick()}>
       <div className="flex items-center justify-center">
         {icon && <FontAwesomeIcon icon={icon} className={'mr-2'} />}
         <span className="flex-none">{title}</span>

@@ -32,6 +32,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
           finished: false,
+          dateAdded: '12.09'
         },
         { 
           id: "d554aeaa-5854-4656-8865-d30fa2b85b1c", 
@@ -43,6 +44,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' ,
           finished: false,
+          dateAdded: '24.09'
         },
         { 
           id: "409808fc-05d7-486a-8eae-d611eb75c2b8", 
@@ -55,6 +57,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
           finished: false,
+          dateAdded: '20.09'
         },
         { 
           id: "7d24b41c-fae0-4843-a380-05ae3ea14048", 
@@ -67,6 +70,7 @@ const initialState: RootState = {
           reserved: false,
           image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg',
           finished: false,
+          dateAdded: '17.11'
         },
         { 
           id: "f9c1520b-fd8a-4eef-be07-d3a0448b5641", 
@@ -79,6 +83,7 @@ const initialState: RootState = {
           additionalInformation: 'Петъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме има',
           image: 'https://agri.bg/media/2019/08/03/409961/740x500.jpg',
           finished: false,
+          dateAdded: '17.07'
         },
     ],
     productFilters: {
@@ -113,7 +118,10 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         image = '',
         additionalInformation = '',
       } = product;
-    
+
+      const currentDate = new Date();
+      const formattedDate = `${currentDate.getDate()}.${currentDate.toLocaleString('default', { month: 'short' })}`;
+
       const newProduct: Product = {
         id: uuidv4(),
         name: name,
@@ -124,7 +132,8 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         image: image || 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
         additionalInformation: additionalInformation,
         reserved: false,
-        finished: false
+        finished: false,
+        dateAdded: formattedDate
       };
     
       const newProducts = [...state.products, newProduct];
