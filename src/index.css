@@ -27,3 +27,7 @@
 .image {
   @apply hover:bg-white text-black py-2 px-4 my-4 rounded w-full border
 }
+
+.collapsible {
+  @apply w-full rounded bg-blue-500 text-white p-2
+}

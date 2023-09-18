@@ -104,22 +104,32 @@ const ProfileScreen: React.FC = () => {
           <div className="mb-5">
             <Collapsible 
               trigger="Моите оферти" 
-              triggerClassName="w-full rounded bg-blue-500 text-white p-2 flex "
-              openedClassName="w-full rounded bg-blue-500 text-white p-2 text-left" 
+              triggerClassName="collapsible"
+              openedClassName="collapsible text-left" 
             >
               <div>
-                {userOffers}
+                {userOffers.length !==0 ? 
+                  userOffers : 
+                  <div className='mt-24'>
+                      <label className='text-3xl font-bold'>Нямате пуснати оферти</label>
+                  </div>
+                  }
               </div>
             </Collapsible>
           </div>
           <div>
             <Collapsible 
               trigger="Моите резервации" 
-              triggerClassName="w-full rounded bg-blue-500 text-white p-2 flex "
-              openedClassName="w-full rounded bg-blue-500 text-white p-2 text-left" 
+              triggerClassName="collapsible flex"
+              openedClassName="collapsible text-left" 
             >
               <div>
-                {userReservations}
+                {userReservations.length !==0 ?
+                userReservations :
+                <div className='mt-24'>
+                    <label className='text-3xl font-bold'>Нямате резервации</label>
+                </div>
+                }
               </div>
             </Collapsible>
           </div>
