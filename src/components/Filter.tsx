@@ -43,14 +43,14 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
         value="minCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        type={'inputNumber'}
+        type={'number'}
       />
       <Row
         label="Цена макс"
         value="maxCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        type={'inputNumber'}
+        type={'number'}
       />
     </div>
   );

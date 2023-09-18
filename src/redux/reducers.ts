@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Product, RootState, User } from '../interfaces/interfaces';
-import { ADD_PRODUCT, FINISH_PRODUCT, LOGIN_USER, LOGOUT_USER, REGISTER_USER, RESERVE_PRODUCT } from './actions';
+import { ADD_PRODUCT, FINISH_PRODUCT, LOGIN_USER, LOGOUT_USER, REGISTER_USER, RESERVE_PRODUCT, UPDATE_PASSWORD } from './actions';
 
 export const mockUsers: User[] = [
   { 
@@ -112,6 +112,22 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
           ...state,
           loggedUser: undefined,
         };
+    case UPDATE_PASSWORD:
+      const { userId: userIdToUpdate, password: newPassword } = action.payload;
+      const updatedLoggedUser = { ...state.loggedUser, password: newPassword };
+    
+      const updatedUsersUpdatePassword = state.users.map((user) => {
+        if (user.id === userIdToUpdate) {
+          return { ...user, password: newPassword };
+        }
+        return user;
+      });
+    
+      return {
+        ...state,
+        loggedUser: updatedLoggedUser as User,
+        users: updatedUsersUpdatePassword,
+    };
     case REGISTER_USER:
       const { username: usernameRegistration, password: passwordRegistration } = action.payload;
       const newUser: User = {

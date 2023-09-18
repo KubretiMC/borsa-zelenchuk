@@ -53,7 +53,7 @@ const AddOfferScreen: React.FC = () => {
           ...offerValues,
           [name]: value,
         });
-      };
+    };
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
@@ -87,21 +87,21 @@ const AddOfferScreen: React.FC = () => {
                     value="cost"
                     filterValues={offerValues}
                     handleInputChange={handleInputChange}
-                    type={'inputNumber'}
+                    type={'number'}
                 />
                 <Row
                     label="Наличност"
                     value="availability"
                     filterValues={offerValues}
                     handleInputChange={handleInputChange}
-                    type={'inputNumber'}
+                    type={'number'}
                 />
                 <Row
                     label="Минимална поръчка"
                     value="minOrder"
                     filterValues={offerValues}
                     handleInputChange={handleInputChange}
-                    type={'inputNumber'}
+                    type={'number'}
                 />
                 <Row
                     label="Място"
@@ -116,7 +116,7 @@ const AddOfferScreen: React.FC = () => {
                     value="phoneNumber"
                     filterValues={offerValues}
                     handleInputChange={handleInputChange}
-                    type={'inputNumber'}
+                    type={'number'}
                 />
                 <Row
                     label="Информация"
