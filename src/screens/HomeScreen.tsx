@@ -22,7 +22,7 @@ const HomeScreen: React.FC = () => {
   }
 
   return (
-    <ScreenContainer subtitle={loggedUser?.username || 'Random Randomov'}>
+    <ScreenContainer subtitle={loggedUser?.username || ''}>
       <div className="flex flex-col justify-center items-center h-full">
         <Button
           title='Търси оферта'

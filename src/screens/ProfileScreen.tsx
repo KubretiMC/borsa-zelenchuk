@@ -93,7 +93,7 @@ const ProfileScreen: React.FC = () => {
     ));
 
   return (
-    <ScreenContainer subtitle={username || 'Random Randomov'} backButton>
+    <ScreenContainer subtitle={username || ''} backButton>
       <div className="flex justify-center mt-5">
         <Button title={'Моите оферти'} onClick={handleMyOffersClick} className={`btn2 ${!offersSectionSelected && `mt-4`}`}/>
         <Button title={'Моят профил'} onClick={handleMyProfileClick} className={`btn2 ${offersSectionSelected && `mt-4`}`} />
@@ -104,7 +104,7 @@ const ProfileScreen: React.FC = () => {
           <div className="mb-5">
             <Collapsible 
               trigger="Моите оферти" 
-              triggerClassName="collapsible"
+              triggerClassName="collapsible flex"
               openedClassName="collapsible text-left" 
             >
               <div>

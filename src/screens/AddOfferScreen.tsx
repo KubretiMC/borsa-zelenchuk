@@ -72,7 +72,7 @@ const AddOfferScreen: React.FC = () => {
     };
     
     return (
-        <ScreenContainer subtitle='Random Randomov' backButton>
+        <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
             <div className="grid grid-cols-1 gap-4 mt-5">
                 <Row
                     label="Име"

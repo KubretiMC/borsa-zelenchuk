@@ -8,7 +8,8 @@ import ProductHeader from '../components/ProductHeader';
 
 const OfferDetailsScreen = () => {
   const { id } = useParams();
-  
+ 
+  const loggedUser = useSelector((state: RootState) => state.loggedUser);
   const products = useSelector((state: RootState) => state.products);
   
   const selectedProduct: Product | undefined = products.find((product: Product) => product.id === id);
@@ -30,7 +31,7 @@ const OfferDetailsScreen = () => {
   };
 
   return (
-    <ScreenContainer subtitle='Random Randomov' backButton>
+    <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
       {selectedProduct ? (
         <div className='mt-2'>
           <ProductHeader name={name} image={image} />

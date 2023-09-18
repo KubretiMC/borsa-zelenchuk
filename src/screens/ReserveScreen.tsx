@@ -53,7 +53,7 @@ const ReserveScreen = () => {
   };
 
   return (
-    <ScreenContainer subtitle='Random Randomov' backButton>
+    <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
         <ProductHeader name={name} image={image} />
         <RangeSlider value={orderQuantity} setValue={setOrderQuantity} min={minOrder} max={availability} />
         <Row

@@ -44,7 +44,7 @@ const OffersScreen: React.FC = () => {
         ));
 
     return (
-        <ScreenContainer subtitle='Random Randomov' backButton>
+        <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
             <Filter filterValues={filterValues} setFilterValues={setFilterValues} productFilters={productFilters} />
             <OffersList 
                 offersList={offersList} 
