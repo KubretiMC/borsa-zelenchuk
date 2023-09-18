@@ -4,7 +4,7 @@ import { FilterValues, OfferValues } from '../interfaces/interfaces';
 interface RowProps {
   label: string;
   value: keyof FilterValues | keyof OfferValues | string | number;
-  type?: 'select' | 'inputNumber' | 'label';
+  type?: 'select' | 'number' | 'label' | 'password';
   filterValues?: any;
   handleInputChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   options?: string[] | null;
@@ -35,12 +35,12 @@ const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange
           <label className='text-left flex ml-14'>{value}</label>
         ) : (
           <input
-            type={type === "inputNumber" ? "number" : "text"}
+            type={type}
             id={value as string}
             name={value as string}
             step="0.01"
             className="border p-2 rounded-md w-full input-select"
-            placeholder={type === "inputNumber" ? "0.00" : ""}
+            placeholder={type === "number" ? "0.00" : ""}
             value={filterValues?.[value] ?? ''}
             onChange={handleInputChange}
           />
