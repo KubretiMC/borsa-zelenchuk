@@ -23,9 +23,9 @@ export const updatePassword = (userId: string, password: string) => ({
   payload: { userId, password },
 })
 
-export const registerUser = (username: string, password: string) => ({
+export const registerUser = (username: string, password: string, phoneNumber: string) => ({
   type: REGISTER_USER,
-  payload: { username, password },
+  payload: { username, password, phoneNumber },
 })
 
 export const addProduct = (userId: string, product: OfferValues) => ({

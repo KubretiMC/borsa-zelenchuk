@@ -26,7 +26,6 @@ const AddOfferScreen: React.FC = () => {
         minOrder: undefined,
         place: 'Всички',
         image: '',
-        phoneNumber: undefined,
         additionalInformation: ''
     };
 
@@ -112,13 +111,6 @@ const AddOfferScreen: React.FC = () => {
                     type={'select'}
                 />
                 <Row
-                    label="Телефонен номер"
-                    value="phoneNumber"
-                    filterValues={offerValues}
-                    handleInputChange={handleInputChange}
-                    type={'number'}
-                />
-                <Row
                     label="Информация"
                     value="additionalInformation"
                     filterValues={offerValues}
@@ -148,7 +140,9 @@ const AddOfferScreen: React.FC = () => {
                 }
             </div>
             <Button title='Добави оферта' onClick={() => handleAddOfferClick(offerValues, loggedUser?.id)} />
-            <Modal isOpen={isModalOpened} text={"Офертата е добавена успешно!"}/>
+            <Modal isOpen={isModalOpened}>
+                <h2 className="text-xl font-bold text-blue-800 text-center">Офертата е добавена успешно!</h2>
+            </Modal>
         </ScreenContainer>
     );
 };

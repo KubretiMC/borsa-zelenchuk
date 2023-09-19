@@ -9,12 +9,14 @@ export const mockUsers: User[] = [
     password: 'admin', 
     offers: ['9cc32e6a-76a9-49a4-9372-4d541d534404', "7d24b41c-fae0-4843-a380-05ae3ea14048"],
     userReserved: [],
+    phoneNumber: '234567890'
    },
   { 
     id: '8b015b4b-dc26-4253-9cd7-305dd733c841',
     username: 'admin2', 
     password: 'admin2',
     userReserved: [],
+    phoneNumber: '345678901'
   },
 ];
 
@@ -129,11 +131,12 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         users: updatedUsersUpdatePassword,
     };
     case REGISTER_USER:
-      const { username: usernameRegistration, password: passwordRegistration } = action.payload;
+      const { username: usernameRegistration, password: passwordRegistration, phoneNumber: phoneNumberRegistration } = action.payload;
       const newUser: User = {
         id: uuidv4(),
         username: usernameRegistration,
-        password: passwordRegistration
+        password: passwordRegistration,
+        phoneNumber: phoneNumberRegistration
       } 
       const newUsers = [...state.users, newUser];
       return {

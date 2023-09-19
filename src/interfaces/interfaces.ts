@@ -2,7 +2,7 @@ export interface User {
   id: string;
   username: string;
   password: string;
-  // phoneNumber: string;
+  phoneNumber: string;
   offers?: string[];
   reserves?: string[];
   userReserved?: string[];
@@ -15,7 +15,6 @@ export interface OfferValues {
     minOrder?: number,
     place: string,
     image: string,
-    phoneNumber?: number,
     additionalInformation: string
 }
 

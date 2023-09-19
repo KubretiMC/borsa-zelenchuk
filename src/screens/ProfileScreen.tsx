@@ -28,7 +28,7 @@ const ProfileScreen: React.FC = () => {
   const products = useSelector((state: RootState) => state.products);
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
-  const { id = '', username = '', password = '', offers = [], reserves = [], userReserved = [] } = loggedUser || {};
+  const { id = '', username = '', password = '', phoneNumber = '', offers = [], reserves = [], userReserved = [] } = loggedUser || {};
 
   const [passwordValues, setPasswordValues] = useState({
     password: password,
@@ -135,11 +135,18 @@ const ProfileScreen: React.FC = () => {
           </div>
         </div>
       :
-        <div>
+        <div className="grid grid-cols-1 gap-4 mt-5">
            <Row
               label="Име"
               value={username}
               type={'label'}
+              labelClassName='text-left flex'
+            />
+            <Row
+              label="Номер"
+              value={phoneNumber}
+              type={'label'}
+              labelClassName='text-left flex'
             />
             <Row
               label="Парола"

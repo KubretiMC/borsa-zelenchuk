@@ -14,6 +14,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     username: '',
     password: '',
     ...(registration ? { passwordConfirm: '' } : {}),
+    ...(registration ? { phoneNumber: '' } : {}),
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -50,7 +51,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     alert('Невалидно име или парола. Моля опитайте отново');
   };
 
-  const handleRegistration = (username: string, password: string, passwordConfirm: string, users: User[]) => {
+  const handleRegistration = (username: string, password: string, passwordConfirm: string, phoneNumber: string, users: User[]) => {
     if(password !== passwordConfirm) {
       alert('Паролите не съвпадат!');
       return;
@@ -62,7 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         return;
       }
     }
-    dispatch(registerUser(username, password));
+    dispatch(registerUser(username, password, phoneNumber));
     handleSuccessfulLogin();
   };
 
@@ -91,19 +92,42 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
             />
         </div>
         {registration &&
-          <div className="mb-4">
-              <input
-                  type="password"
-                  id="passwordConfirm"
-                  name="passwordConfirm"
-                  className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Повторете паролата"
-                  value={formData.passwordConfirm}
-                  onChange={handleInputChange}
-              />
+          <>
+            <div className="mb-4">
+                <input
+                    type="password"
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Повторете паролата"
+                    value={formData.passwordConfirm}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <div className="mb-4">
+                <input
+                    type="number"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Телофонен номер"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                />
           </div>
+        </>
         }
-        <Button title={registration ? 'Регистрация' : 'Влез'} onClick={() => registration ? handleRegistration(formData.username, formData.password, formData.passwordConfirm ?? '', users) : handleLogin(formData.username, formData.password, users)} />
+        <Button 
+          title={registration ? 'Регистрация' : 'Влез'} 
+          onClick={() => registration ? 
+          handleRegistration(
+            formData.username, 
+            formData.password, 
+            formData.passwordConfirm ?? '', 
+            formData.phoneNumber ?? '', 
+            users
+          ) : 
+          handleLogin(formData.username, formData.password, users)} />
         <div className="mt-4 text-right">
             <button className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
                 {registration ? 'Имате акаунт? Влезте!' : 'Нямате акаунт? Регистрация!'}
