@@ -62,7 +62,9 @@ const ReserveScreen = () => {
           type={'label'}
         />
         <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder, loggedUser?.id)} />
-        <Modal isOpen={isModalOpened} text="Продукта е резервиран успешно!" />
+        <Modal isOpen={isModalOpened}>
+          <h2 className="text-xl font-bold text-blue-800 text-center">Продукта е резервиран успешно!</h2>
+        </Modal>
     </ScreenContainer>
   );
 };
