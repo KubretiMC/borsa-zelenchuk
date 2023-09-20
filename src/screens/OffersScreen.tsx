@@ -14,8 +14,8 @@ const OffersScreen: React.FC = () => {
     const initialFilterValues: FilterValues = {
         name: 'Всички',
         place: 'Всички',
-        minCost: 0,
-        maxCost: 9999.99,
+        minCost: undefined,
+        maxCost: undefined,
     };
 
     const [filterValues, setFilterValues] = useState(initialFilterValues);
@@ -26,7 +26,7 @@ const OffersScreen: React.FC = () => {
     const endIndex = startIndex + itemsPerPage;
 
     const filteredProductsList = products.filter((product: Product) => {
-        const { name, place, minCost, maxCost } = filterValues;
+        const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
 
         const nameMatch = name === 'Всички' || product.name === name;
         const placeMatch = place === 'Всички' || product.place === place;
