@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
-import { Product, RootState, User } from '../interfaces/interfaces';
+import { Product, RootState } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import Button from '../components/Button';
 import ProductHeader from '../components/ProductHeader';

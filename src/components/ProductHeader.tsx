@@ -13,7 +13,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ name, image }) => {
       </div>
       <img
         src={image}
-        alt='Image Description'
+        alt='description'
         className='w-full h-56'
       />
     </div>

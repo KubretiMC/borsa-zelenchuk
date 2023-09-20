@@ -37,10 +37,14 @@ const ReserveScreen = () => {
     setOrderCost(orderQuantity*cost);
   }, [cost, minOrder, orderQuantity]);
 
+  const navigateBack = () => {
+    navigate(-3);
+}
+
   useEffect(() => {
       if (isModalOpened) {
           setTimeout(() => {
-              navigate(-3);
+            navigateBack();
           }, 2000);
       }
   }, [isModalOpened]);

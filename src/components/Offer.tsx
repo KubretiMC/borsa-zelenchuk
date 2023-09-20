@@ -26,7 +26,7 @@ const Offer: React.FC<OfferProps> = ({ id, name, place, cost, image, profileOffe
             <button onClick={handleViewDetailsClick}>
                 <img
                     src={image}
-                    alt='Image Description'
+                    alt='description'
                     className=' w-screen h-56'
                 />
             </button>

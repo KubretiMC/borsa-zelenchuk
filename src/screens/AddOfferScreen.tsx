@@ -46,10 +46,14 @@ const AddOfferScreen: React.FC = () => {
         }
     };
 
+    const navigateBack = () => {
+        navigate(-1);
+    }
+
     useEffect(() => {
         if (isModalOpened) {
             setTimeout(() => {
-                navigate(-1);
+                navigateBack();
             }, 2000);
         }
     }, [isModalOpened]);
