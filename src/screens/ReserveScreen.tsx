@@ -36,18 +36,15 @@ const ReserveScreen = () => {
   useEffect(() => {
     setOrderCost(orderQuantity*cost);
   }, [cost, minOrder, orderQuantity]);
-
-  const navigateBack = () => {
-    navigate(-3);
-}
+  
 
   useEffect(() => {
       if (isModalOpened) {
           setTimeout(() => {
-            navigateBack();
+              navigate(-3);
           }, 2000);
       }
-  }, [isModalOpened]);
+  }, [isModalOpened, navigate]);
 
   const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number, userId?: string) => {
     if(userId) {

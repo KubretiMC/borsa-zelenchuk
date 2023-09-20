@@ -45,18 +45,15 @@ const AddOfferScreen: React.FC = () => {
             setIsModalOpened(true);
         }
     };
-
-    const navigateBack = () => {
-        navigate(-1);
-    }
+    
 
     useEffect(() => {
         if (isModalOpened) {
             setTimeout(() => {
-                navigateBack();
+                navigate(-1);
             }, 2000);
         }
-    }, [isModalOpened]);
+    }, [isModalOpened, navigate]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
