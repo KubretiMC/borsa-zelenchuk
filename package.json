@@ -55,9 +55,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/cordova": "^11.0.1",
     "@types/react-modal": "^3.16.0",
-    "@types/uuid": "^9.0.3",
-    "@babel/plugin-proposal-private-property-in-object": "^1.0.6"
+    "@types/uuid": "^9.0.3"
   }
 }
