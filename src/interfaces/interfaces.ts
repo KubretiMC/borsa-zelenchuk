@@ -8,6 +8,13 @@ export interface User {
   userReserved?: string[];
 }
 
+export interface UserErrors {
+  username: string;
+  password: string;
+  passwordConfirm: string;
+  phoneNumber: string;
+}
+
 export interface OfferValues {
     name: string,
     cost?: number,
@@ -18,11 +25,18 @@ export interface OfferValues {
     additionalInformation: string
 }
 
+export interface OfferErrors {
+  cost: string,
+  availability: string,
+  minOrder: string,
+  image: string,
+}
+
 export type FilterValues = {
     name: string;
     place: string;
-    minCost: number;
-    maxCost: number;
+    minCost?: number;
+    maxCost?: number;
   };
 
 export interface Product {

@@ -3,7 +3,7 @@ import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../redux/actions';
-import { RootState, User } from '../interfaces/interfaces';
+import { RootState, User, UserErrors } from '../interfaces/interfaces';
 
 interface LoginFormProps {
   registration: boolean;
@@ -18,6 +18,12 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState<Partial<UserErrors>>({
+    username: '',
+    password: '',
+    passwordConfirm: '',
+    phoneNumber: ''
+  });
 
   const users = useSelector((state: RootState) => state.users);
 
@@ -67,8 +73,49 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     handleSuccessfulLogin();
   };
 
+  const validateForm = () => {
+    const newErrors : Partial<UserErrors> = {};
+
+    if (!formData.username) {
+        newErrors.username = 'Въведете потребителско име';
+    }
+
+    if (!formData.password) {
+        newErrors.password = 'Въведете парола';
+    }
+
+    if(registration) {
+      if (!formData.passwordConfirm) {
+        newErrors.passwordConfirm = 'Повторете паролата';
+      }
+
+      if (!formData.phoneNumber) {
+          newErrors.phoneNumber = 'Въведете телефонен номер';
+      }
+    }
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (validateForm()) {
+      registration ? 
+      handleRegistration(
+        formData.username, 
+        formData.password, 
+        formData.passwordConfirm ?? '', 
+        formData.phoneNumber ?? '', 
+        users
+      ) : 
+      handleLogin(formData.username, formData.password, users)
+    }
+  };
+
   return (
     <div className="bg-white py-8 px-4 rounded-lg shadow-xl border w-4/5 z-10">
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
             <input
                 type="text"
@@ -79,6 +126,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                 value={formData.username}
                 onChange={handleInputChange}
             />
+            {errors.username && <p className="flex text-left text-red-500">{errors.username}</p>}
         </div>
         <div className="mb-4">
             <input
@@ -90,6 +138,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                 value={formData.password}
                 onChange={handleInputChange}
             />
+            {errors.password && <p className="flex text-left text-red-500">{errors.password}</p>}
         </div>
         {registration &&
           <>
@@ -103,6 +152,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                     value={formData.passwordConfirm}
                     onChange={handleInputChange}
                 />
+                {errors.passwordConfirm && <p className="flex text-left text-red-500">{errors.passwordConfirm}</p>}
             </div>
             <div className="mb-4">
                 <input
@@ -114,25 +164,20 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
                 />
+                {errors.phoneNumber && <p className="flex text-left text-red-500">{errors.phoneNumber}</p>}
           </div>
         </>
         }
         <Button 
           title={registration ? 'Регистрация' : 'Влез'} 
-          onClick={() => registration ? 
-          handleRegistration(
-            formData.username, 
-            formData.password, 
-            formData.passwordConfirm ?? '', 
-            formData.phoneNumber ?? '', 
-            users
-          ) : 
-          handleLogin(formData.username, formData.password, users)} />
+          submit
+        />
         <div className="mt-4 text-right">
             <button className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
                 {registration ? 'Имате акаунт? Влезте!' : 'Нямате акаунт? Регистрация!'}
             </button>
         </div>
+      </form>
     </div>
   );
 };
