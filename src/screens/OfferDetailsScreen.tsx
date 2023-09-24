@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import ProductHeader from '../components/ProductHeader';
 import Modal from '../components/Modal';
 import { useState } from 'react';
-import { AVAILABILITY, COST, ADDED_DATE, INFO_ADDIOTIONAL, LEV_PER_KG, OFFER_MIN, NAME, PHONE_NUMBER, PLACE, STOCK, ADDED_FROM, PRODUCT_SHOW_ERROR, BLOCK, CLOSE } from '../constants/constants';
+import { AVAILABILITY, COST, ADDED_DATE, INFO_ADDIOTIONAL, LEV_PER_KG, OFFER_MIN, NAME, PLACE, STOCK, ADDED_FROM, PRODUCT_SHOW_ERROR, BLOCK, CLOSE } from '../constants/constants';
 
 const OfferDetailsScreen = () => {
   const { id = '' } = useParams();
