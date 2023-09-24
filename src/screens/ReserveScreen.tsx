@@ -30,11 +30,12 @@ const ReserveScreen = () => {
   } = selectedProduct || {};
 
   const [orderQuantity, setOrderQuantity] = useState<number>(minOrder);
-  const [orderCost, setOrderCost] = useState<number>(cost*minOrder);
+  const [orderCost, setOrderCost] = useState<string>('');
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
-    setOrderCost(orderQuantity*cost);
+    const newOrderCost = (orderQuantity * cost).toFixed(2);
+    setOrderCost(newOrderCost);
   }, [cost, minOrder, orderQuantity]);
   
 

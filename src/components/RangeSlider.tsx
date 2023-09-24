@@ -25,6 +25,11 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
   return (
     <div>
       <div>
+        <button onClick={handleDecrement}>-</button>
+        <label className='mx-1'>{value} кг.</label>
+        <button onClick={handleIncrement}>+</button>
+      </div>
+      <div>
         <input
           type="range"
           min={min}
@@ -32,11 +37,6 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
           value={value}
           onChange={handleChange}
         />
-      </div>
-      <div>
-        <button onClick={handleDecrement}>-</button>
-        <label className='mx-1'>{value}</label>
-        <button onClick={handleIncrement}>+</button>
       </div>
     </div>
   );
