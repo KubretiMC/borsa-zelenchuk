@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../redux/actions';
 import { RootState, User, UserErrors } from '../interfaces/interfaces';
+import { PASSWORD_CONFIRM, FIELD_REQUIRED, INVALID_CREDENTIALS, LOGIN, LOGIN_TEXT, PASSWORD, PASSWORD_NOT_MATCH, REGISTRATION, REGISTRATION_TEXT, USERNAME, USERNAME_TAKEN, PHONE_NUMBER } from '../constants/constants';
 
 interface LoginFormProps {
   registration: boolean;
@@ -54,18 +55,18 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         return;
       }
     }
-    alert('Невалидно име или парола. Моля опитайте отново');
+    alert(INVALID_CREDENTIALS);
   };
 
   const handleRegistration = (username: string, password: string, passwordConfirm: string, phoneNumber: string, users: User[]) => {
     if(password !== passwordConfirm) {
-      alert('Паролите не съвпадат!');
+      alert(PASSWORD_NOT_MATCH);
       return;
     }
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].username === username) {
-        alert('Потребителскто име е заето!');
+        alert(USERNAME_TAKEN);
         return;
       }
     }
@@ -77,20 +78,20 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     const newErrors : Partial<UserErrors> = {};
 
     if (!formData.username) {
-        newErrors.username = 'Въведете потребителско име';
+        newErrors.username = FIELD_REQUIRED;
     }
 
     if (!formData.password) {
-        newErrors.password = 'Въведете парола';
+        newErrors.password = FIELD_REQUIRED;
     }
 
     if(registration) {
       if (!formData.passwordConfirm) {
-        newErrors.passwordConfirm = 'Повторете паролата';
+        newErrors.passwordConfirm =  FIELD_REQUIRED;
       }
 
       if (!formData.phoneNumber) {
-          newErrors.phoneNumber = 'Въведете телефонен номер';
+          newErrors.phoneNumber = FIELD_REQUIRED;
       }
     }
     setErrors(newErrors);
@@ -122,7 +123,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                 id="username"
                 name="username"
                 className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Потребителско име"
+                placeholder={USERNAME}
                 value={formData.username}
                 onChange={handleInputChange}
             />
@@ -134,7 +135,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                 id="password"
                 name="password"
                 className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Парола"
+                placeholder={PASSWORD}
                 value={formData.password}
                 onChange={handleInputChange}
             />
@@ -148,7 +149,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                     id="passwordConfirm"
                     name="passwordConfirm"
                     className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Повторете паролата"
+                    placeholder={PASSWORD_CONFIRM}
                     value={formData.passwordConfirm}
                     onChange={handleInputChange}
                 />
@@ -160,7 +161,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                     id="phoneNumber"
                     name="phoneNumber"
                     className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Телофонен номер"
+                    placeholder={PHONE_NUMBER}
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
                 />
@@ -169,12 +170,12 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         </>
         }
         <Button 
-          title={registration ? 'Регистрация' : 'Влез'} 
+          title={registration ? REGISTRATION: LOGIN} 
           submit
         />
         <div className="mt-4 text-right">
             <button className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
-                {registration ? 'Имате акаунт? Влезте!' : 'Нямате акаунт? Регистрация!'}
+                {registration ? LOGIN_TEXT : REGISTRATION_TEXT}
             </button>
         </div>
       </form>

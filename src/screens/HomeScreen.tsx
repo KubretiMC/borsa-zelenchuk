@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../interfaces/interfaces';
 import { logOutUser } from '../redux/actions';
+import { LOGOUT, OFFER_MAKE, OFFER_SEARCH } from '../constants/constants';
 
 const HomeScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,11 +26,11 @@ const HomeScreen: React.FC = () => {
     <ScreenContainer subtitle={loggedUser?.username || ''}>
       <div className="flex flex-col justify-center items-center h-full">
         <Button
-          title='Търси оферта'
+          title={OFFER_SEARCH}
           onClick={() => handleNavigateButtonClick('/offers')}
         />
-        <Button title='Направи оферта' onClick={() => handleNavigateButtonClick('/add-offer')} />
-        <Button title='Излез' onClick={() => handleLogout()} />
+        <Button title={OFFER_MAKE} onClick={() => handleNavigateButtonClick('/add-offer')} />
+        <Button title={LOGOUT} onClick={() => handleLogout()} />
       </div>
     </ScreenContainer>
   );

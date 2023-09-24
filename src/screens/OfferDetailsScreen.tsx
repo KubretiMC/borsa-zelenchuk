@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import ProductHeader from '../components/ProductHeader';
 import Modal from '../components/Modal';
 import { useState } from 'react';
+import { AVAILABILITY, COST, ADDED_DATE, INFO_ADDIOTIONAL, LEV_PER_KG, OFFER_MIN, NAME, PHONE_NUMBER, PLACE, STOCK, ADDED_FROM, PRODUCT_SHOW_ERROR, BLOCK, CLOSE } from '../constants/constants';
 
 const OfferDetailsScreen = () => {
   const { id = '' } = useParams();
@@ -45,42 +46,37 @@ const OfferDetailsScreen = () => {
           <ProductHeader name={name} image={image} />
           <div className="grid grid-cols-1 gap-4 mt-5">
             <Row
-              label="Стока"
+              label={STOCK}
               value={name}
               type={'label'}
             />
             <Row
-              label="Цена"
-              value={`${cost} лв./кг.`}
+              label={COST}
+              value={`${cost} ${LEV_PER_KG}`}
               type={'label'}
             />
             <Row
-              label="Местоположение"
+              label={PLACE}
               value={place}
               type={'label'}
             />
             <Row
-              label="Наличност"
+              label={AVAILABILITY}
               value={availability}
               type={'label'}
             />
             <Row
-              label="Минимална поръчка"
+              label={OFFER_MIN}
               value={minOrder}
               type={'label'}
             />
             <Row
-              label="Телефонен номер"
-              value={'012346789'}
-              type={'label'}
-            />
-            <Row
-              label="Дата на добавяне"
+              label={ADDED_DATE}
               value={dateAdded}
               type={'label'}
             />
             <Row
-              label="Качено от"
+              label={ADDED_FROM}
               value={username}
               type={'label'}
               onClick={() => setIsModalOpened(true)}
@@ -89,7 +85,7 @@ const OfferDetailsScreen = () => {
             {additionalInformation && (
               <div className="border-2 p-2 rounded-md mt-4">
                 <div className="font-bold">
-                  <label>Допълнителна информация:</label>
+                  <label>{INFO_ADDIOTIONAL}</label>
                 </div>
                 <div className="text-left">
                   <label>{additionalInformation}</label>
@@ -100,7 +96,7 @@ const OfferDetailsScreen = () => {
           <Button title='Резервирай' onClick={() => handleReserveClick()} />
         </div>
       ) : (
-        <p>Проблем с показването на продукта</p>
+        <p>{PRODUCT_SHOW_ERROR}</p>
       )}
       <Modal 
         isOpen={isModalOpened} 
@@ -109,7 +105,7 @@ const OfferDetailsScreen = () => {
         <div>
           <div className="grid grid-cols-1 gap-4 mb-4">
             <Row
-              label="Име"
+              label={NAME}
               value={username}
               type={'label'}
               onClick={() => console.log('ffff')}
@@ -121,8 +117,8 @@ const OfferDetailsScreen = () => {
             />
           </div>
           <div>
-            <Button title={'Блокирай'} onClick={() => console.log('blockUser')} />
-            <Button title={'Затвори'} onClick={() =>setIsModalOpened(false)} />
+            <Button title={BLOCK} onClick={() => console.log('blockUser')} />
+            <Button title={CLOSE} onClick={() =>setIsModalOpened(false)} />
           </div>
         </div>
       </Modal>

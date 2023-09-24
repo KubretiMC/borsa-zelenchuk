@@ -1,6 +1,7 @@
 import React from 'react';
 import Row from './Row';
 import { FilterValues } from '../interfaces/interfaces';
+import { ALL, MAX_COST, MIN_COST, NAME, PLACE } from '../constants/constants';
 
 interface FilterProps {
   filterValues: FilterValues;
@@ -23,30 +24,30 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
   return (
     <div className="grid grid-cols-1 gap-4 mt-5">
       <Row
-        label="Име"
+        label={NAME}
         value="name"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={['Всички', ...productFilters.names]}
+        options={[ALL, ...productFilters.names]}
         type={'select'}
       />
       <Row
-        label="Място"
+        label={PLACE}
         value="place"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={['Всички', ...productFilters.places]}
+        options={[ALL, ...productFilters.places]}
         type={'select'}
       />
       <Row
-        label="Цена мин"
+        label={MIN_COST}
         value="minCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
         type={'number'}
       />
       <Row
-        label="Цена макс"
+        label={MAX_COST}
         value="maxCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}

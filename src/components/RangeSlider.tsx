@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { AVAILABILITY_MAX_LIMIT, AVAILABILITY_MIN_LIMIT, KG } from '../constants/constants';
 
 interface RangeSliderProps {
   value: number;
@@ -20,7 +21,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
     if(value <= max) {
       setValue(value + 1);
     } else {
-      alert("Не може да изберете над максималната стойност!")
+      alert(AVAILABILITY_MAX_LIMIT)
     }
   };
 
@@ -28,7 +29,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
     if(value >= min) {
       setValue(value - 1);
     } else {
-      alert("Не може да изберете под минималната стойност!")
+      alert(AVAILABILITY_MIN_LIMIT)
     }
   };
 
@@ -45,7 +46,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
       </div>
       <div>
         <FontAwesomeIcon icon={faMinus} onClick={handleDecrement} />
-        <label className='mx-1'>{value} кг.</label>
+        <label className='mx-1'>{value} {KG}</label>
         <FontAwesomeIcon icon={faPlus} onClick={handleIncrement}/>
       </div>
     </div>

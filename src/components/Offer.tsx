@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
+import { LEV, LEV_PER_KG, RESERVED } from '../constants/constants';
 
 interface OfferProps {
     id: string;
@@ -37,12 +38,12 @@ const Offer: React.FC<OfferProps> = ({ id, name, place, cost, image, profileOffe
                 </div>
                 <div className="flex items-start">
                     {
-                        <h1>{cost} {profileOffer ? "лв." : "лв/кг."}</h1> 
+                        <h1>{cost} {profileOffer ? LEV : LEV_PER_KG}</h1> 
                     }
                 </div>
                 {reserved && 
                     <div className="flex items-start">
-                        <h1>Резервирана</h1>
+                        <h1>{RESERVED}</h1>
                     </div>
                 }
                 {profileOffer && buttonName &&

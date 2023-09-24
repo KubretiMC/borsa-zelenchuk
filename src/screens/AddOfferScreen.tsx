@@ -9,6 +9,7 @@ import Button from '../components/Button';
 import { addProduct } from '../redux/actions';
 import { OfferErrors, OfferValues, RootState } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
+import { ADD_IMAGE, AVAILABILITY, COST, FIELD_REQUIRED, IMAGE, IMAGE_ADD, IMAGE_CHANGE, INFO, OFFER_MIN, NAME, OFERR_ADD, OFFER_ADDED_SUCCESSFULLY, PLACE, REQUIRED } from '../constants/constants';
 
 const AddOfferScreen: React.FC = () => {
     const productFilters = useSelector((state: RootState) => state.productFilters);
@@ -82,19 +83,19 @@ const AddOfferScreen: React.FC = () => {
         const newErrors : Partial<OfferErrors> = {};
     
         if (!offerValues.cost || isNaN(offerValues.cost as number)) {
-            newErrors.cost = 'Въведете цена';
+            newErrors.cost = FIELD_REQUIRED;
         }
 
         if (!offerValues.availability || isNaN(offerValues.cost as number)) {
-            newErrors.availability = 'Въведете наличност';
+            newErrors.availability = FIELD_REQUIRED;
         }
     
         if (!offerValues.minOrder || isNaN(offerValues.cost as number)) {
-            newErrors.minOrder = 'Въведете минимална поръчка';
+            newErrors.minOrder = FIELD_REQUIRED;
         }
 
         if (!offerValues.image) {
-            newErrors.image = 'Качете снимка';
+            newErrors.image = ADD_IMAGE;
         }
         setErrors(newErrors);
 
@@ -108,13 +109,13 @@ const AddOfferScreen: React.FC = () => {
           handleAddOfferClick(offerValues, loggedUser?.id);
         }
       };
-    
+
     return (
         <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-4 mt-5">
                     <Row
-                        label="Име"
+                        label={NAME}
                         value="name"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -122,7 +123,7 @@ const AddOfferScreen: React.FC = () => {
                         type={'select'}
                     />
                     <Row
-                        label="Цена"
+                        label={`${COST}${REQUIRED}`}
                         value="cost"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -130,7 +131,7 @@ const AddOfferScreen: React.FC = () => {
                         error={errors.cost}
                     />
                     <Row
-                        label="Наличност"
+                        label={`${AVAILABILITY}${REQUIRED}`}
                         value="availability"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -138,7 +139,7 @@ const AddOfferScreen: React.FC = () => {
                         error={errors.availability}
                     />
                     <Row
-                        label="Минимална поръчка"
+                        label={`${OFFER_MIN}${REQUIRED}`}
                         value="minOrder"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -146,7 +147,7 @@ const AddOfferScreen: React.FC = () => {
                         error={errors.minOrder}
                     />
                     <Row
-                        label="Място"
+                        label={`${PLACE}${REQUIRED}`}
                         value="place"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -154,14 +155,14 @@ const AddOfferScreen: React.FC = () => {
                         type={'select'}
                     />
                     <Row
-                        label="Информация"
+                        label={INFO}
                         value="additionalInformation"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
                     />
                     <div className="flex items-center input-select-wrapper">
                         <label className={`mr-6 w-20 text-left ${errors.image && 'pb-7'}`} htmlFor="imageUpload">
-                            Изображение
+                            {IMAGE}
                         </label>
                         <div className={`flex-1`}>
                             <label className='cursor-pointer'>
@@ -173,7 +174,7 @@ const AddOfferScreen: React.FC = () => {
                                 />
                                 <div className="image pt-1 flex items-center justify-center">
                                     {<FontAwesomeIcon icon={faUpload} className={'mr-2 text-gray-400'} />}
-                                    <span className="flex-none text-sm text-gray-400">{offerValues.image ? "Смени изображение" : "Добавете Изображение"}</span>
+                                    <span className="flex-none text-sm text-gray-400">{offerValues.image ? IMAGE_CHANGE : IMAGE_ADD}</span>
                                 </div>
                                 {errors.image && <p className="text-red-500">{errors.image}</p>}
                             </label>            
@@ -183,9 +184,9 @@ const AddOfferScreen: React.FC = () => {
                         <img src={offerValues.image} alt=''/>
                     }
                 </div>
-                <Button title='Добави оферта' submit />
+                <Button title={OFERR_ADD} submit />
                 <Modal isOpen={isModalOpened}>
-                    <h2 className="text-xl font-bold text-blue-800 text-center">Офертата е добавена успешно!</h2>
+                    <h2 className="text-xl font-bold text-blue-800 text-center">{OFFER_ADDED_SUCCESSFULLY}</h2>
                 </Modal>
             </form>
         </ScreenContainer>
