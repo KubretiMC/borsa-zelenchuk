@@ -1,4 +1,7 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { AVAILABILITY_MAX_LIMIT, AVAILABILITY_MIN_LIMIT, KG } from '../constants/constants';
 
 interface RangeSliderProps {
   value: number;
@@ -15,15 +18,23 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
   };
 
   const handleIncrement = () => {
-    setValue(value + 1);
+    if(value <= max) {
+      setValue(value + 1);
+    } else {
+      alert(AVAILABILITY_MAX_LIMIT)
+    }
   };
 
   const handleDecrement = () => {
-    setValue(value - 1);
+    if(value >= min) {
+      setValue(value - 1);
+    } else {
+      alert(AVAILABILITY_MIN_LIMIT)
+    }
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <div>
         <input
           type="range"
@@ -34,9 +45,9 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
         />
       </div>
       <div>
-        <button onClick={handleDecrement}>-</button>
-        <label className='mx-1'>{value}</label>
-        <button onClick={handleIncrement}>+</button>
+        <FontAwesomeIcon icon={faMinus} onClick={handleDecrement} />
+        <label className='mx-1'>{value} {KG}</label>
+        <FontAwesomeIcon icon={faPlus} onClick={handleIncrement}/>
       </div>
     </div>
   );

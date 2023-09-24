@@ -7,6 +7,7 @@ import Offer from '../components/Offer';
 import { finishProduct, updatePassword } from '../redux/actions';
 import Button from '../components/Button';
 import Row from '../components/Row';
+import { PASSWORD_CONFIRM, MY_OFFERS, MY_PROFILE, NAME, PASSWORD, PASSWORD_NOT_MATCH, PASSWORD_CHANGED, OFFER_REMOVE, RESERVATION_REMOVE, OFFERS_NOT_MADE, RESERVATIONS_NOT_MADE } from '../constants/constants';
 
 const ProfileScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -46,9 +47,9 @@ const ProfileScreen: React.FC = () => {
   const handleChangePassword = (password: string, confirmPassword: string, userId: string) => {
     if(password === confirmPassword) {
       dispatch(updatePassword(userId, password))
-      alert("Паролата е сменена успешно!")
+      alert(PASSWORD_CHANGED)
     } else {
-      alert("Паролите не съвпадат!")
+      alert(PASSWORD_NOT_MATCH)
     }
   }
 
@@ -67,7 +68,7 @@ const ProfileScreen: React.FC = () => {
         image={product.image} 
         profileOffer
         reserved={product.reserved}
-        buttonName='Премахни оферта'
+        buttonName={OFFER_REMOVE}
         buttonClick={() => handleFinishProduct(product.id)}
       />
   ));
@@ -87,7 +88,7 @@ const ProfileScreen: React.FC = () => {
         cost={product.cost * product.availability} 
         image={product.image} 
         profileOffer
-        buttonName='Премахни резервация'
+        buttonName={RESERVATION_REMOVE}
         buttonClick={() => handleFinishProduct(product.id)}
       />
     ));
@@ -95,15 +96,15 @@ const ProfileScreen: React.FC = () => {
   return (
     <ScreenContainer subtitle={username || ''} backButton>
       <div className="flex justify-center mt-5">
-        <Button title={'Моите оферти'} onClick={handleMyOffersClick} className={`btn2 ${!offersSectionSelected && `mt-4`}`}/>
-        <Button title={'Моят профил'} onClick={handleMyProfileClick} className={`btn2 ${offersSectionSelected && `mt-4`}`} />
+        <Button title={MY_OFFERS} onClick={handleMyOffersClick} className={`btn2 ${!offersSectionSelected && `mt-4`}`}/>
+        <Button title={MY_PROFILE} onClick={handleMyProfileClick} className={`btn2 ${offersSectionSelected && `mt-4`}`} />
       </div>
       <hr className="border-gray-300 border-t" />
       {offersSectionSelected ?
         <div className="mt-5">
           <div className="mb-5">
             <Collapsible 
-              trigger="Моите оферти" 
+              trigger={MY_OFFERS}
               triggerClassName="collapsible flex"
               openedClassName="collapsible text-left" 
             >
@@ -111,7 +112,7 @@ const ProfileScreen: React.FC = () => {
                 {userOffers.length !==0 ? 
                   userOffers : 
                   <div className='mt-24'>
-                      <label className='text-3xl font-bold'>Нямате пуснати оферти</label>
+                      <label className='text-3xl font-bold'>{OFFERS_NOT_MADE}</label>
                   </div>
                   }
               </div>
@@ -127,7 +128,7 @@ const ProfileScreen: React.FC = () => {
                 {userReservations.length !==0 ?
                 userReservations :
                 <div className='mt-24'>
-                    <label className='text-3xl font-bold'>Нямате резервации</label>
+                    <label className='text-3xl font-bold'>{RESERVATIONS_NOT_MADE}</label>
                 </div>
                 }
               </div>
@@ -137,7 +138,7 @@ const ProfileScreen: React.FC = () => {
       :
         <div className="grid grid-cols-1 gap-4 mt-5">
            <Row
-              label="Име"
+              label={NAME}
               value={username}
               type={'label'}
               labelClassName='text-left flex'
@@ -149,14 +150,14 @@ const ProfileScreen: React.FC = () => {
               labelClassName='text-left flex'
             />
             <Row
-              label="Парола"
+              label={PASSWORD}
               value="password"
               filterValues={passwordValues}
               handleInputChange={handleInputChange}
               type='password'
             />
             <Row
-              label="Повторете парола"
+              label={PASSWORD_CONFIRM}
               value="confirmPassword"
               filterValues={passwordValues}
               handleInputChange={handleInputChange}

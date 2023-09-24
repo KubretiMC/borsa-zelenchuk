@@ -9,6 +9,7 @@ import RangeSlider from '../components/RangeSlider';
 import Button from '../components/Button';
 import { reserveProduct } from '../redux/actions';
 import Modal from '../components/Modal';
+import { COST, LEV, PRODUCT_RESERVED_SUCCESSFULLY } from '../constants/constants';
 
 
 const ReserveScreen = () => {
@@ -30,11 +31,12 @@ const ReserveScreen = () => {
   } = selectedProduct || {};
 
   const [orderQuantity, setOrderQuantity] = useState<number>(minOrder);
-  const [orderCost, setOrderCost] = useState<number>(cost*minOrder);
+  const [orderCost, setOrderCost] = useState<string>('');
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
-    setOrderCost(orderQuantity*cost);
+    const newOrderCost = (orderQuantity * cost).toFixed(2);
+    setOrderCost(newOrderCost);
   }, [cost, minOrder, orderQuantity]);
   
 
@@ -58,13 +60,13 @@ const ReserveScreen = () => {
         <ProductHeader name={name} image={image} />
         <RangeSlider value={orderQuantity} setValue={setOrderQuantity} min={minOrder} max={availability} />
         <Row
-          label="Цена"
-          value={`${orderCost} лв.`}
+          label={COST}
+          value={`${orderCost} ${LEV}`}
           type={'label'}
         />
         <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder, loggedUser?.id)} />
         <Modal isOpen={isModalOpened}>
-          <h2 className="text-xl font-bold text-blue-800 text-center">Продукта е резервиран успешно!</h2>
+          <h2 className="text-xl font-bold text-blue-800 text-center">{PRODUCT_RESERVED_SUCCESSFULLY}</h2>
         </Modal>
     </ScreenContainer>
   );
