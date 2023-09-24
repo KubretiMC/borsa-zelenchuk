@@ -16,7 +16,7 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
     const { name, value } = e.target;
     setFilterValues({
       ...filterValues,
-      [name]: value,
+      [name]: value !== '' ? value : undefined,
     });
   };
 

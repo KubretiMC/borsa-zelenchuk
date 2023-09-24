@@ -10,6 +10,22 @@ interface OffersListProps {
 }
 
 const OffersList: React.FC<OffersListProps> = ({ offersList, lastPage, currentPage, setCurrentPage }) => {
+  const changePage = (nextPage: boolean) => {
+    if(nextPage) {
+      if(lastPage) {
+        alert("Няма повече страници!")
+      } else {
+        setCurrentPage(currentPage + 1);
+      }
+    } else {
+      if(currentPage === 1) {
+        alert("В момента сте на първа страница")
+      } else {
+        setCurrentPage(currentPage - 1)
+      }
+    }
+  }
+
   return (
     <div>
       {offersList.length === 0 ? (
@@ -23,13 +39,13 @@ const OffersList: React.FC<OffersListProps> = ({ offersList, lastPage, currentPa
             <FontAwesomeIcon
               icon={faArrowLeft}
               className="mr-2"
-              onClick={() => currentPage !== 1 && setCurrentPage(currentPage - 1)}
+              onClick={() => changePage(false)}
             />
             <span>Page {currentPage}</span>
             <FontAwesomeIcon
               icon={faArrowRight}
               className="ml-2"
-              onClick={() => !lastPage && setCurrentPage(currentPage + 1)}
+              onClick={() => changePage(true)}
             />
           </div>
         </>

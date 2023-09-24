@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScreenContainer from '../components/ScreenContainer';
 import Offer from '../components/Offer';
 import Filter from '../components/Filter';
@@ -24,6 +24,10 @@ const OffersScreen: React.FC = () => {
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filterValues])
 
     const filteredProductsList = products.filter((product: Product) => {
         const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
