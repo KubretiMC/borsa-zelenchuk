@@ -6,7 +6,6 @@ export const APP_NAME = 'Борса заленчук';
 export const AVAILABILITY = 'Наличност';
 export const AVAILABILITY_MIN_LIMIT  = 'Не може да изберете под минималната стойност!';
 export const AVAILABILITY_MAX_LIMIT  = 'Не може да изберете над максималната стойност!';
-export const BLOCK = 'Блокирай';
 export const CLOSE = 'Затвори';
 export const COST = 'Цена';
 export const FIELD_REQUIRED = 'Полето е задължително';
