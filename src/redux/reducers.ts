@@ -1,75 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Product, RootState, User } from '../interfaces/interfaces';
-import { ADD_PRODUCT, FETCH_USERS, FINISH_PRODUCT, LOGIN_USER, LOGOUT_USER, RESERVE_PRODUCT, UPDATE_PASSWORD } from './actions';
+import { 
+  ADD_PRODUCT, 
+  FETCH_PRODUCTS, 
+  FETCH_USERS, 
+  FINISH_PRODUCT, 
+  LOGIN_USER, 
+  LOGOUT_USER, 
+  RESERVE_PRODUCT, 
+  UPDATE_PASSWORD 
+} from './actions';
 
 const initialState: RootState = {
     users: [],
-    products: [
-        { 
-          id: '9cc32e6a-76a9-49a4-9372-4d541d534404', 
-          name:'Диня', 
-          place: 'Огняново', 
-          cost: 1.2,
-          availability: 2000,
-          minOrder: 200,  
-          additionalInformation: 'Най-доброто на пазара',
-          reserved: false,
-          image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
-          finished: false,
-          dateAdded: '12.09'
-        },
-        { 
-          id: "d554aeaa-5854-4656-8865-d30fa2b85b1c", 
-          name:'Череша', 
-          place: 'Мало Конаре', 
-          cost: 4, 
-          availability: 800,
-          minOrder: 40,
-          reserved: false,
-          image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg' ,
-          finished: false,
-          dateAdded: '24.09'
-        },
-        { 
-          id: "409808fc-05d7-486a-8eae-d611eb75c2b8", 
-          name:'Диня', 
-          place: 'Огняново', 
-          cost: 1.5,
-          availability:1200,
-          minOrder:150, 
-          additionalInformation: 'Купена от Турция',
-          reserved: false,
-          image: 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
-          finished: false,
-          dateAdded: '20.09'
-        },
-        { 
-          id: "7d24b41c-fae0-4843-a380-05ae3ea14048", 
-          name:'Череша', 
-          place: 'Динката', 
-          cost: 2.5, 
-          availability:500,
-          minOrder:10,
-          additionalInformation: 'Петъка няма да ме има',
-          reserved: false,
-          image: 'https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg',
-          finished: false,
-          dateAdded: '17.11'
-        },
-        { 
-          id: "f9c1520b-fd8a-4eef-be07-d3a0448b5641", 
-          name:'Праскова', 
-          place: 'Мало Конаре', 
-          cost: 4,
-          availability: 4000,
-          minOrder:500, 
-          reserved: false,
-          additionalInformation: 'Петъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме имаПетъка няма да ме има',
-          image: 'https://agri.bg/media/2019/08/03/409961/740x500.jpg',
-          finished: false,
-          dateAdded: '17.07'
-        },
-    ],
+    products: [],
     productFilters: {
         names: ['Диня', 'Череша', 'Праскова', 'Ягода'],
         places: ['Огняново', 'Мало Конаре', 'Динката', 'Мокрище'],
@@ -111,6 +55,12 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         ...state,
         loggedUser: userRegistration,
       };
+    case FETCH_PRODUCTS:
+      const { products: productsFetchProducts = [] } = action.payload;
+      return {
+        ...state,
+        products: productsFetchProducts,
+      };
     case ADD_PRODUCT:
       const { userId: userIdAddProduct, product } = action.payload;
       const {
@@ -133,7 +83,7 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         availability: parseFloat(availability),
         minOrder: parseFloat(minOrder),
         place: place,
-        image: image || 'https://zemedeleca.bg/wp-content/uploads/2023/05/%D0%94%D0%B8%D0%BD%D0%B8.jpg',
+        image: image || '',
         additionalInformation: additionalInformation,
         reserved: false,
         finished: false,

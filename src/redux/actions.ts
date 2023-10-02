@@ -1,9 +1,10 @@
-import { OfferValues, User } from "../interfaces/interfaces";
+import { OfferValues, Product, User } from "../interfaces/interfaces";
 
 export const FETCH_USERS = 'FETCH_USERS';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
+export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const RESERVE_PRODUCT = 'RESERVE_PRODUCT';
 export const FINISH_PRODUCT = 'REMOVE_PRODUCT';
@@ -27,6 +28,12 @@ export const updatePassword = (userId: string, password: string) => ({
   type: UPDATE_PASSWORD,
   payload: { userId, password },
 })
+
+export const fetchProducts = (products: Product[]) => ({
+  type: FETCH_PRODUCTS,
+  payload: { products },
+});
+
 
 export const addProduct = (userId: string, product: OfferValues) => ({
   type: ADD_PRODUCT,

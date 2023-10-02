@@ -4,7 +4,7 @@ import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../interfaces/interfaces';
-import { fetchUsers, logoutUser } from '../redux/actions';
+import { fetchProducts, fetchUsers, logoutUser } from '../redux/actions';
 import { LOGOUT, OFFER_MAKE, OFFER_SEARCH } from '../constants/constants';
 
 const HomeScreen: React.FC = () => {
@@ -24,7 +24,7 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     const getAllUsers = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/user/getAll', {
+        const response = await fetch('http://localhost:3001/api/user/getAllUsers', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -39,7 +39,26 @@ const HomeScreen: React.FC = () => {
         console.error('Error:', error);
       }
     }
+
+    const getAllProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/product/getAllProducts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(fetchProducts(data));
+        };
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
     getAllUsers();
+    getAllProducts();
   }, []);
 
   return (
