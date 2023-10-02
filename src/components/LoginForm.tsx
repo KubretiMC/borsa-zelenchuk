@@ -2,9 +2,20 @@ import React, { useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser, registerUser } from '../redux/actions';
-import { User, UserErrors } from '../interfaces/interfaces';
-import { PASSWORD_CONFIRM, FIELD_REQUIRED, INVALID_CREDENTIALS, LOGIN, LOGIN_TEXT, PASSWORD, PASSWORD_NOT_MATCH, REGISTRATION, REGISTRATION_TEXT, USERNAME, USERNAME_TAKEN, PHONE_NUMBER } from '../constants/constants';
+import { loginUser } from '../redux/actions';
+import { UserErrors } from '../interfaces/interfaces';
+import { 
+  PASSWORD_CONFIRM, 
+  FIELD_REQUIRED, 
+  LOGIN, 
+  LOGIN_TEXT, 
+  PASSWORD, 
+  PASSWORD_NOT_MATCH, 
+  REGISTRATION, 
+  REGISTRATION_TEXT, 
+  USERNAME, 
+  PHONE_NUMBER 
+} from '../constants/constants';
 
 interface LoginFormProps {
   registration: boolean;
@@ -45,17 +56,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     });
   };
 
-  const handleLogin = (username: string, password: string, users: User[]) => {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === username && users[i].password === password) {
-        dispatch(loginUser(username, password));
-        handleSuccessfulLogin();
-        return;
-      }
-    }
-    alert(INVALID_CREDENTIALS);
-  };
-
   const validateForm = () => {
     const newErrors : Partial<UserErrors> = {};
 
@@ -81,21 +81,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const handleSubmit = (e: any) => {
-  //   e.preventDefault();
-    // if (validateForm()) {
-  //     registration ? 
-  //     handleRegistration(
-  //       formData.username, 
-  //       formData.password, 
-  //       formData.passwordConfirm ?? '', 
-  //       formData.phoneNumber ?? '', 
-  //       users
-  //     ) : 
-  //     handleLogin(formData.username, formData.password, users)
-  //   }
-  // };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     
@@ -104,34 +89,39 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         alert(PASSWORD_NOT_MATCH);
         return;
       }
-  
       const requestBody = registration
-        ? {
-            username: formData.username,
-            password: formData.password,
-            phoneNumber: formData.phoneNumber,
-          }
-        : {
-            username: formData.username,
-            password: formData.password,
-          };
+      ? {
+          username: formData.username,
+          password: formData.password,
+          phoneNumber: formData.phoneNumber,
+        }
+      : {
+          username: formData.username,
+          password: formData.password,
+        };
+
+      const requestUrl = registration ? 
+        'http://localhost:3001/api/user/register'
+        :
+        'http://localhost:3001/api/user/login'
   
       try {
-        const response = await fetch('http://localhost:3001/api/register', {
+        const response = await fetch(requestUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
         });
-        console.log('response', response);
+  
         if (response.ok) {
           const data = await response.json();
-          dispatch(registerUser({...data}));
+          dispatch(loginUser({...data}));
           navigate('/home');
         } else {
-          alert(USERNAME_TAKEN);
-          console.error('Registration failed');
+          const data = await response.json();
+          const { error = '' } = data;
+          alert(error);
         }
       } catch (error) {
         console.error('Error:', error);

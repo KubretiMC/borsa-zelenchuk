@@ -3,15 +3,9 @@ import { OfferValues, User } from "../interfaces/interfaces";
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
-export const REGISTER_USER = 'REGISTER_USER';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const RESERVE_PRODUCT = 'RESERVE_PRODUCT';
 export const FINISH_PRODUCT = 'REMOVE_PRODUCT';
-
-export const loginUser = (username: string, password: string) => ({
-  type: LOGIN_USER,
-  payload: { username, password },
-})
 
 export const logOutUser = () => ({
   type: LOGOUT_USER,
@@ -23,8 +17,8 @@ export const updatePassword = (userId: string, password: string) => ({
   payload: { userId, password },
 })
 
-export const registerUser = (user: User) => ({
-  type: REGISTER_USER,
+export const loginUser = (user: User) => ({
+  type: LOGIN_USER,
   payload: { user },
 })
 
