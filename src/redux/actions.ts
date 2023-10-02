@@ -1,4 +1,4 @@
-import { OfferValues } from "../interfaces/interfaces";
+import { OfferValues, User } from "../interfaces/interfaces";
 
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -23,9 +23,9 @@ export const updatePassword = (userId: string, password: string) => ({
   payload: { userId, password },
 })
 
-export const registerUser = (username: string, password: string, phoneNumber: string) => ({
+export const registerUser = (user: User) => ({
   type: REGISTER_USER,
-  payload: { username, password, phoneNumber },
+  payload: { user },
 })
 
 export const addProduct = (userId: string, product: OfferValues) => ({

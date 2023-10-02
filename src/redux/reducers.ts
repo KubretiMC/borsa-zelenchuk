@@ -131,18 +131,12 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         users: updatedUsersUpdatePassword,
     };
     case REGISTER_USER:
-      const { username: usernameRegistration, password: passwordRegistration, phoneNumber: phoneNumberRegistration } = action.payload;
-      const newUser: User = {
-        id: uuidv4(),
-        username: usernameRegistration,
-        password: passwordRegistration,
-        phoneNumber: phoneNumberRegistration
-      } 
-      const newUsers = [...state.users, newUser];
+      const { user: userRegistration} = action.payload;
+      const newUsers = [...state.users, userRegistration];
       return {
         ...state,
         users: newUsers,
-        loggedUser: newUser,
+        loggedUser: userRegistration,
       };
     case ADD_PRODUCT:
       const { userId: userIdAddProduct, product } = action.payload;

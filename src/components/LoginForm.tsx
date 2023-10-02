@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginUser, registerUser } from '../redux/actions';
-import { RootState, User, UserErrors } from '../interfaces/interfaces';
+import { User, UserErrors } from '../interfaces/interfaces';
 import { PASSWORD_CONFIRM, FIELD_REQUIRED, INVALID_CREDENTIALS, LOGIN, LOGIN_TEXT, PASSWORD, PASSWORD_NOT_MATCH, REGISTRATION, REGISTRATION_TEXT, USERNAME, USERNAME_TAKEN, PHONE_NUMBER } from '../constants/constants';
 
 interface LoginFormProps {
@@ -25,8 +25,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     passwordConfirm: '',
     phoneNumber: ''
   });
-
-  const users = useSelector((state: RootState) => state.users);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -58,22 +56,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     alert(INVALID_CREDENTIALS);
   };
 
-  const handleRegistration = (username: string, password: string, passwordConfirm: string, phoneNumber: string, users: User[]) => {
-    if(password !== passwordConfirm) {
-      alert(PASSWORD_NOT_MATCH);
-      return;
-    }
-
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === username) {
-        alert(USERNAME_TAKEN);
-        return;
-      }
-    }
-    dispatch(registerUser(username, password, phoneNumber));
-    handleSuccessfulLogin();
-  };
-
   const validateForm = () => {
     const newErrors : Partial<UserErrors> = {};
 
@@ -99,18 +81,61 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: any) => {
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault();
+    // if (validateForm()) {
+  //     registration ? 
+  //     handleRegistration(
+  //       formData.username, 
+  //       formData.password, 
+  //       formData.passwordConfirm ?? '', 
+  //       formData.phoneNumber ?? '', 
+  //       users
+  //     ) : 
+  //     handleLogin(formData.username, formData.password, users)
+  //   }
+  // };
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+    
     if (validateForm()) {
-      registration ? 
-      handleRegistration(
-        formData.username, 
-        formData.password, 
-        formData.passwordConfirm ?? '', 
-        formData.phoneNumber ?? '', 
-        users
-      ) : 
-      handleLogin(formData.username, formData.password, users)
+      if (registration && formData.password !== formData.passwordConfirm) {
+        alert(PASSWORD_NOT_MATCH);
+        return;
+      }
+  
+      const requestBody = registration
+        ? {
+            username: formData.username,
+            password: formData.password,
+            phoneNumber: formData.phoneNumber,
+          }
+        : {
+            username: formData.username,
+            password: formData.password,
+          };
+  
+      try {
+        const response = await fetch('http://localhost:3001/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+        console.log('response', response);
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(registerUser({...data}));
+          navigate('/home');
+        } else {
+          alert(USERNAME_TAKEN);
+          console.error('Registration failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
