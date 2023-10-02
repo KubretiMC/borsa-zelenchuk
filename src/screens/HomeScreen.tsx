@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../interfaces/interfaces';
-import { logOutUser } from '../redux/actions';
+import { fetchUsers, logoutUser } from '../redux/actions';
 import { LOGOUT, OFFER_MAKE, OFFER_SEARCH } from '../constants/constants';
 
 const HomeScreen: React.FC = () => {
@@ -18,9 +18,29 @@ const HomeScreen: React.FC = () => {
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
   const handleLogout = () => {
-    dispatch(logOutUser())
+    dispatch(logoutUser())
     handleNavigateButtonClick('/');
   }
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/user/getAll', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(fetchUsers(data));
+        };
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    getAllUsers();
+  }, []);
 
   return (
     <ScreenContainer subtitle={loggedUser?.username || ''}>

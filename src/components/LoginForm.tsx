@@ -185,7 +185,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
           submit
         />
         <div className="mt-4 text-right">
-            <button className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
+            <button type='button' className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
                 {registration ? LOGIN_TEXT : REGISTRATION_TEXT}
             </button>
         </div>
