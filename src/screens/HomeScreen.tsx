@@ -59,7 +59,7 @@ const HomeScreen: React.FC = () => {
     }
     getAllUsers();
     getAllProducts();
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenContainer subtitle={loggedUser?.username || ''}>
