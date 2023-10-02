@@ -40,10 +40,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSuccessfulLogin = () => {
-    navigate(`/home`);
-  };
-
   const handleNavigateButtonClick = (registration: boolean) => {
     navigate(registration ? `/` : 'registration');
   };
