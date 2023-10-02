@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Product, RootState, User } from '../interfaces/interfaces';
-import { ADD_PRODUCT, FINISH_PRODUCT, LOGIN_USER, LOGOUT_USER, REGISTER_USER, RESERVE_PRODUCT, UPDATE_PASSWORD } from './actions';
+import { ADD_PRODUCT, FINISH_PRODUCT, LOGIN_USER, LOGOUT_USER, RESERVE_PRODUCT, UPDATE_PASSWORD } from './actions';
 
 export const mockUsers: User[] = [
   { 
@@ -96,19 +96,6 @@ const initialState: RootState = {
 
 const rootReducer = (state: RootState = initialState, action: any): RootState => {
   switch (action.type) {
-    case LOGIN_USER:
-      const { username: usernameLogin, password: passwordLogin } = action.payload;
-      const foundUserLogin = state.users.find(
-        (user) => user.username === usernameLogin && user.password === passwordLogin
-      );
-
-      if (foundUserLogin) {
-        return {
-          ...state,
-          loggedUser: foundUserLogin,
-        };
-      }
-      return state;
     case LOGOUT_USER:
         return {
           ...state,
@@ -130,19 +117,13 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         loggedUser: updatedLoggedUser as User,
         users: updatedUsersUpdatePassword,
     };
-    case REGISTER_USER:
-      const { username: usernameRegistration, password: passwordRegistration, phoneNumber: phoneNumberRegistration } = action.payload;
-      const newUser: User = {
-        id: uuidv4(),
-        username: usernameRegistration,
-        password: passwordRegistration,
-        phoneNumber: phoneNumberRegistration
-      } 
-      const newUsers = [...state.users, newUser];
+    case LOGIN_USER:
+      const { user: userRegistration} = action.payload;
+      const newUsers = [...state.users, userRegistration];
       return {
         ...state,
         users: newUsers,
-        loggedUser: newUser,
+        loggedUser: userRegistration,
       };
     case ADD_PRODUCT:
       const { userId: userIdAddProduct, product } = action.payload;

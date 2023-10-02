@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, registerUser } from '../redux/actions';
-import { RootState, User, UserErrors } from '../interfaces/interfaces';
-import { PASSWORD_CONFIRM, FIELD_REQUIRED, INVALID_CREDENTIALS, LOGIN, LOGIN_TEXT, PASSWORD, PASSWORD_NOT_MATCH, REGISTRATION, REGISTRATION_TEXT, USERNAME, USERNAME_TAKEN, PHONE_NUMBER } from '../constants/constants';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../redux/actions';
+import { UserErrors } from '../interfaces/interfaces';
+import { 
+  PASSWORD_CONFIRM, 
+  FIELD_REQUIRED, 
+  LOGIN, 
+  LOGIN_TEXT, 
+  PASSWORD, 
+  PASSWORD_NOT_MATCH, 
+  REGISTRATION, 
+  REGISTRATION_TEXT, 
+  USERNAME, 
+  PHONE_NUMBER 
+} from '../constants/constants';
 
 interface LoginFormProps {
   registration: boolean;
@@ -26,14 +37,8 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     phoneNumber: ''
   });
 
-  const users = useSelector((state: RootState) => state.users);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleSuccessfulLogin = () => {
-    navigate(`/home`);
-  };
 
   const handleNavigateButtonClick = (registration: boolean) => {
     navigate(registration ? `/` : 'registration');
@@ -45,33 +50,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
       ...formData,
       [name]: value,
     });
-  };
-
-  const handleLogin = (username: string, password: string, users: User[]) => {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === username && users[i].password === password) {
-        dispatch(loginUser(username, password));
-        handleSuccessfulLogin();
-        return;
-      }
-    }
-    alert(INVALID_CREDENTIALS);
-  };
-
-  const handleRegistration = (username: string, password: string, passwordConfirm: string, phoneNumber: string, users: User[]) => {
-    if(password !== passwordConfirm) {
-      alert(PASSWORD_NOT_MATCH);
-      return;
-    }
-
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === username) {
-        alert(USERNAME_TAKEN);
-        return;
-      }
-    }
-    dispatch(registerUser(username, password, phoneNumber));
-    handleSuccessfulLogin();
   };
 
   const validateForm = () => {
@@ -99,18 +77,51 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+    
     if (validateForm()) {
-      registration ? 
-      handleRegistration(
-        formData.username, 
-        formData.password, 
-        formData.passwordConfirm ?? '', 
-        formData.phoneNumber ?? '', 
-        users
-      ) : 
-      handleLogin(formData.username, formData.password, users)
+      if (registration && formData.password !== formData.passwordConfirm) {
+        alert(PASSWORD_NOT_MATCH);
+        return;
+      }
+      const requestBody = registration
+      ? {
+          username: formData.username,
+          password: formData.password,
+          phoneNumber: formData.phoneNumber,
+        }
+      : {
+          username: formData.username,
+          password: formData.password,
+        };
+
+      const requestUrl = registration ? 
+        'http://localhost:3001/api/user/register'
+        :
+        'http://localhost:3001/api/user/login'
+  
+      try {
+        const response = await fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(loginUser({...data}));
+          navigate('/home');
+        } else {
+          const data = await response.json();
+          const { error = '' } = data;
+          alert(error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
