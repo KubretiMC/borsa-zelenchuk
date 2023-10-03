@@ -1,4 +1,4 @@
-import { OfferValues, Product, User } from "../interfaces/interfaces";
+import { Product, User } from "../interfaces/interfaces";
 
 export const FETCH_USERS = 'FETCH_USERS';
 export const LOGIN_USER = 'LOGIN_USER';
