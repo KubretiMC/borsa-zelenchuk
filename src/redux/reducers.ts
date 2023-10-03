@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Product, RootState, User } from '../interfaces/interfaces';
 import { 
-  ADD_PRODUCT, 
+  ADD_PRODUCT_LOGGED_USER, 
   FETCH_PRODUCTS, 
   FETCH_USERS, 
   FINISH_PRODUCT, 
@@ -50,10 +50,10 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         users: updatedUsersUpdatePassword,
     };
     case LOGIN_USER:
-      const { user: userRegistration = {} } = action.payload;
+      const { user: userLoginUser = {} } = action.payload;
       return {
         ...state,
-        loggedUser: userRegistration,
+        loggedUser: userLoginUser,
       };
     case FETCH_PRODUCTS:
       const { products: productsFetchProducts = [] } = action.payload;
@@ -61,59 +61,19 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         ...state,
         products: productsFetchProducts,
       };
-    case ADD_PRODUCT:
-      const { userId: userIdAddProduct, product } = action.payload;
-      const {
-        name = '',
-        cost = 0,
-        availability = 0,
-        minOrder = 0,
-        place = '',
-        image = '',
-        additionalInformation = '',
-      } = product;
+    case ADD_PRODUCT_LOGGED_USER:
+      const { loggedUser: loggedUserAddProduct, productId: productIdAddProduct } = action.payload;
 
-      const currentDate = new Date();
-      const formattedDate = `${currentDate.getDate()}.${currentDate.toLocaleString('default', { month: 'short' })}`;
-
-      const newProduct: Product = {
-        id: uuidv4(),
-        name: name,
-        cost: parseFloat(cost),
-        availability: parseFloat(availability),
-        minOrder: parseFloat(minOrder),
-        place: place,
-        image: image || '',
-        additionalInformation: additionalInformation,
-        reserved: false,
-        finished: false,
-        dateAdded: formattedDate
+      const updatedLoggedUserAddProduct = {
+        ...loggedUserAddProduct,
+        offers: loggedUserAddProduct.offers ? [...loggedUserAddProduct.offers, productIdAddProduct] : [productIdAddProduct],
       };
     
-      const newProducts = [...state.products, newProduct];
-    
-      const updatedUsersAddProducts = state.users.map((user) => {
-        if (user.id === userIdAddProduct) {
-          const updatedOffers = user.offers ? [...user.offers, newProduct.id] : [newProduct.id];
-    
-          return {
-            ...user,
-            offers: updatedOffers,
-          };
-        }
-        return user;
-      });
-
-      const loggedUserUpdatedAddProduct = updatedUsersAddProducts.find(
-        (user) => user.id === userIdAddProduct
-      )
-
       return {
         ...state,
-        products: newProducts,
-        users: updatedUsersAddProducts,
-        loggedUser: loggedUserUpdatedAddProduct,
+        loggedUser: updatedLoggedUserAddProduct,
       };
+        
     case FINISH_PRODUCT:
       const { productId: productIdFinishProduct } = action.payload;
 

@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
 import Button from '../components/Button';
-import { addProduct } from '../redux/actions';
-import { OfferErrors, OfferValues, RootState } from '../interfaces/interfaces';
+import { addProductLoggedUser } from '../redux/actions';
+import { OfferErrors, OfferValues, RootState, User } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
 import { ADD_IMAGE, AVAILABILITY, COST, FIELD_REQUIRED, IMAGE, IMAGE_ADD, IMAGE_CHANGE, INFO, OFFER_MIN, NAME, OFERR_ADD, OFFER_ADDED_SUCCESSFULLY, PLACE, REQUIRED } from '../constants/constants';
 
@@ -40,13 +40,31 @@ const AddOfferScreen: React.FC = () => {
         image: '',
       });
 
-    const handleAddOfferClick = (offer: OfferValues, userId?: string) => {
-        if(userId){
-            dispatch(addProduct(userId, offer));
-            setIsModalOpened(true);
+    const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
+        if (loggedUser) {
+            try {
+                const response = await fetch('http://localhost:3001/api/product/addProduct',  {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: loggedUser.id, product: offer }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const { productId = '' } = data;
+                    dispatch(addProductLoggedUser(loggedUser, productId));
+                    setIsModalOpened(true);
+                } else {
+                    // Handle the error if the request is not successful
+                    console.error('Error:', response.statusText);
+                }
+            } catch (error) {
+            console.error('Error:', error);
+            }
         }
     };
-    
 
     useEffect(() => {
         if (isModalOpened) {
@@ -72,7 +90,8 @@ const AddOfferScreen: React.FC = () => {
             reader.onload = () => {
                 setOfferValues({
                 ...offerValues,
-                image: reader.result as string,
+                // image: reader.result as string,
+                image: "https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg"
                 });
             };
             reader.readAsDataURL(selectedFile);
@@ -106,7 +125,7 @@ const AddOfferScreen: React.FC = () => {
         e.preventDefault();
       
         if (validateForm()) {
-          handleAddOfferClick(offerValues, loggedUser?.id);
+          handleAddOfferClick(offerValues, loggedUser);
         }
       };
 
