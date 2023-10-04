@@ -14,7 +14,6 @@ import { COST, LEV, PRODUCT_RESERVED_SUCCESSFULLY } from '../constants/constants
 const ReserveScreen = () => {
   const { id = '' } = useParams();
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
