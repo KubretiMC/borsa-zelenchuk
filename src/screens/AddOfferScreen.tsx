@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
 import Button from '../components/Button';
-import { addProductLoggedUser } from '../redux/actions';
 import { OfferErrors, OfferValues, RootState, User } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
 import { ADD_IMAGE, AVAILABILITY, COST, FIELD_REQUIRED, IMAGE, IMAGE_ADD, IMAGE_CHANGE, INFO, OFFER_MIN, NAME, OFERR_ADD, OFFER_ADDED_SUCCESSFULLY, PLACE, REQUIRED } from '../constants/constants';
@@ -15,7 +14,6 @@ const AddOfferScreen: React.FC = () => {
     const productFilters = useSelector((state: RootState) => state.productFilters);
     const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [isModalOpened, setIsModalOpened] = useState(false);
