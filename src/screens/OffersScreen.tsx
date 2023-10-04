@@ -40,9 +40,10 @@ const OffersScreen: React.FC = () => {
         return nameMatch && placeMatch && costMatch && notInOffers;
     });
 
-    const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
-
-    const offersList = slicedProducts
+    // to fix sliced products
+    // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
+    // console.log('slicedProducts', slicedProducts);
+    const offersList = filteredProductsList
         .filter((product: Product) => !product.reserved) 
         .map((product: Product) => (
             <Offer key={product.id} id={product.id} name={product.name} place={product.place} cost={product.cost} image={product.image} />

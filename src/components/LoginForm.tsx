@@ -112,7 +112,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
   
         if (response.ok) {
           const data = await response.json();
-          dispatch(loginUser({...data}));
+          dispatch(loginUser(data.id));
           navigate('/home');
         } else {
           const data = await response.json();

@@ -4,7 +4,6 @@ export interface User {
   password: string;
   phoneNumber: string;
   offers?: string[];
-  reserves?: string[];
   userReserved?: string[];
 }
 
@@ -16,13 +15,13 @@ export interface UserErrors {
 }
 
 export interface OfferValues {
-    name: string,
-    cost?: number,
-    availability?: number,
-    minOrder?: number,
-    place: string,
-    image: string,
-    additionalInformation: string
+  name: string,
+  cost?: number,
+  availability?: number,
+  minOrder?: number,
+  place: string,
+  image: string,
+  additionalInformation: string,
 }
 
 export interface OfferErrors {
@@ -48,6 +47,7 @@ export interface Product {
   availability: number;
   minOrder: number;
   reserved: boolean;
+  reservedCost: number;
   additionalInformation?: string;
   finished: boolean;
   dateAdded: string;

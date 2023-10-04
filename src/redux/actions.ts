@@ -6,17 +6,22 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const ADD_PRODUCT_LOGGED_USER = 'ADD_PRODUCT_LOGGED_USER';
-export const RESERVE_PRODUCT = 'RESERVE_PRODUCT';
 export const FINISH_PRODUCT = 'REMOVE_PRODUCT';
+export const UPDATE_LOGGED_USER = 'UPDATE_LOGGED_USER';
 
 export const fetchUsers = (users: User[]) => ({
   type: FETCH_USERS,
   payload: { users },
 });
 
-export const loginUser = (user: User) => ({
+export const updateLoggedUser = (userId: string) => ({
+  type: UPDATE_LOGGED_USER,
+  payload: { userId },
+})
+
+export const loginUser = (userId: string) => ({
   type: LOGIN_USER,
-  payload: { user },
+  payload: { userId },
 })
 
 export const logoutUser = () => ({
@@ -38,11 +43,6 @@ export const fetchProducts = (products: Product[]) => ({
 export const addProductLoggedUser = (loggedUser: User, productId: string) => ({
   type: ADD_PRODUCT_LOGGED_USER,
   payload: { loggedUser, productId },
-});
-
-export const reserveProduct = (userId: string, productId: string, orderQuantity: number, minOrder: number) => ({
-    type: RESERVE_PRODUCT,
-    payload: { userId, productId, orderQuantity, minOrder },
 });
 
 export const finishProduct = (productId: string) => ({

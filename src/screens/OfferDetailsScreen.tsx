@@ -25,10 +25,10 @@ const OfferDetailsScreen = () => {
     availability = 0, 
     minOrder = 0, 
     additionalInformation = '',
-    dateAdded = ''
+    dateAdded = '',
+    reserved = false,
   } = selectedProduct || {};
 
-  
   const selectedUser = users.find((user) => user.offers && user.offers.includes(id));
   const { phoneNumber = '', username = '' } = selectedUser || {};
   
@@ -75,13 +75,15 @@ const OfferDetailsScreen = () => {
               value={dateAdded}
               type={'label'}
             />
-            <Row
-              label={ADDED_FROM}
-              value={username}
-              type={'label'}
-              onClick={() => setIsModalOpened(true)}
-              labelClassName={'text-left flex ml-14 font-bold'}
-            />
+            {selectedUser?.id !== loggedUser?.id &&
+              <Row
+                label={ADDED_FROM}
+                value={username}
+                type={'label'}
+                onClick={() => setIsModalOpened(true)}
+                labelClassName={'text-left flex ml-14 font-bold'}
+              />
+            }
             {additionalInformation && (
               <div className="border-2 p-2 rounded-md mt-4">
                 <div className="font-bold">
@@ -93,7 +95,9 @@ const OfferDetailsScreen = () => {
               </div>
             )}
           </div>
-          <Button title='Резервирай' onClick={() => handleReserveClick()} />
+          {selectedUser?.id !== loggedUser?.id && !reserved &&
+            <Button title='Резервирай' onClick={() => handleReserveClick()} />
+          }
         </div>
       ) : (
         <p>{PRODUCT_SHOW_ERROR}</p>

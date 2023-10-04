@@ -29,7 +29,7 @@ const ProfileScreen: React.FC = () => {
   const products = useSelector((state: RootState) => state.products);
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
-  const { id = '', username = '', password = '', phoneNumber = '', offers = [], reserves = [], userReserved = [] } = loggedUser || {};
+  const { id = '', username = '', password = '', phoneNumber = '', offers = [], userReserved = [] } = loggedUser || {};
 
   const [passwordValues, setPasswordValues] = useState({
     password: password,
@@ -56,7 +56,7 @@ const ProfileScreen: React.FC = () => {
   const userOffers = products
     .filter((product: Product) => 
       (!product.finished) && 
-      (offers.includes(product.id) || userReserved.includes(product.id))
+      (offers.includes(product.id))
     )
     .map((product: Product) => (
       <Offer 
@@ -77,7 +77,7 @@ const ProfileScreen: React.FC = () => {
   const userReservations = products
     .filter((product: Product) => 
       (!product.finished) && 
-      reserves.includes(product.id)
+      userReserved.includes(product.id)
     )
     .map((product: Product) => (
       <Offer 
@@ -85,7 +85,7 @@ const ProfileScreen: React.FC = () => {
         id={product.id} 
         name={product.name} 
         place={product.place} 
-        cost={product.cost * product.availability} 
+        cost={product.reservedCost} 
         image={product.image} 
         profileOffer
         buttonName={RESERVATION_REMOVE}
