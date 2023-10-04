@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ScreenContainer from '../components/ScreenContainer';
 import { Product, RootState } from '../interfaces/interfaces';
