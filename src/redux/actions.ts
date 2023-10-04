@@ -6,7 +6,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const ADD_PRODUCT_LOGGED_USER = 'ADD_PRODUCT_LOGGED_USER';
-export const FINISH_PRODUCT = 'REMOVE_PRODUCT';
+export const FINISH_PRODUCT = 'FINISH_PRODUCT';
 export const UPDATE_LOGGED_USER = 'UPDATE_LOGGED_USER';
 
 export const fetchUsers = (users: User[]) => ({

@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Product, RootState, User } from '../interfaces/interfaces';
 import { 
   ADD_PRODUCT_LOGGED_USER, 
@@ -7,7 +6,6 @@ import {
   FINISH_PRODUCT, 
   LOGIN_USER, 
   LOGOUT_USER, 
-  RESERVE_PRODUCT, 
   UPDATE_LOGGED_USER, 
   UPDATE_PASSWORD 
 } from './actions';
