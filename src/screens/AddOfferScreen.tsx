@@ -52,9 +52,6 @@ const AddOfferScreen: React.FC = () => {
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
-                    const { id = '' } = data;
-                    dispatch(addProductLoggedUser(loggedUser, id));
                     setIsModalOpened(true);
                 } else {
                     // Handle the error if the request is not successful

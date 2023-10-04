@@ -7,17 +7,11 @@ export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const ADD_PRODUCT_LOGGED_USER = 'ADD_PRODUCT_LOGGED_USER';
 export const FINISH_PRODUCT = 'FINISH_PRODUCT';
-export const UPDATE_LOGGED_USER = 'UPDATE_LOGGED_USER';
 
 export const fetchUsers = (users: User[]) => ({
   type: FETCH_USERS,
   payload: { users },
 });
-
-export const updateLoggedUser = (userId: string) => ({
-  type: UPDATE_LOGGED_USER,
-  payload: { userId },
-})
 
 export const loginUser = (userId: string) => ({
   type: LOGIN_USER,

@@ -6,7 +6,6 @@ import {
   FINISH_PRODUCT, 
   LOGIN_USER, 
   LOGOUT_USER, 
-  UPDATE_LOGGED_USER, 
   UPDATE_PASSWORD 
 } from './actions';
 
@@ -23,22 +22,14 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
   switch (action.type) {
     case FETCH_USERS:
       const { users: usersFetchUsers = [] } = action.payload;
+      const { id: loggedUserId } = state.loggedUser || {};
+      const updatedLoggedUserFetchUses = usersFetchUsers.find((user: User) => user.id === loggedUserId);
+    
       return {
         ...state,
         users: usersFetchUsers,
-      };
-    case UPDATE_LOGGED_USER:
-      const { userId } = action.payload;
-      const updatedLoggedUser = state.users.find((user => user.id === userId));
-
-      if (updatedLoggedUser) {
-        return {
-          ...state,
-          loggedUser: updatedLoggedUser as User,
-        };
-      }
-
-      return state;
+        loggedUser: updatedLoggedUserFetchUses || state.loggedUser,
+    };
     case LOGOUT_USER:
       return {
         ...state,

@@ -4,23 +4,23 @@ import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../interfaces/interfaces';
-import { fetchProducts, fetchUsers, logoutUser, updateLoggedUser } from '../redux/actions';
+import { fetchProducts, fetchUsers, logoutUser } from '../redux/actions';
 import { LOGOUT, OFFER_MAKE, OFFER_SEARCH } from '../constants/constants';
 
 const HomeScreen: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
   const handleNavigateButtonClick = (path: string) => {
     navigate(path);
   };
 
-  const loggedUser = useSelector((state: RootState) => state.loggedUser);
-
   const handleLogout = () => {
     dispatch(logoutUser())
     handleNavigateButtonClick('/');
   }
+
   useEffect(() => {
     const getAllUsers = async () => {
       try {
@@ -34,10 +34,7 @@ const HomeScreen: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           dispatch(fetchUsers(data));
-          if (loggedUser) {
-            dispatch(updateLoggedUser(loggedUser.id))
-          }
-        };
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -62,7 +59,7 @@ const HomeScreen: React.FC = () => {
     }
     getAllUsers();
     getAllProducts();
-  }, [dispatch, loggedUser]);
+  }, [dispatch]);
 
   return (
     <ScreenContainer subtitle={loggedUser?.username || ''}>
