@@ -5,7 +5,7 @@ import { ALL, MAX_COST, MIN_COST, NAME, PLACE } from '../constants/constants';
 
 interface FilterProps {
   filterValues: FilterValues;
-  setFilterValues: (object: any) => void;
+  setFilterValues: (filterValues: FilterValues) => void;
   productFilters: {
     names: string[];
     places: string[];
