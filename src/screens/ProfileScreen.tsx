@@ -22,9 +22,25 @@ const ProfileScreen: React.FC = () => {
     setOffersSectionSelected(false);
   };
 
-  const handleFinishProduct = (productId: string) => {
-    dispatch(finishProduct(productId));
-  }
+  const handleFinishProduct = async (productId: string) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/product/finishProduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId }),
+      });
+      console.log('response.ok', response.ok);
+      if (response.ok) {
+        dispatch(finishProduct(productId));
+      } else {
+        console.error('Error finishing product:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error finishing product:', error);
+    }
+  };
 
   const products = useSelector((state: RootState) => state.products);
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
@@ -64,7 +80,7 @@ const ProfileScreen: React.FC = () => {
         id={product.id} 
         name={product.name} 
         place={product.place} 
-        cost={product.cost * product.availability} 
+        cost={product.reserved ? product.reservedCost : product.cost * product.availability} 
         image={product.image} 
         profileOffer
         reserved={product.reserved}
@@ -76,7 +92,6 @@ const ProfileScreen: React.FC = () => {
 
   const userReservations = products
     .filter((product: Product) => 
-      (!product.finished) && 
       userReserved.includes(product.id)
     )
     .map((product: Product) => (
@@ -88,8 +103,6 @@ const ProfileScreen: React.FC = () => {
         cost={product.reservedCost} 
         image={product.image} 
         profileOffer
-        buttonName={RESERVATION_REMOVE}
-        buttonClick={() => handleFinishProduct(product.id)}
       />
     ));
 

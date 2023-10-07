@@ -52,7 +52,6 @@ const AddOfferScreen: React.FC = () => {
                 if (response.ok) {
                     setIsModalOpened(true);
                 } else {
-                    // Handle the error if the request is not successful
                     console.error('Error:', response.statusText);
                 }
             } catch (error) {
