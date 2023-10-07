@@ -7,7 +7,7 @@ import Offer from '../components/Offer';
 import { finishProduct, updatePassword } from '../redux/actions';
 import Button from '../components/Button';
 import Row from '../components/Row';
-import { PASSWORD_CONFIRM, MY_OFFERS, MY_PROFILE, NAME, PASSWORD, PASSWORD_NOT_MATCH, PASSWORD_CHANGED, OFFER_REMOVE, RESERVATION_REMOVE, OFFERS_NOT_MADE, RESERVATIONS_NOT_MADE } from '../constants/constants';
+import { PASSWORD_CONFIRM, MY_OFFERS, MY_PROFILE, NAME, PASSWORD, PASSWORD_NOT_MATCH, PASSWORD_CHANGED, OFFER_REMOVE, OFFERS_NOT_MADE, RESERVATIONS_NOT_MADE } from '../constants/constants';
 
 const ProfileScreen: React.FC = () => {
   const dispatch = useDispatch();
