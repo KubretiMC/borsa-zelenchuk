@@ -53,4 +53,3 @@ export const REGISTRATION = 'Регистрация';
 export const REGISTRATION_TEXT = 'Нямате акаунт? Регистрация!';
 export const RESERVED = 'Резервирана';
 export const RESERVATIONS_NOT_MADE = 'Нямате резервации';
-export const RESERVATION_REMOVE = 'Премахни резервация';
