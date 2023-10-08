@@ -1,7 +1,6 @@
 export interface User {
   id: string;
   username: string;
-  password: string;
   phoneNumber: string;
   offers?: string[];
   userReserved?: string[];

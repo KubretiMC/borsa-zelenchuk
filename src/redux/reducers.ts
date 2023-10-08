@@ -6,7 +6,6 @@ import {
   FINISH_PRODUCT, 
   LOGIN_USER, 
   LOGOUT_USER, 
-  UPDATE_PASSWORD 
 } from './actions';
 
 const initialState: RootState = {
@@ -35,28 +34,11 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         ...state,
         loggedUser: undefined,
       };
-    case UPDATE_PASSWORD:
-      const { userId: userIdToUpdate, password: newPassword } = action.payload;
-      const updatedLoggedUserUpdatePassword = { ...state.loggedUser, password: newPassword };
-    
-      const updatedUsersUpdatePassword = state.users.map((user) => {
-        if (user.id === userIdToUpdate) {
-          return { ...user, password: newPassword };
-        }
-        return user;
-      });
-    
-      return {
-        ...state,
-        loggedUser: updatedLoggedUserUpdatePassword as User,
-        users: updatedUsersUpdatePassword,
-    };
     case LOGIN_USER:
       const { userId: userIdLoginUser = '' } = action.payload;
       const user: User = {
         id: userIdLoginUser,
         username: '',
-        password: '',
         phoneNumber: ''
       };
 
