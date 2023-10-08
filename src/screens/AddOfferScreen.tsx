@@ -41,7 +41,8 @@ const AddOfferScreen: React.FC = () => {
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
         if (loggedUser) {
             try {
-                const response = await fetch('http://localhost:3001/api/product/addProduct',  {
+                const apiUrl = process.env.REACT_APP_API_URL;          
+                const response = await fetch(`${apiUrl}/product/addProduct`,  {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

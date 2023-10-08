@@ -22,9 +22,10 @@ const HomeScreen: React.FC = () => {
   }
 
   useEffect(() => {
+    const apiUrl = process.env.REACT_APP_API_URL;   
     const getAllUsers = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/user/getAllUsers', {
+        const response = await fetch(`${apiUrl}/user/getAllUsers`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -41,8 +42,8 @@ const HomeScreen: React.FC = () => {
     }
 
     const getAllProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/product/getAllProducts', {
+      try { 
+        const response = await fetch(`${apiUrl}/product/getAllProducts`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

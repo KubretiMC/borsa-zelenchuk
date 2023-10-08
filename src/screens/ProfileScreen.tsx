@@ -34,16 +34,17 @@ const ProfileScreen: React.FC = () => {
     setOffersSectionSelected(false);
   };
 
-  const handleFinishProduct = async (productId: string) => {
+  const handleFinishProduct = async (productId: string) => { 
     try {
-      const response = await fetch('http://localhost:3001/api/product/finishProduct', {
+      const apiUrl = process.env.REACT_APP_API_URL;  
+      const response = await fetch(`${apiUrl}/product/finishProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ productId }),
       });
-      console.log('response.ok', response.ok);
+
       if (response.ok) {
         dispatch(finishProduct(productId));
       } else {
@@ -78,7 +79,8 @@ const ProfileScreen: React.FC = () => {
       alert(PASSWORD_NOT_MATCH);
     } else {
       try {
-        const response = await fetch('http://localhost:3001/api/user/updatePassword', {
+        const apiUrl = process.env.REACT_APP_API_URL;  
+        const response = await fetch(`${apiUrl}/user/updatePassword`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

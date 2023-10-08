@@ -48,7 +48,8 @@ const ReserveScreen = () => {
 
   const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number, reservedCost: string, userId?: string) => {
     if (userId) {
-      fetch('http://localhost:3001/api/product/reserveProduct', {
+      const apiUrl = process.env.REACT_APP_API_URL;  
+      fetch(`${apiUrl}/product/reserveProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
