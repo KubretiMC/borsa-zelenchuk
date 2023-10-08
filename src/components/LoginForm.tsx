@@ -97,12 +97,12 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         };
 
       const apiUrl = process.env.REACT_APP_API_URL;
-  
+      console.log('apiUrl', apiUrl);
       const requestUrl = registration ? 
         `${apiUrl}/user/register`
         :
         `${apiUrl}/user/login`
-  
+      console.log('requestUrl', requestUrl);
       try {
         const response = await fetch(requestUrl, {
           method: 'POST',
