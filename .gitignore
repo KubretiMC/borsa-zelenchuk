@@ -24,3 +24,7 @@ yarn-error.log*
 
 #cordova
 /BorsaZelenchuk
+
+#env
+.env.development
+.env.production
