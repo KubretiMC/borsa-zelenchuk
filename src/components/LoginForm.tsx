@@ -96,12 +96,12 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
           password: formData.password,
         };
 
-      const apiUrl = process.env.REACT_APP_API_URL as string;
-
+      const apiUrl = process.env.REACT_APP_API_URL;
+  
       const requestUrl = registration ? 
-        'http://localhost:3001/api/user/register'
+        `${apiUrl}/user/register`
         :
-        apiUrl
+        `${apiUrl}/user/login`
   
       try {
         const response = await fetch(requestUrl, {
