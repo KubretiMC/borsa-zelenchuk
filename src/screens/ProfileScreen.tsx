@@ -4,10 +4,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Product, RootState } from '../interfaces/interfaces';
 import Collapsible from 'react-collapsible';
 import Offer from '../components/Offer';
-import { finishProduct, updatePassword } from '../redux/actions';
+import { finishProduct } from '../redux/actions';
 import Button from '../components/Button';
 import Row from '../components/Row';
-import { PASSWORD_CONFIRM, MY_OFFERS, MY_PROFILE, NAME, PASSWORD, PASSWORD_NOT_MATCH, PASSWORD_CHANGED, OFFER_REMOVE, OFFERS_NOT_MADE, RESERVATIONS_NOT_MADE } from '../constants/constants';
+import { 
+  PASSWORD_CONFIRM,
+  MY_OFFERS,
+  MY_PROFILE,
+  NAME,
+  PASSWORD,
+  PASSWORD_NOT_MATCH,
+  PASSWORD_CHANGED,
+  OFFER_REMOVE,
+  OFFERS_NOT_MADE,
+  RESERVATIONS_NOT_MADE,
+  PASSWORD_NEW
+} from '../constants/constants';
 
 const ProfileScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -45,11 +57,12 @@ const ProfileScreen: React.FC = () => {
   const products = useSelector((state: RootState) => state.products);
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
-  const { id = '', username = '', password = '', phoneNumber = '', offers = [], userReserved = [] } = loggedUser || {};
+  const { id = '', username = '', phoneNumber = '', offers = [], userReserved = [] } = loggedUser || {};
 
   const [passwordValues, setPasswordValues] = useState({
-    password: password,
-    confirmPassword: password,
+    password: '',
+    newPassword: '',
+    confirmPassword: '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -60,14 +73,37 @@ const ProfileScreen: React.FC = () => {
     });
   };
 
-  const handleChangePassword = (password: string, confirmPassword: string, userId: string) => {
-    if(password === confirmPassword) {
-      dispatch(updatePassword(userId, password))
-      alert(PASSWORD_CHANGED)
+  const handleChangePassword = async (currentPassword: string, newPassword: string, confirmPassword: string, userId: string) => {
+    if(newPassword !== confirmPassword) {
+      alert(PASSWORD_NOT_MATCH);
     } else {
-      alert(PASSWORD_NOT_MATCH)
+      try {
+        const response = await fetch('http://localhost:3001/api/user/updatePassword', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, currentPassword, newPassword }),
+        });
+      
+        if (response.ok) {
+          alert(PASSWORD_CHANGED);
+        } else if (response.status === 400) {
+          // when current password doesn't match
+          const errorResponse = await response.json();
+          alert(errorResponse.error);
+        } else {
+          // other errors
+          alert('Error updating password');
+        }
+      } catch (error) {
+        console.error('Error changing password:', error);
+        alert('Error changing password');
+      }
+      
     }
-  }
+  };
+  
 
   const userOffers = products
     .filter((product: Product) => 
@@ -88,7 +124,6 @@ const ProfileScreen: React.FC = () => {
         buttonClick={() => handleFinishProduct(product.id)}
       />
   ));
-
 
   const userReservations = products
     .filter((product: Product) => 
@@ -170,13 +205,22 @@ const ProfileScreen: React.FC = () => {
               type='password'
             />
             <Row
+              label={PASSWORD_NEW}
+              value="newPassword"
+              filterValues={passwordValues}
+              handleInputChange={handleInputChange}
+              type='password'
+            />
+            <Row
               label={PASSWORD_CONFIRM}
               value="confirmPassword"
               filterValues={passwordValues}
               handleInputChange={handleInputChange}
               type='password'
             />
-            <Button title={'Промени паролата'} onClick={() => handleChangePassword(passwordValues.password, passwordValues.confirmPassword, id)} />
+            <Button title={'Промени паролата'} onClick={() => 
+              handleChangePassword(passwordValues.password, passwordValues.newPassword, passwordValues.confirmPassword, id)} 
+            />
         </div>
     }
     </ScreenContainer>
