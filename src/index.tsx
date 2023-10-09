@@ -5,10 +5,29 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import bgTranslation from './locales/bg.json';
+import enTranslation from './locales/en.json';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: enTranslation,
+      },
+      bg: {
+        translation: bgTranslation,
+      },
+    },
+    lng: 'bg',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
