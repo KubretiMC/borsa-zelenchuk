@@ -8,10 +8,11 @@ import Row from '../components/Row';
 import RangeSlider from '../components/RangeSlider';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
-import { COST, LEV, PRODUCT_RESERVED_SUCCESSFULLY } from '../constants/constants';
-
+import { useTranslation } from 'react-i18next';
 
 const ReserveScreen = () => {
+  const { t } = useTranslation();
+
   const { id = '' } = useParams();
 
   const navigate = useNavigate();
@@ -80,13 +81,13 @@ const ReserveScreen = () => {
         <ProductHeader name={name} image={image} />
         <RangeSlider value={orderQuantity} setValue={setOrderQuantity} min={minOrder} max={availability} />
         <Row
-          label={COST}
-          value={`${orderCost} ${LEV}`}
+          label={t('COST')}
+          value={`${orderCost} ${t('LEV')}`}
           type={'label'}
         />
         <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder, orderCost, loggedUser?.id)} />
         <Modal isOpen={isModalOpened}>
-          <h2 className="text-xl font-bold text-blue-800 text-center">{PRODUCT_RESERVED_SUCCESSFULLY}</h2>
+          <h2 className="text-xl font-bold text-blue-800 text-center">{t('PRODUCT_RESERVED_SUCCESSFULLY')}</h2>
         </Modal>
     </ScreenContainer>
   );

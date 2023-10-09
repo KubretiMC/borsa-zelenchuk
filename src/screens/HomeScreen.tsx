@@ -4,15 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../interfaces/interfaces';
 import { fetchProducts, fetchUsers, logoutUser } from '../redux/actions';
-import { LOGOUT, OFFER_SEARCH } from '../constants/constants';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
 
 const HomeScreen: React.FC = () => {
+  const { t } = useTranslation();
+    
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
-  const { t } = useTranslation();
 
   const handleNavigateButtonClick = (path: string) => {
     navigate(path);
@@ -68,11 +68,11 @@ const HomeScreen: React.FC = () => {
     <ScreenContainer subtitle={loggedUser?.username || ''}>
       <div className="flex flex-col justify-center items-center h-full">
         <Button
-          title={t(OFFER_SEARCH)} // Translate the text using the t function
+          title={t('OFFER_SEARCH')}
           onClick={() => handleNavigateButtonClick('/offers')}
         />
         <Button title={t('OFFER_MAKE')} onClick={() => handleNavigateButtonClick('/add-offer')} />
-        <Button title={t(LOGOUT)} onClick={() => handleLogout()} />
+        <Button title={t('LOGOUT')} onClick={() => handleLogout()} />
       </div>
     </ScreenContainer>
   );

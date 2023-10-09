@@ -55,5 +55,10 @@
     "REGISTRATION": "Registration",
     "REGISTRATION_TEXT": "Don't have an account? Register!",
     "RESERVED": "Reserved",
-    "RESERVATIONS_NOT_MADE": "You haven't made any reservations"
+    "RESERVATIONS_NOT_MADE": "You haven't made any reservations",
+
+    "WATERMELON": "Watermelon",
+    "CHERRY": "Cherry",
+    "PEACH": "Peach",
+    "STRAWBERRY": "Strawberry"
 }

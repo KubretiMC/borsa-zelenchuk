@@ -55,6 +55,11 @@
     "REGISTRATION": "Регистрация",
     "REGISTRATION_TEXT": "Нямате акаунт? Регистрация!",
     "RESERVED": "Резервирана",
-    "RESERVATIONS_NOT_MADE": "Нямате резервации"
+    "RESERVATIONS_NOT_MADE": "Нямате резервации",
+
+    "WATERMELON": "Диня",
+    "CHERRY": "Череша",
+    "PEACH": "Праскова",
+    "STRAWBERRY": "Ягода"
 }
   
