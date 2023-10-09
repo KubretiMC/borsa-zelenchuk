@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import Title from './Title';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface ScreenContainerProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
   return (
     <div className="mainWrapper">
       <div className="wrapper">
+       <LanguageSwitcher />
         <Title subTitle={subtitle} backButton={backButton} />
         <div className='px-5 h-screen'>
           {children}

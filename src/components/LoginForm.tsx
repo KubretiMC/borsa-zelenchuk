@@ -6,8 +6,7 @@ import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
 import { 
   PASSWORD_CONFIRM, 
-  FIELD_REQUIRED, 
-  LOGIN, 
+  FIELD_REQUIRED,  
   LOGIN_TEXT, 
   PASSWORD, 
   PASSWORD_NOT_MATCH, 
@@ -16,12 +15,15 @@ import {
   USERNAME, 
   PHONE_NUMBER 
 } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps {
   registration: boolean;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
+  const { t } = useTranslation();
+
   const initialFormData = {
     username: '',
     password: '',
@@ -183,7 +185,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         </>
         }
         <Button 
-          title={registration ? REGISTRATION: LOGIN} 
+          title={registration ? REGISTRATION: t('LOGIN')} 
           submit
         />
         <div className="mt-4 text-right">
