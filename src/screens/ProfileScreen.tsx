@@ -184,7 +184,7 @@ const ProfileScreen: React.FC = () => {
               labelClassName='text-left flex'
             />
             <Row
-              label="Номер"
+              label={t('NUMBER')}
               value={phoneNumber}
               type={'label'}
               labelClassName='text-left flex'

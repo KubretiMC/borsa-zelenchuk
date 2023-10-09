@@ -116,7 +116,7 @@ const OfferDetailsScreen = () => {
               onClick={() => console.log('ffff')}
             />
             <Row
-              label="Номер"
+              label={t('NUMBER')}
               value={phoneNumber}
               type={'label'}
             />
