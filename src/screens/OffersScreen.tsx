@@ -5,19 +5,23 @@ import Filter from '../components/Filter';
 import { FilterValues, Product, RootState } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import OffersList from '../components/OffersList';
-import { ALL } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 const OffersScreen: React.FC = () => {
+    const { t, i18n } = useTranslation();
+
     const loggedUser = useSelector((state: RootState) => state.loggedUser);
     const products = useSelector((state: RootState) => state.products);
     const productFilters = useSelector((state: RootState) => state.productFilters);
 
     const initialFilterValues: FilterValues = {
-        name: ALL,
-        place: ALL,
+        name: t('ALL'),
+        place: t('ALL'),
         minCost: undefined,
         maxCost: undefined,
     };
+
+    console.log('initialFilterValues', initialFilterValues);
 
     const [filterValues, setFilterValues] = useState(initialFilterValues);
     const [currentPage, setCurrentPage] = useState(1);
@@ -30,11 +34,20 @@ const OffersScreen: React.FC = () => {
         setCurrentPage(1);
     }, [filterValues])
 
+    useEffect(() => {
+        const updatedInitialFilterValues: FilterValues = {
+            name: t('ALL'),
+            place: t('ALL'),
+            minCost: undefined,
+            maxCost: undefined,
+        };
+        setFilterValues(updatedInitialFilterValues);
+    }, [t, i18n.language]);
+
     const filteredProductsList = products.filter((product: Product) => {
         const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
-
-        const nameMatch = name === ALL || product.name === name;
-        const placeMatch = place === ALL || product.place === place;
+        const nameMatch = name === t('ALL') || product.name === name;
+        const placeMatch = place === t('ALL') || product.place === place;
         const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
         const notInOffers = !loggedUser?.offers?.includes(product.id);
         return nameMatch && placeMatch && costMatch && notInOffers;

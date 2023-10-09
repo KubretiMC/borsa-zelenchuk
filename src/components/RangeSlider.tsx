@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { AVAILABILITY_MAX_LIMIT, AVAILABILITY_MIN_LIMIT, KG } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 interface RangeSliderProps {
   value: number;
@@ -11,6 +11,8 @@ interface RangeSliderProps {
 }
 
 const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) => {
+  const { t } = useTranslation();
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     const newValue = inputValue === '' ? '' : Number(inputValue);
@@ -21,7 +23,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
     if(value <= max) {
       setValue(value + 1);
     } else {
-      alert(AVAILABILITY_MAX_LIMIT)
+      alert(t('AVAILABILITY_MAX_LIMIT'))
     }
   };
 
@@ -29,7 +31,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
     if(value >= min) {
       setValue(value - 1);
     } else {
-      alert(AVAILABILITY_MIN_LIMIT)
+      alert(t('AVAILABILITY_MIN_LIMIT'))
     }
   };
 
@@ -46,7 +48,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
       </div>
       <div>
         <FontAwesomeIcon icon={faMinus} onClick={handleDecrement} />
-        <label className='mx-1'>{value} {KG}</label>
+        <label className='mx-1'>{value} {t('KG')}</label>
         <FontAwesomeIcon icon={faPlus} onClick={handleIncrement}/>
       </div>
     </div>

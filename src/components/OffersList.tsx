@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { OFFERS_UNAVAILABLE, PAGES_ENDED, PAGES_STARTED } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 interface OffersListProps {
   offersList: any[];
@@ -11,16 +11,18 @@ interface OffersListProps {
 }
 
 const OffersList: React.FC<OffersListProps> = ({ offersList, lastPage, currentPage, setCurrentPage }) => {
+  const { t } = useTranslation();
+
   const changePage = (nextPage: boolean) => {
     if(nextPage) {
       if(lastPage) {
-        alert(PAGES_ENDED)
+        alert(t('PAGES_ENDED'))
       } else {
         setCurrentPage(currentPage + 1);
       }
     } else {
       if(currentPage === 1) {
-        alert(PAGES_STARTED)
+        alert(t('PAGES_STARTED'))
       } else {
         setCurrentPage(currentPage - 1)
       }
@@ -31,7 +33,7 @@ const OffersList: React.FC<OffersListProps> = ({ offersList, lastPage, currentPa
     <div>
       {offersList.length === 0 ? (
         <div className='mt-24'>
-            <label className='text-3xl font-bold'>{OFFERS_UNAVAILABLE}</label>
+            <label className='text-3xl font-bold'>{t('OFFERS_UNAVAILABLE')}</label>
         </div>
       ) : (
         <>

@@ -4,24 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
-import { 
-  PASSWORD_CONFIRM, 
-  FIELD_REQUIRED, 
-  LOGIN, 
-  LOGIN_TEXT, 
-  PASSWORD, 
-  PASSWORD_NOT_MATCH, 
-  REGISTRATION, 
-  REGISTRATION_TEXT, 
-  USERNAME, 
-  PHONE_NUMBER 
-} from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps {
   registration: boolean;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
+  const { t } = useTranslation();
+
   const initialFormData = {
     username: '',
     password: '',
@@ -56,20 +47,20 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     const newErrors : Partial<UserErrors> = {};
 
     if (!formData.username) {
-        newErrors.username = FIELD_REQUIRED;
+        newErrors.username = t('FIELD_REQUIRED');
     }
 
     if (!formData.password) {
-        newErrors.password = FIELD_REQUIRED;
+        newErrors.password = t('FIELD_REQUIRED');
     }
 
     if(registration) {
       if (!formData.passwordConfirm) {
-        newErrors.passwordConfirm =  FIELD_REQUIRED;
+        newErrors.passwordConfirm = t('FIELD_REQUIRED');
       }
 
       if (!formData.phoneNumber) {
-          newErrors.phoneNumber = FIELD_REQUIRED;
+          newErrors.phoneNumber = t('FIELD_REQUIRED');
       }
     }
     setErrors(newErrors);
@@ -82,7 +73,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     
     if (validateForm()) {
       if (registration && formData.password !== formData.passwordConfirm) {
-        alert(PASSWORD_NOT_MATCH);
+        alert(t('PASSWORD_NOT_MATCH'));
         return;
       }
       const requestBody = registration
@@ -136,7 +127,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                 id="username"
                 name="username"
                 className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder={USERNAME}
+                placeholder={t('USERNAME')}
                 value={formData.username}
                 onChange={handleInputChange}
             />
@@ -148,7 +139,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                 id="password"
                 name="password"
                 className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder={PASSWORD}
+                placeholder={t('PASSWORD')}
                 value={formData.password}
                 onChange={handleInputChange}
             />
@@ -162,7 +153,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                     id="passwordConfirm"
                     name="passwordConfirm"
                     className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder={PASSWORD_CONFIRM}
+                    placeholder={t('PASSWORD_CONFIRM')}
                     value={formData.passwordConfirm}
                     onChange={handleInputChange}
                 />
@@ -174,7 +165,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
                     id="phoneNumber"
                     name="phoneNumber"
                     className="border rounded border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder={PHONE_NUMBER}
+                    placeholder={t('PHONE_NUMBER')}
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
                 />
@@ -183,12 +174,12 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         </>
         }
         <Button 
-          title={registration ? REGISTRATION: LOGIN} 
+          title={registration ? t('REGISTRATION') : t('LOGIN')} 
           submit
         />
         <div className="mt-4 text-right">
             <button type='button' className="text-gray-400 text-sm" onClick={() => handleNavigateButtonClick(registration)}>
-                {registration ? LOGIN_TEXT : REGISTRATION_TEXT}
+                {registration ? t('LOGIN_TEXT') : t('REGISTRATION_TEXT')}
             </button>
         </div>
       </form>

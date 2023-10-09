@@ -7,21 +7,11 @@ import Offer from '../components/Offer';
 import { finishProduct } from '../redux/actions';
 import Button from '../components/Button';
 import Row from '../components/Row';
-import { 
-  PASSWORD_CONFIRM,
-  MY_OFFERS,
-  MY_PROFILE,
-  NAME,
-  PASSWORD,
-  PASSWORD_NOT_MATCH,
-  PASSWORD_CHANGED,
-  OFFER_REMOVE,
-  OFFERS_NOT_MADE,
-  RESERVATIONS_NOT_MADE,
-  PASSWORD_NEW
-} from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 const ProfileScreen: React.FC = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const [offersSectionSelected, setOffersSectionSelected] = useState(true);
@@ -76,7 +66,7 @@ const ProfileScreen: React.FC = () => {
 
   const handleChangePassword = async (currentPassword: string, newPassword: string, confirmPassword: string, userId: string) => {
     if(newPassword !== confirmPassword) {
-      alert(PASSWORD_NOT_MATCH);
+      alert(t('PASSWORD_NOT_MATCH'));
     } else {
       try {
         const apiUrl = process.env.REACT_APP_API_URL;  
@@ -89,7 +79,7 @@ const ProfileScreen: React.FC = () => {
         });
       
         if (response.ok) {
-          alert(PASSWORD_CHANGED);
+          alert(t('PASSWORD_CHANGED'));
         } else if (response.status === 400) {
           // when current password doesn't match
           const errorResponse = await response.json();
@@ -122,7 +112,7 @@ const ProfileScreen: React.FC = () => {
         image={product.image} 
         profileOffer
         reserved={product.reserved}
-        buttonName={OFFER_REMOVE}
+        buttonName={t('OFFER_REMOVE')}
         buttonClick={() => handleFinishProduct(product.id)}
       />
   ));
@@ -146,15 +136,15 @@ const ProfileScreen: React.FC = () => {
   return (
     <ScreenContainer subtitle={username || ''} backButton>
       <div className="flex justify-center mt-5">
-        <Button title={MY_OFFERS} onClick={handleMyOffersClick} className={`btn2 ${!offersSectionSelected && `mt-4`}`}/>
-        <Button title={MY_PROFILE} onClick={handleMyProfileClick} className={`btn2 ${offersSectionSelected && `mt-4`}`} />
+        <Button title={t('MY_OFFERS')} onClick={handleMyOffersClick} className={`btn2 ${!offersSectionSelected && `mt-4`}`}/>
+        <Button title={t('MY_PROFILE')} onClick={handleMyProfileClick} className={`btn2 ${offersSectionSelected && `mt-4`}`} />
       </div>
       <hr className="border-gray-300 border-t" />
       {offersSectionSelected ?
         <div className="mt-5">
           <div className="mb-5">
             <Collapsible 
-              trigger={MY_OFFERS}
+              trigger={t('MY_OFFERS')}
               triggerClassName="collapsible flex"
               openedClassName="collapsible text-left" 
             >
@@ -162,7 +152,7 @@ const ProfileScreen: React.FC = () => {
                 {userOffers.length !==0 ? 
                   userOffers : 
                   <div className='mt-24'>
-                      <label className='text-3xl font-bold'>{OFFERS_NOT_MADE}</label>
+                      <label className='text-3xl font-bold'>{t('OFFERS_NOT_MADE')}</label>
                   </div>
                   }
               </div>
@@ -178,7 +168,7 @@ const ProfileScreen: React.FC = () => {
                 {userReservations.length !==0 ?
                 userReservations :
                 <div className='mt-24'>
-                    <label className='text-3xl font-bold'>{RESERVATIONS_NOT_MADE}</label>
+                    <label className='text-3xl font-bold'>{t('RESERVATIONS_NOT_MADE')}</label>
                 </div>
                 }
               </div>
@@ -188,33 +178,33 @@ const ProfileScreen: React.FC = () => {
       :
         <div className="grid grid-cols-1 gap-4 mt-5">
            <Row
-              label={NAME}
+              label={t('NAME')}
               value={username}
               type={'label'}
               labelClassName='text-left flex'
             />
             <Row
-              label="Номер"
+              label={t('NUMBER')}
               value={phoneNumber}
               type={'label'}
               labelClassName='text-left flex'
             />
             <Row
-              label={PASSWORD}
+              label={t('PASSWORD')}
               value="password"
               filterValues={passwordValues}
               handleInputChange={handleInputChange}
               type='password'
             />
             <Row
-              label={PASSWORD_NEW}
+              label={t('PASSWORD_NEW')}
               value="newPassword"
               filterValues={passwordValues}
               handleInputChange={handleInputChange}
               type='password'
             />
             <Row
-              label={PASSWORD_CONFIRM}
+              label={t('PASSWORD_CONFIRM')}
               value="confirmPassword"
               filterValues={passwordValues}
               handleInputChange={handleInputChange}

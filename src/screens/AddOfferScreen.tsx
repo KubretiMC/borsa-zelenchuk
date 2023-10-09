@@ -8,9 +8,10 @@ import Row from '../components/Row';
 import Button from '../components/Button';
 import { OfferErrors, OfferValues, RootState, User } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
-import { ADD_IMAGE, AVAILABILITY, COST, FIELD_REQUIRED, IMAGE, IMAGE_ADD, IMAGE_CHANGE, INFO, OFFER_MIN, NAME, OFERR_ADD, OFFER_ADDED_SUCCESSFULLY, PLACE, REQUIRED } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 const AddOfferScreen: React.FC = () => {
+    const { t } = useTranslation();
     const productFilters = useSelector((state: RootState) => state.productFilters);
     const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
@@ -97,19 +98,19 @@ const AddOfferScreen: React.FC = () => {
         const newErrors : Partial<OfferErrors> = {};
     
         if (!offerValues.cost || isNaN(offerValues.cost as number)) {
-            newErrors.cost = FIELD_REQUIRED;
+            newErrors.cost = t('FIELD_REQUIRED');
         }
 
         if (!offerValues.availability || isNaN(offerValues.cost as number)) {
-            newErrors.availability = FIELD_REQUIRED;
+            newErrors.availability = t('FIELD_REQUIRED');
         }
     
         if (!offerValues.minOrder || isNaN(offerValues.cost as number)) {
-            newErrors.minOrder = FIELD_REQUIRED;
+            newErrors.minOrder = t('FIELD_REQUIRED');
         }
 
         if (!offerValues.image) {
-            newErrors.image = ADD_IMAGE;
+            newErrors.image = t('ADD_IMAGE');
         }
         setErrors(newErrors);
 
@@ -129,7 +130,7 @@ const AddOfferScreen: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-4 mt-5">
                     <Row
-                        label={NAME}
+                        label={t('NAME')}
                         value="name"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -137,7 +138,7 @@ const AddOfferScreen: React.FC = () => {
                         type={'select'}
                     />
                     <Row
-                        label={`${COST}${REQUIRED}`}
+                        label={`${t('COST')}${t('REQUIRED')}`}
                         value="cost"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -145,7 +146,7 @@ const AddOfferScreen: React.FC = () => {
                         error={errors.cost}
                     />
                     <Row
-                        label={`${AVAILABILITY}${REQUIRED}`}
+                        label={`${t('AVAILABILITY')}${t('REQUIRED')}`}
                         value="availability"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -153,7 +154,7 @@ const AddOfferScreen: React.FC = () => {
                         error={errors.availability}
                     />
                     <Row
-                        label={`${OFFER_MIN}${REQUIRED}`}
+                        label={`${t('OFFER_MIN')}${t('REQUIRED')}`}
                         value="minOrder"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -161,7 +162,7 @@ const AddOfferScreen: React.FC = () => {
                         error={errors.minOrder}
                     />
                     <Row
-                        label={`${PLACE}${REQUIRED}`}
+                        label={`${t('PLACE')}${t('REQUIRED')}`}
                         value="place"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
@@ -169,14 +170,14 @@ const AddOfferScreen: React.FC = () => {
                         type={'select'}
                     />
                     <Row
-                        label={INFO}
+                        label={t('INFO')}
                         value="additionalInformation"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
                     />
                     <div className="flex items-center input-select-wrapper">
                         <label className={`mr-6 w-20 text-left ${errors.image && 'pb-7'}`} htmlFor="imageUpload">
-                            {IMAGE}
+                            {t('IMAGE')}
                         </label>
                         <div className={`flex-1`}>
                             <label className='cursor-pointer'>
@@ -188,7 +189,7 @@ const AddOfferScreen: React.FC = () => {
                                 />
                                 <div className="image pt-1 flex items-center justify-center">
                                     {<FontAwesomeIcon icon={faUpload} className={'mr-2 text-gray-400'} />}
-                                    <span className="flex-none text-sm text-gray-400">{offerValues.image ? IMAGE_CHANGE : IMAGE_ADD}</span>
+                                    <span className="flex-none text-sm text-gray-400">{offerValues.image ? t('IMAGE_CHANGE') : t('IMAGE_ADD')}</span>
                                 </div>
                                 {errors.image && <p className="text-red-500">{errors.image}</p>}
                             </label>            
@@ -198,9 +199,9 @@ const AddOfferScreen: React.FC = () => {
                         <img src={offerValues.image} alt=''/>
                     }
                 </div>
-                <Button title={OFERR_ADD} submit />
+                <Button title={t('OFFER_ADD')} submit />
                 <Modal isOpen={isModalOpened}>
-                    <h2 className="text-xl font-bold text-blue-800 text-center">{OFFER_ADDED_SUCCESSFULLY}</h2>
+                    <h2 className="text-xl font-bold text-blue-800 text-center">{t('OFFER_ADDED_SUCCESSFULLY')}</h2>
                 </Modal>
             </form>
         </ScreenContainer>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from './Row';
 import { FilterValues } from '../interfaces/interfaces';
-import { ALL, MAX_COST, MIN_COST, NAME, PLACE } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 interface FilterProps {
   filterValues: FilterValues;
@@ -13,6 +13,8 @@ interface FilterProps {
 }
 
 const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productFilters }) => {
+  const { t } = useTranslation();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilterValues({
@@ -24,30 +26,30 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
   return (
     <div className="grid grid-cols-1 gap-4 mt-5">
       <Row
-        label={NAME}
+        label={t('NAME')}
         value="name"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={[ALL, ...productFilters.names]}
+        options={[t('ALL'), ...productFilters.names]}
         type={'select'}
       />
       <Row
-        label={PLACE}
+        label={t('PLACE')}
         value="place"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={[ALL, ...productFilters.places]}
+        options={[t('ALL'), ...productFilters.places]}
         type={'select'}
       />
       <Row
-        label={MIN_COST}
+        label={t('MIN_COST')}
         value="minCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
         type={'number'}
       />
       <Row
-        label={MAX_COST}
+        label={t('MAX_COST')}
         value="maxCost"
         filterValues={filterValues}
         handleInputChange={handleInputChange}

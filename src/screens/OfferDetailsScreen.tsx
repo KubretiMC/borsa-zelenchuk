@@ -7,9 +7,10 @@ import Button from '../components/Button';
 import ProductHeader from '../components/ProductHeader';
 import Modal from '../components/Modal';
 import { useState } from 'react';
-import { AVAILABILITY, COST, ADDED_DATE, INFO_ADDIOTIONAL, LEV_PER_KG, OFFER_MIN, NAME, PLACE, STOCK, ADDED_FROM, PRODUCT_SHOW_ERROR, CLOSE } from '../constants/constants';
+import { useTranslation } from 'react-i18next';
 
 const OfferDetailsScreen = () => {
+  const { t } = useTranslation();
   const { id = '' } = useParams();
  
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
@@ -46,38 +47,38 @@ const OfferDetailsScreen = () => {
           <ProductHeader name={name} image={image} />
           <div className="grid grid-cols-1 gap-4 mt-5">
             <Row
-              label={STOCK}
+              label={t('STOCK')}
               value={name}
               type={'label'}
             />
             <Row
-              label={COST}
-              value={`${cost} ${LEV_PER_KG}`}
+              label={t('COST')}
+              value={`${cost} ${t('LEV_PER_KG')}`}
               type={'label'}
             />
             <Row
-              label={PLACE}
+              label={t('PLACE')}
               value={place}
               type={'label'}
             />
             <Row
-              label={AVAILABILITY}
+              label={t('AVAILABILITY')}
               value={availability}
               type={'label'}
             />
             <Row
-              label={OFFER_MIN}
+              label={t('OFFER_MIN')}
               value={minOrder}
               type={'label'}
             />
             <Row
-              label={ADDED_DATE}
+              label={t('ADDED_DATE')}
               value={dateAdded}
               type={'label'}
             />
             {selectedUser?.id !== loggedUser?.id &&
               <Row
-                label={ADDED_FROM}
+                label={t('ADDED_FROM')}
                 value={username}
                 type={'label'}
                 onClick={() => setIsModalOpened(true)}
@@ -87,7 +88,7 @@ const OfferDetailsScreen = () => {
             {additionalInformation && (
               <div className="border-2 p-2 rounded-md mt-4">
                 <div className="font-bold">
-                  <label>{INFO_ADDIOTIONAL}</label>
+                  <label>{t('INFO_ADDITIONAL')}</label>
                 </div>
                 <div className="text-left">
                   <label>{additionalInformation}</label>
@@ -100,7 +101,7 @@ const OfferDetailsScreen = () => {
           }
         </div>
       ) : (
-        <p>{PRODUCT_SHOW_ERROR}</p>
+        <p>{t('PRODUCT_SHOW_ERROR')}</p>
       )}
       <Modal 
         isOpen={isModalOpened} 
@@ -109,19 +110,19 @@ const OfferDetailsScreen = () => {
         <div>
           <div className="grid grid-cols-1 gap-4 mb-4">
             <Row
-              label={NAME}
+              label={t('NAME')}
               value={username}
               type={'label'}
               onClick={() => console.log('ffff')}
             />
             <Row
-              label="Номер"
+              label={t('NUMBER')}
               value={phoneNumber}
               type={'label'}
             />
           </div>
           <div>
-            <Button title={CLOSE} onClick={() =>setIsModalOpened(false)} />
+            <Button title={t('CLOSE')} onClick={() =>setIsModalOpened(false)} />
           </div>
         </div>
       </Modal>
