@@ -99,7 +99,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         };
       console.log('process.env', process.env);
       const apiUrl = process.env.REACT_APP_API_URL;
-
+      console.log('apiUrl', apiUrl);
       const requestUrl = registration ? 
         `${apiUrl}/user/register`
         :
