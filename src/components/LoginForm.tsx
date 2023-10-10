@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
 import { useTranslation } from 'react-i18next';
+import Modal from './Modal';
 
 interface LoginFormProps {
   registration: boolean;
@@ -28,8 +29,18 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     phoneNumber: ''
   });
 
+  const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(modalData.isOpen) {
+      setTimeout(() => {
+        setModalData({ text: '', isOpen: false})
+      }, 2000);
+    }
+  }, [modalData])
 
   const handleNavigateButtonClick = (registration: boolean) => {
     navigate(registration ? `/` : 'registration');
@@ -73,7 +84,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     
     if (validateForm()) {
       if (registration && formData.password !== formData.passwordConfirm) {
-        alert(t('PASSWORD_NOT_MATCH'));
+        setModalData({ isOpen: true, text: t('PASSWORD_NOT_MATCH') });
         return;
       }
       const requestBody = registration
@@ -110,17 +121,17 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         } else {
           const data = await response.json();
           const { error = '' } = data;
-          alert(error);
+          setModalData({ isOpen: true, text: t(error) });
         }
       } catch (error) {
-        console.error('Error:', error);
+        setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
       }
     }
   };
 
   return (
-    <div className="bg-white py-8 px-4 rounded-lg shadow-xl border w-4/5 z-10">
-      <form onSubmit={handleSubmit}>
+    <div className="bg-white py-8 px-4 rounded-lg shadow-xl border w-4/5">
+      <form onSubmit={handleSubmit} className='z-10'>
         <div className="mb-4">
             <input
                 type="text"
@@ -183,6 +194,9 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
             </button>
         </div>
       </form>
+      <Modal isOpen={modalData.isOpen}>
+          <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
+      </Modal>
     </div>
   );
 };

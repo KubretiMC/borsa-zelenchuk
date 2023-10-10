@@ -66,7 +66,7 @@ const ReserveScreen = () => {
           } else {
             responseModalText = t(data.error);
             setTimeout(() => {
-              setModalData({...modalData, isOpen: false})
+              setModalData({text: '', isOpen: false})
             }, 2000);
           }
   

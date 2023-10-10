@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScreenContainer from '../components/ScreenContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { Product, RootState } from '../interfaces/interfaces';
@@ -8,13 +8,23 @@ import { finishProduct } from '../redux/actions';
 import Button from '../components/Button';
 import Row from '../components/Row';
 import { useTranslation } from 'react-i18next';
+import Modal from '../components/Modal';
 
 const ProfileScreen: React.FC = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
+  const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
   const [offersSectionSelected, setOffersSectionSelected] = useState(true);
+
+  useEffect(() => {
+    if(modalData.isOpen) {
+      setTimeout(() => {
+        setModalData({ text: '', isOpen: false})
+      }, 2000);
+    }
+  }, [modalData])
 
   const handleMyOffersClick = () => {
     setOffersSectionSelected(true);
@@ -66,7 +76,7 @@ const ProfileScreen: React.FC = () => {
 
   const handleChangePassword = async (currentPassword: string, newPassword: string, confirmPassword: string, userId: string) => {
     if(newPassword !== confirmPassword) {
-      alert(t('PASSWORD_NOT_MATCH'));
+      setModalData({ isOpen: true, text: t('PASSWORD_NOT_MATCH') });
     } else {
       try {
         const apiUrl = process.env.REACT_APP_API_URL;  
@@ -77,20 +87,16 @@ const ProfileScreen: React.FC = () => {
           },
           body: JSON.stringify({ userId, currentPassword, newPassword }),
         });
-      
+
+        const data = await response.json();
+
         if (response.ok) {
-          alert(t('PASSWORD_CHANGED'));
-        } else if (response.status === 400) {
-          // when current password doesn't match
-          const errorResponse = await response.json();
-          alert(errorResponse.error);
+          setModalData({ isOpen: true, text: t(data.message) });
         } else {
-          // other errors
-          alert('Error updating password');
+          setModalData({ isOpen: true, text: t(data.error) });
         }
       } catch (error) {
-        console.error('Error changing password:', error);
-        alert('Error changing password');
+        setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
       }
       
     }
@@ -215,6 +221,9 @@ const ProfileScreen: React.FC = () => {
             />
         </div>
     }
+    <Modal isOpen={modalData.isOpen}>
+        <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
+    </Modal>
     </ScreenContainer>
   );
 };
