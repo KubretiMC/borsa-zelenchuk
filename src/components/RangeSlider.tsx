@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
+import Modal from './Modal';
 
 interface RangeSliderProps {
   value: number;
@@ -13,25 +14,34 @@ interface RangeSliderProps {
 const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) => {
   const { t } = useTranslation();
 
+  const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     const newValue = inputValue === '' ? '' : Number(inputValue);
     setValue(newValue);
   };
 
+  useEffect(() => {
+    if(modalData.isOpen) {
+      setTimeout(() => {
+        setModalData({ text: '', isOpen: false})
+      }, 2000);
+    }
+  }, [modalData])
+
   const handleIncrement = () => {
-    if(value <= max) {
+    if(value < max) {
       setValue(value + 1);
     } else {
-      alert(t('AVAILABILITY_MAX_LIMIT'))
+      setModalData({ isOpen: true, text: t('AVAILABILITY_MAX_LIMIT') });
     }
   };
 
   const handleDecrement = () => {
-    if(value >= min) {
+    if(value > min) {
       setValue(value - 1);
     } else {
-      alert(t('AVAILABILITY_MIN_LIMIT'))
+      setModalData({ isOpen: true, text: t('AVAILABILITY_MIN_LIMIT') });
     }
   };
 
@@ -51,6 +61,9 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ value, setValue, min, max }) 
         <label className='mx-1'>{value} {t('KG')}</label>
         <FontAwesomeIcon icon={faPlus} onClick={handleIncrement}/>
       </div>
+      <Modal isOpen={modalData.isOpen}>
+          <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
+      </Modal>
     </div>
   );
 };
