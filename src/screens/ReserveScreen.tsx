@@ -31,21 +31,12 @@ const ReserveScreen = () => {
 
   const [orderQuantity, setOrderQuantity] = useState<number>(minOrder);
   const [orderCost, setOrderCost] = useState<string>('');
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
 
   useEffect(() => {
     const newOrderCost = (orderQuantity * cost).toFixed(2);
     setOrderCost(newOrderCost);
   }, [cost, minOrder, orderQuantity]);
-  
-
-  useEffect(() => {
-      if (isModalOpened) {
-          setTimeout(() => {
-              navigate(-3);
-          }, 2000);
-      }
-  }, [isModalOpened, navigate]);
 
   const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number, reservedCost: string, userId?: string) => {
     if (userId) {
@@ -63,19 +54,30 @@ const ReserveScreen = () => {
           reservedCost: reservedCost,
         }),
       })
-        .then((response) => {
+        .then(async (response) => {
+          let responseModalText = '';
+          const data = await response.json();
+          
           if (response.ok) {
-            setIsModalOpened(true);
+            responseModalText = t(data.message);
+            setTimeout(() => {
+              navigate(-3);
+            }, 2000);
           } else {
-            console.error('Reservation failed');
+            responseModalText = t(data.error);
+            setTimeout(() => {
+              setModalData({...modalData, isOpen: false})
+            }, 2000);
           }
+  
+          setModalData({ isOpen: true, text: responseModalText });
         })
         .catch((error) => {
           console.error('Reservation error:', error);
         });
     }
   };
-
+  
   return (
     <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
         <ProductHeader name={name} image={image} />
@@ -86,8 +88,8 @@ const ReserveScreen = () => {
           type={'label'}
         />
         <Button title='Резервирай' onClick={() => handleReserveClick(id, orderQuantity, minOrder, orderCost, loggedUser?.id)} />
-        <Modal isOpen={isModalOpened}>
-          <h2 className="text-xl font-bold text-blue-800 text-center">{t('PRODUCT_RESERVED_SUCCESSFULLY')}</h2>
+        <Modal isOpen={modalData.isOpen}>
+          <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
         </Modal>
     </ScreenContainer>
   );
