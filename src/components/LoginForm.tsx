@@ -97,7 +97,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
           username: formData.username,
           password: formData.password,
         };
-
+      console.log('process.env', process.env);
       const apiUrl = process.env.REACT_APP_API_URL;
 
       const requestUrl = registration ? 
