@@ -73,7 +73,7 @@ const ReserveScreen = () => {
           setModalData({ isOpen: true, text: responseModalText });
         })
         .catch((error) => {
-          console.error('Reservation error:', error);
+          setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
         });
     }
   };

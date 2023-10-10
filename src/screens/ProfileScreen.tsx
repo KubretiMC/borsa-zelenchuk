@@ -51,7 +51,7 @@ const ProfileScreen: React.FC = () => {
         console.error('Error finishing product:', response.statusText);
       }
     } catch (error) {
-      console.error('Error finishing product:', error);
+      setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
     }
   };
 
