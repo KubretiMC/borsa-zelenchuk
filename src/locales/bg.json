@@ -58,7 +58,7 @@
     "USER_NOT_FOUND": "Потребителят не е намерен!",
     "USERNAME": "Потребителско име",
     "USERNAME_TAKEN": "Потребителското име е заето!",
-    "USERNAME_PASSWORD_WRONG": "Грешно потребителско име или парола4!",
+    "USERNAME_PASSWORD_WRONG": "Грешно потребителско име или парола!",
     "REQUIRED": "*",
     "REGISTRATION": "Регистрация",
     "REGISTRATION_TEXT": "Нямате акаунт? Регистрация!",
