@@ -9,6 +9,7 @@ import RangeSlider from '../components/RangeSlider';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import { useTranslation } from 'react-i18next';
+import Spinner from '../components/Spinner';
 
 const ReserveScreen = () => {
   const { t } = useTranslation();
@@ -29,6 +30,7 @@ const ReserveScreen = () => {
     minOrder = 0, 
   } = selectedProduct || {};
 
+  const [loading, setLoading] = useState(false);
   const [orderQuantity, setOrderQuantity] = useState<number>(minOrder);
   const [orderCost, setOrderCost] = useState<string>('');
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
@@ -40,6 +42,7 @@ const ReserveScreen = () => {
 
   const handleReserveClick = (productId: string, orderQuantity: number, minOrder: number, reservedCost: string, userId?: string) => {
     if (userId) {
+      setLoading(true);
       const apiUrl = process.env.REACT_APP_API_URL;  
       fetch(`${apiUrl}/product/reserveProduct`, {
         method: 'POST',
@@ -74,12 +77,18 @@ const ReserveScreen = () => {
         })
         .catch((error) => {
           setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
   
   return (
     <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
+        {loading && (
+          <Spinner />
+        )}
         <ProductHeader name={name} image={image} />
         <RangeSlider value={orderQuantity} setValue={setOrderQuantity} min={minOrder} max={availability} />
         <Row

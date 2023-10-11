@@ -9,6 +9,7 @@ import Button from '../components/Button';
 import { OfferErrors, OfferValues, RootState, User } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
 import { useTranslation } from 'react-i18next';
+import Spinner from '../components/Spinner';
 
 const AddOfferScreen: React.FC = () => {
     const { t } = useTranslation();
@@ -17,7 +18,9 @@ const AddOfferScreen: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const [isModalOpened, setIsModalOpened] = useState(false);
+    const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
+
+    const [loading, setLoading] = useState(false);
 
     const { names = [], places = [] } = productFilters;
     const initialOfferValues: OfferValues = {
@@ -42,34 +45,33 @@ const AddOfferScreen: React.FC = () => {
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
         if (loggedUser) {
             try {
+                setLoading(true);
+                
                 const apiUrl = process.env.REACT_APP_API_URL;          
-                const response = await fetch(`${apiUrl}/product/addProduct`,  {
+                const response = await fetch(`${apiUrl}/product/addProduct`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ userId: loggedUser.id, product: offer }),
                 });
-
+    
                 if (response.ok) {
-                    setIsModalOpened(true);
+                    setLoading(false);
+                    setModalData({ isOpen: true, text: t('OFFER_ADDED_SUCCESSFULLY') });
                 } else {
                     console.error('Error:', response.statusText);
                 }
             } catch (error) {
-            console.error('Error:', error);
+                setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+            } finally {
+                setTimeout(() => {
+                    navigate(-1);
+                }, 2000);
             }
         }
     };
-
-    useEffect(() => {
-        if (isModalOpened) {
-            setTimeout(() => {
-                navigate(-1);
-            }, 2000);
-        }
-    }, [isModalOpened, navigate]);
-
+    
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setOfferValues({
@@ -127,6 +129,9 @@ const AddOfferScreen: React.FC = () => {
 
     return (
         <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
+            {loading && (
+              <Spinner />
+            )}
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-4 mt-5">
                     <Row
@@ -200,8 +205,8 @@ const AddOfferScreen: React.FC = () => {
                     }
                 </div>
                 <Button title={t('OFFER_ADD')} submit />
-                <Modal isOpen={isModalOpened}>
-                    <h2 className="text-xl font-bold text-blue-800 text-center">{t('OFFER_ADDED_SUCCESSFULLY')}</h2>
+                <Modal isOpen={modalData.isOpen}>
+                    <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
                 </Modal>
             </form>
         </ScreenContainer>

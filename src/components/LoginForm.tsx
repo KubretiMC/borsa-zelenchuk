@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Circles, CirclesWithBar, Grid } from 'react-loader-spinner';
 import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
 import { useTranslation } from 'react-i18next';

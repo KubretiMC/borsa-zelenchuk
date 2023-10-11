@@ -47,7 +47,7 @@
     "PASSWORD_CONFIRM": "Повторете паролата",
     "PASSWORD_INVALID": "Невалидна текуща парола!",
     "PASSWORD_NOT_MATCH": "Паролите не съвпадат!",
-    "PRODUCT_FINISHED_SUCCESSFULLY": "Продуктът е завършен успешно!",
+    "PRODUCT_FINISHED_SUCCESSFULLY": "Продуктът е премахнат успешно!",
     "PRODUCT_NOT_FOUND": "Продуктът не е намерен!",
     "PRODUCT_NOT_AVAILABLE": "Продуктът не е достъпен за резервация!",
     "PRODUCT_RESERVED_SUCCESSFULLY": "Продукта е резервиран успешно!",
