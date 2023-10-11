@@ -1,21 +1,15 @@
 import { Product, User } from "../interfaces/interfaces";
 
 export const FETCH_USERS = 'FETCH_USERS';
-export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const ADD_PRODUCT_LOGGED_USER = 'ADD_PRODUCT_LOGGED_USER';
 export const FINISH_PRODUCT = 'FINISH_PRODUCT';
 
-export const fetchUsers = (users: User[]) => ({
+export const fetchUsers = (users: User[], userId: string) => ({
   type: FETCH_USERS,
-  payload: { users },
+  payload: { users, userId },
 });
-
-export const loginUser = (userId: string) => ({
-  type: LOGIN_USER,
-  payload: { userId },
-})
 
 export const logoutUser = () => ({
   type: LOGOUT_USER,

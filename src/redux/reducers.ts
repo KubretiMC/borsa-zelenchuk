@@ -4,7 +4,6 @@ import {
   FETCH_PRODUCTS, 
   FETCH_USERS, 
   FINISH_PRODUCT, 
-  LOGIN_USER, 
   LOGOUT_USER, 
 } from './actions';
 
@@ -20,9 +19,8 @@ const initialState: RootState = {
 const rootReducer = (state: RootState = initialState, action: any): RootState => {
   switch (action.type) {
     case FETCH_USERS:
-      const { users: usersFetchUsers = [] } = action.payload;
-      const { id: loggedUserId } = state.loggedUser || {};
-      const updatedLoggedUserFetchUses = usersFetchUsers.find((user: User) => user.id === loggedUserId);
+      const { users: usersFetchUsers = [], userId = '' } = action.payload;
+      const updatedLoggedUserFetchUses = usersFetchUsers.find((user: User) => user.id === userId);
     
       return {
         ...state,
@@ -34,18 +32,6 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         ...state,
         loggedUser: undefined,
       };
-    case LOGIN_USER:
-      const { userId: userIdLoginUser = '' } = action.payload;
-      const user: User = {
-        id: userIdLoginUser,
-        username: '',
-        phoneNumber: ''
-      };
-
-      return {
-        ...state,
-        loggedUser: user
-    };
     case FETCH_PRODUCTS:
       const { products: productsFetchProducts = [] } = action.payload;
       return {

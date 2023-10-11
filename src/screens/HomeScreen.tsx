@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../interfaces/interfaces';
-import { fetchProducts, fetchUsers, logoutUser } from '../redux/actions';
+import { logoutUser } from '../redux/actions';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
 
@@ -22,47 +22,6 @@ const HomeScreen: React.FC = () => {
     dispatch(logoutUser())
     handleNavigateButtonClick('/');
   }
-
-  useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL;   
-    const getAllUsers = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/user/getAllUsers`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          dispatch(fetchUsers(data));
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    const getAllProducts = async () => {
-      try { 
-        const response = await fetch(`${apiUrl}/product/getAllProducts`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          dispatch(fetchProducts(data));
-        };
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-    getAllUsers();
-    getAllProducts();
-  }, [dispatch]);
 
   return (
     <ScreenContainer subtitle={loggedUser?.username || ''}>

@@ -54,6 +54,7 @@
     "PRODUCT_SHOW_ERROR": "Problem displaying the product",
     "PLACE": "Place",
     "PHONE_NUMBER": "Phone Number",
+    "SESSION_EXPIRED": "The session has expired! Please log in again.",
     "STOCK": "Stock",
     "USER_NOT_FOUND": "The user is not found!",
     "USERNAME": "Username",

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
 import { useTranslation } from 'react-i18next';
 import Modal from './Modal';
@@ -33,7 +31,6 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
 
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -120,7 +117,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
   
         if (response.ok) {
           const data = await response.json();
-          dispatch(loginUser(data.id));
+          localStorage.setItem('authToken', data.token);
           navigate('/home');
         } else {
           const data = await response.json();

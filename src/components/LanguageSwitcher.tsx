@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Switch from "react-switch";
 import { useTranslation } from 'react-i18next';
 
@@ -10,10 +10,17 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ textColor }) => {
   const [isEnglish, setIsEnglish] = useState(true);
   const { i18n } = useTranslation(); 
 
-  const toggleLanguage = () => {
-    setIsEnglish((prevIsEnglish) => !prevIsEnglish);
-    const selectedLanguage = isEnglish ? 'en' : 'bg';
+  useEffect(() => {
+    const selectedLanguage = localStorage.getItem('language') as string;
+    setIsEnglish(selectedLanguage === 'en' ? true : false);
     i18n.changeLanguage(selectedLanguage);
+  }, [i18n])
+
+  const toggleLanguage = () => {
+    const selectedLanguage = !isEnglish ? 'en' : 'bg';
+    localStorage.setItem('language', selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+    setIsEnglish((prevIsEnglish) => !prevIsEnglish);
   };
 
   return (
@@ -22,7 +29,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ textColor }) => {
         <span className={textColor}>EN</span>
         <Switch
             onChange={toggleLanguage}
-            checked={isEnglish}
+            checked={!isEnglish}
             uncheckedIcon={false}
             checkedIcon={false}
             height={20}
