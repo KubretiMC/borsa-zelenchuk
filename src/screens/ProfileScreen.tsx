@@ -9,12 +9,14 @@ import Button from '../components/Button';
 import Row from '../components/Row';
 import { useTranslation } from 'react-i18next';
 import Modal from '../components/Modal';
+import Spinner from '../components/Spinner';
 
 const ProfileScreen: React.FC = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
   const [offersSectionSelected, setOffersSectionSelected] = useState(true);
 
@@ -36,6 +38,7 @@ const ProfileScreen: React.FC = () => {
 
   const handleFinishProduct = async (productId: string) => { 
     try {
+      setLoading(true);
       const apiUrl = process.env.REACT_APP_API_URL;  
       const response = await fetch(`${apiUrl}/product/finishProduct`, {
         method: 'POST',
@@ -45,13 +48,17 @@ const ProfileScreen: React.FC = () => {
         body: JSON.stringify({ productId }),
       });
 
+      const data = await response.json();
       if (response.ok) {
+        setModalData({ isOpen: true, text: t(data.message) });
         dispatch(finishProduct(productId));
       } else {
         console.error('Error finishing product:', response.statusText);
       }
     } catch (error) {
       setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,6 +86,7 @@ const ProfileScreen: React.FC = () => {
       setModalData({ isOpen: true, text: t('PASSWORD_NOT_MATCH') });
     } else {
       try {
+        setLoading(true);
         const apiUrl = process.env.REACT_APP_API_URL;  
         const response = await fetch(`${apiUrl}/user/updatePassword`, {
           method: 'POST',
@@ -97,8 +105,9 @@ const ProfileScreen: React.FC = () => {
         }
       } catch (error) {
         setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+      } finally {
+        setLoading(false);
       }
-      
     }
   };
   
@@ -141,6 +150,9 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <ScreenContainer subtitle={username || ''} backButton>
+      {loading && (
+        <Spinner />
+      )}
       <div className="flex justify-center mt-5">
         <Button title={t('MY_OFFERS')} onClick={handleMyOffersClick} className={`btn2 ${!offersSectionSelected && `mt-4`}`}/>
         <Button title={t('MY_PROFILE')} onClick={handleMyProfileClick} className={`btn2 ${offersSectionSelected && `mt-4`}`} />

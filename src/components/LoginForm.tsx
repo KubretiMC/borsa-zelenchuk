@@ -6,6 +6,7 @@ import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
 import { useTranslation } from 'react-i18next';
 import Modal from './Modal';
+import Spinner from './Spinner';
 
 interface LoginFormProps {
   registration: boolean;
@@ -28,6 +29,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     passwordConfirm: '',
     phoneNumber: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
 
@@ -106,6 +108,8 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         `${apiUrl}/user/login`
 
       try {
+        setLoading(true);
+        
         const response = await fetch(requestUrl, {
           method: 'POST',
           headers: {
@@ -125,12 +129,17 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         }
       } catch (error) {
         setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   return (
     <div className="bg-white py-8 px-4 rounded-lg shadow-xl border w-4/5">
+      {loading && (
+        <Spinner />
+      )}
       <form onSubmit={handleSubmit} className='z-10'>
         <div className="mb-4">
             <input
@@ -197,8 +206,8 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
       <Modal isOpen={modalData.isOpen}>
           <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
       </Modal>
-    </div>
-  );
+    </div>  
+  )
 };
 
 export default LoginForm;
