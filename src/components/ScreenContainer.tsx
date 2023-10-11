@@ -22,30 +22,31 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
 
-  const checkTokenExpiration = () => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      const decodedToken: DecodedToken = jwtDecode(token);
-      const currentTime = Math.floor(Date.now() / 1000);
-
-      if (decodedToken.exp < currentTime) {
-        setModalData({ isOpen: true, text: t('SESSION_EXPIRED') });
-        setTimeout(() =>{
-          navigate('/');
-        }, 2000)
-      } else {
-        return decodedToken.userId;
-      }
-    } else {
-      setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
-      setTimeout(() =>{
-        navigate('/');
-      }, 2000)
-    }
-  }
   
   useEffect(() => {
     if(!loggedUser?.id) {
+      const checkTokenExpiration = () => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+          const decodedToken: DecodedToken = jwtDecode(token);
+          const currentTime = Math.floor(Date.now() / 1000);
+    
+          if (decodedToken.exp < currentTime) {
+            setModalData({ isOpen: true, text: t('SESSION_EXPIRED') });
+            setTimeout(() =>{
+              navigate('/');
+            }, 2000)
+          } else {
+            return decodedToken.userId;
+          }
+        } else {
+          setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+          setTimeout(() =>{
+            navigate('/');
+          }, 2000)
+        }
+      }
+
       const userId = checkTokenExpiration();
       if(userId) {
         const apiUrl = process.env.REACT_APP_API_URL;   
@@ -90,7 +91,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
         getAllProducts();
       }
     }
-  }, [dispatch]);
+  }, [loggedUser?.id, dispatch]);
   
   return (
     <div className="mainWrapper">
