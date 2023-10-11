@@ -63,3 +63,8 @@ export interface RootState {
   loggedUser?: User;
   users: User[];
 }
+
+export interface DecodedToken {
+  userId: string;
+  exp: number;
+}
