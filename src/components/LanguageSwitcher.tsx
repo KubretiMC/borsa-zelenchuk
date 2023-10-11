@@ -14,7 +14,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ textColor }) => {
     const selectedLanguage = localStorage.getItem('language') as string;
     setIsEnglish(selectedLanguage === 'en' ? true : false);
     i18n.changeLanguage(selectedLanguage);
-  }, [])
+  }, [i18n])
 
   const toggleLanguage = () => {
     const selectedLanguage = !isEnglish ? 'en' : 'bg';
