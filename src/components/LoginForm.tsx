@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Circles, CirclesWithBar, Grid } from 'react-loader-spinner';
 import { loginUser } from '../redux/actions';
 import { UserErrors } from '../interfaces/interfaces';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +29,7 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
     passwordConfirm: '',
     phoneNumber: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
 
@@ -106,6 +108,8 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         `${apiUrl}/user/login`
 
       try {
+        setLoading(true);
+        
         const response = await fetch(requestUrl, {
           method: 'POST',
           headers: {
@@ -125,11 +129,23 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
         }
       } catch (error) {
         setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   return (
+    true ? (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Grid
+          height={80}
+          width={80}
+          color="blue"
+          ariaLabel="loading"
+        />
+      </div>
+    ) : (
     <div className="bg-white py-8 px-4 rounded-lg shadow-xl border w-4/5">
       <form onSubmit={handleSubmit} className='z-10'>
         <div className="mb-4">
@@ -198,7 +214,8 @@ const LoginForm: React.FC<LoginFormProps> = ({registration}) => {
           <h2 className="text-xl font-bold text-blue-800 text-center">{modalData.text}</h2>
       </Modal>
     </div>
-  );
+    )
+  )
 };
 
 export default LoginForm;
