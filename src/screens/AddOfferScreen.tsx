@@ -47,20 +47,25 @@ const AddOfferScreen: React.FC = () => {
             try {
                 setLoading(true);
                 
+                const token = localStorage.getItem('authToken');
                 const apiUrl = process.env.REACT_APP_API_URL;          
                 const response = await fetch(`${apiUrl}/product/addProduct`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
                     },
-                    body: JSON.stringify({ userId: loggedUser.id, product: offer }),
+                    body: JSON.stringify({ product: offer }),
                 });
     
                 if (response.ok) {
+                    const data = await response.json();
+                    const message = t(data.message);
                     setLoading(false);
-                    setModalData({ isOpen: true, text: t('OFFER_ADDED_SUCCESSFULLY') });
+                    setModalData({ isOpen: true, text: t(message) });
                 } else {
-                    console.error('Error:', response.statusText);
+                    setLoading(false);
+                    setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
                 }
             } catch (error) {
                 setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
