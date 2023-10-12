@@ -44,10 +44,12 @@ const ReserveScreen = () => {
     if (userId) {
       setLoading(true);
       const apiUrl = process.env.REACT_APP_API_URL;  
+      const token = localStorage.getItem('authToken');
       fetch(`${apiUrl}/product/reserveProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           userId: userId,

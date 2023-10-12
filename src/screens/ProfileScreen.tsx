@@ -39,11 +39,14 @@ const ProfileScreen: React.FC = () => {
   const handleFinishProduct = async (productId: string) => { 
     try {
       setLoading(true);
+
+      const token = localStorage.getItem('authToken');
       const apiUrl = process.env.REACT_APP_API_URL;  
       const response = await fetch(`${apiUrl}/product/finishProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ productId }),
       });
@@ -87,11 +90,14 @@ const ProfileScreen: React.FC = () => {
     } else {
       try {
         setLoading(true);
+
+        const token = localStorage.getItem('authToken');
         const apiUrl = process.env.REACT_APP_API_URL;  
         const response = await fetch(`${apiUrl}/user/updatePassword`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({ userId, currentPassword, newPassword }),
         });
