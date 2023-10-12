@@ -52,11 +52,13 @@ const ProfileScreen: React.FC = () => {
       });
 
       const data = await response.json();
+      console.log('error4444', data);
       if (response.ok) {
         setModalData({ isOpen: true, text: t(data.message) });
         dispatch(finishProduct(productId));
       } else {
-        console.error('Error finishing product:', response.statusText);
+        console.log('error4444', data);
+        setModalData({ isOpen: true, text: t(data.error) });
       }
     } catch (error) {
       setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
