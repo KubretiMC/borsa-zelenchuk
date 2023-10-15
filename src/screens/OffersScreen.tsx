@@ -30,50 +30,49 @@ const OffersScreen: React.FC = () => {
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    
-
-    const updateFilterValues = () => {
-        const { name, place, minCost, maxCost } = filterValues;
-        const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
-        const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
-
-        // if there is value, translate it, if there is not - set initial one
-        const updatedFilterValueName = name ? t(originalKeyName) : t('ALL');
-        const updatedFilterValuePlace = place ? t(originalKeyPlace) : t('ALL');
-
-        // if there is value, use it, if there is not - set initial one
-        const updatedFilterMinCost = minCost ? minCost : undefined;
-        const updatedFilterMaxCost = maxCost ? maxCost : undefined;
-
-        return {
-            name: updatedFilterValueName,
-            place: updatedFilterValuePlace,
-            minCost: updatedFilterMinCost,
-            maxCost: updatedFilterMaxCost,
-        };
-    }
-
-    const getFilteredProducts = () => {
-        const filteredList = products.filter((product: Product) => {
-            const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
-            const nameMatch = name === t('ALL') || t(product.name) === name;
-            const placeMatch = place === t('ALL') || t(product.place) === place;
-            const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
-            const notInOffers = !loggedUser?.offers?.includes(product.id);
-            return nameMatch && placeMatch && costMatch && notInOffers;
-        });
-        return filteredList;
-    }
 
     useEffect(() => {
+        const getFilteredProducts = () => {
+            const filteredList = products.filter((product: Product) => {
+                const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
+                const nameMatch = name === t('ALL') || t(product.name) === name;
+                const placeMatch = place === t('ALL') || t(product.place) === place;
+                const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
+                const notInOffers = !loggedUser?.offers?.includes(product.id);
+                return nameMatch && placeMatch && costMatch && notInOffers;
+            });
+            return filteredList;
+        }
+
         const filteredList = getFilteredProducts();
         setFilteredProductsList(filteredList);
-    }, [getFilteredProducts])
+    }, [])
 
     useEffect(() => {
+        const updateFilterValues = () => {
+            const { name, place, minCost, maxCost } = filterValues;
+            const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
+            const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
+    
+            // if there is value, translate it, if there is not - set initial one
+            const updatedFilterValueName = name ? t(originalKeyName) : t('ALL');
+            const updatedFilterValuePlace = place ? t(originalKeyPlace) : t('ALL');
+    
+            // if there is value, use it, if there is not - set initial one
+            const updatedFilterMinCost = minCost ? minCost : undefined;
+            const updatedFilterMaxCost = maxCost ? maxCost : undefined;
+    
+            return {
+                name: updatedFilterValueName,
+                place: updatedFilterValuePlace,
+                minCost: updatedFilterMinCost,
+                maxCost: updatedFilterMaxCost,
+            };
+        }
+        
         const updatedFilterValues: FilterValues = updateFilterValues();
         setFilterValues(updatedFilterValues);
-    }, [updateFilterValues]);
+    }, []);
 
     
     useEffect(() => {

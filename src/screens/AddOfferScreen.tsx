@@ -46,40 +46,41 @@ const AddOfferScreen: React.FC = () => {
         image: '',
       });
 
-    const translateOfferValues = () => {
-        const { names = [], places = [] } = productFilters;
-        const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
-
-        // when we change the language, we get the key of the value
-        const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
-        const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
-
-        // initial value is the first from productFilters, after that when we change the language we translate the selected value
-        const offerName = name ? t(originalKeyName) : t(names[0]);
-        const ooferPlace = place ? t(originalKeyPlace) : t(places[0]);
-
-        // initial value is empty, after that we set the last selected value
-        const offerCost = cost ? cost : undefined;
-        const offerAvailability = availability ? availability : undefined;
-        const oferMinOrder = minOrder ? minOrder : undefined;
-        const offerImage = image ? image : '';
-        const offerAdditionalInformation = additionalInformation ? additionalInformation : '';
-
-        return {
-            name: offerName,
-            cost: offerCost,
-            availability: offerAvailability,
-            minOrder: oferMinOrder,
-            place: ooferPlace,
-            image: offerImage,
-            additionalInformation: offerAdditionalInformation
-        };
-    }
 
     useEffect(() => {
+        const translateOfferValues = () => {
+            const { names = [], places = [] } = productFilters;
+            const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
+    
+            // when we change the language, we get the key of the value
+            const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
+            const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
+    
+            // initial value is the first from productFilters, after that when we change the language we translate the selected value
+            const offerName = name ? t(originalKeyName) : t(names[0]);
+            const ooferPlace = place ? t(originalKeyPlace) : t(places[0]);
+    
+            // initial value is empty, after that we set the last selected value
+            const offerCost = cost ? cost : undefined;
+            const offerAvailability = availability ? availability : undefined;
+            const oferMinOrder = minOrder ? minOrder : undefined;
+            const offerImage = image ? image : '';
+            const offerAdditionalInformation = additionalInformation ? additionalInformation : '';
+    
+            return {
+                name: offerName,
+                cost: offerCost,
+                availability: offerAvailability,
+                minOrder: oferMinOrder,
+                place: ooferPlace,
+                image: offerImage,
+                additionalInformation: offerAdditionalInformation
+            };
+        }
+
         const translatedofferValues: OfferValues = translateOfferValues()
         setOfferValues(translatedofferValues);
-    }, [translateOfferValues]);
+    }, []);
 
     useEffect(() => {
         const { names = [], places = [] } = productFilters;
