@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import Title from './Title';
 import LanguageSwitcher from './LanguageSwitcher';
-import _isEqual from 'lodash/isEqual';
 
 interface ScreenContainerProps {
   children: ReactNode;
