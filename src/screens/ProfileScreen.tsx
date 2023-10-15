@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ScreenContainer from '../components/ScreenContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { Product, RootState } from '../interfaces/interfaces';
+import { PasswordChangeErrors, Product, RootState } from '../interfaces/interfaces';
 import Collapsible from 'react-collapsible';
 import Offer from '../components/Offer';
 import { finishProduct } from '../redux/actions';
@@ -19,6 +19,18 @@ const ProfileScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
   const [offersSectionSelected, setOffersSectionSelected] = useState(true);
+
+  const [formData, setFormData] = useState({
+    password: '',
+    newPassword: '',
+    newPasswordConfirm: ''
+  });
+
+  const [errors, setErrors] = useState<Partial<PasswordChangeErrors>>({
+    password: '',
+    newPassword: '',
+    newPasswordConfirm: '',
+  });
 
   useEffect(() => {
     if(modalData.isOpen) {
@@ -70,24 +82,42 @@ const ProfileScreen: React.FC = () => {
 
   const { id = '', username = '', phoneNumber = '', offers = [], userReserved = [] } = loggedUser || {};
 
-  const [passwordValues, setPasswordValues] = useState({
-    password: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setPasswordValues({
-      ...passwordValues,
+    setFormData({
+      ...formData,
       [name]: value,
     });
   };
 
-  const handleChangePassword = async (currentPassword: string, newPassword: string, confirmPassword: string, userId: string) => {
-    if(newPassword !== confirmPassword) {
-      setModalData({ isOpen: true, text: t('PASSWORD_NOT_MATCH') });
+  const validateForm = () => {
+    const newErrors : Partial<PasswordChangeErrors> = {};
+
+    if (!formData.password) {
+        newErrors.password = t('FIELD_REQUIRED');
+    }
+
+    if (formData.newPassword !== formData.newPasswordConfirm) {
+      newErrors.newPassword = t('PASSWORD_NOT_MATCH');
+      newErrors.newPasswordConfirm = t('PASSWORD_NOT_MATCH');
     } else {
+      if (!formData.newPassword) {
+          newErrors.newPassword = t('FIELD_REQUIRED');
+      }
+
+      if (!formData.newPasswordConfirm) {
+        newErrors.newPasswordConfirm = t('FIELD_REQUIRED');
+      }
+    }
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (validateForm()) {
       try {
         setLoading(true);
 
@@ -99,7 +129,7 @@ const ProfileScreen: React.FC = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({ userId, currentPassword, newPassword }),
+          body: JSON.stringify({ userId: id, currentPassword: formData.password, newPassword: formData.newPassword }),
         });
 
         const data = await response.json();
@@ -112,6 +142,11 @@ const ProfileScreen: React.FC = () => {
       } catch (error) {
         setModalData({ isOpen: true, text: t('ERROR_OCCURED') });
       } finally {
+        setFormData({
+          password: '',
+          newPassword: '',
+          newPasswordConfirm: ''
+        })
         setLoading(false);
       }
     }
@@ -213,30 +248,33 @@ const ProfileScreen: React.FC = () => {
               type={'label'}
               labelClassName='text-left flex'
             />
-            <Row
-              label={t('PASSWORD')}
-              value="password"
-              filterValues={passwordValues}
-              handleInputChange={handleInputChange}
-              type='password'
-            />
-            <Row
-              label={t('PASSWORD_NEW')}
-              value="newPassword"
-              filterValues={passwordValues}
-              handleInputChange={handleInputChange}
-              type='password'
-            />
-            <Row
-              label={t('PASSWORD_CONFIRM')}
-              value="confirmPassword"
-              filterValues={passwordValues}
-              handleInputChange={handleInputChange}
-              type='password'
-            />
-            <Button title={'Промени паролата'} onClick={() => 
-              handleChangePassword(passwordValues.password, passwordValues.newPassword, passwordValues.confirmPassword, id)} 
-            />
+            <form onSubmit={handleSubmit}>
+              <Row
+                label={"dasdsa"}
+                value="password"
+                filterValues={formData}
+                handleInputChange={handleInputChange}
+                type='password'
+                error={errors.password}
+              />
+              <Row
+                label={t('PASSWORD_NEW')}
+                value="newPassword"
+                filterValues={formData}
+                handleInputChange={handleInputChange}
+                type='password'
+                error={errors.newPassword}
+              />
+              <Row
+                label={t('PASSWORD_CONFIRM')}
+                value="newPasswordConfirm"
+                filterValues={formData}
+                handleInputChange={handleInputChange}
+                type='password'
+                error={errors.newPasswordConfirm}
+              />
+              <Button title={'Промени паролата'} submit />
+            </form>
         </div>
     }
     <Modal isOpen={modalData.isOpen}>

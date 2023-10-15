@@ -134,9 +134,10 @@ const AddOfferScreen: React.FC = () => {
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        const newValue =  e.target.type === 'number' ? parseFloat(value) : value;
         setOfferValues({
           ...offerValues,
-          [name]: value,
+          [name]: newValue,
         });
     };
 
@@ -158,7 +159,6 @@ const AddOfferScreen: React.FC = () => {
 
     const validateForm = () => {
         const newErrors : Partial<OfferErrors> = {};
-    
         if (!offerValues.cost || isNaN(offerValues.cost as number)) {
             newErrors.cost = t('FIELD_REQUIRED');
         }
@@ -173,6 +173,13 @@ const AddOfferScreen: React.FC = () => {
 
         if (!offerValues.image) {
             newErrors.image = t('ADD_IMAGE');
+        }
+
+        if(offerValues?.minOrder && offerValues.availability) {
+            if (offerValues.minOrder > offerValues.availability) {
+                newErrors.minOrder = t('MIN_OFFER_MORE_THAN_AVAILABILITY_ERROR');
+                newErrors.availability = t('MIN_OFFER_MORE_THAN_AVAILABILITY_ERROR');
+            }
         }
         setErrors(newErrors);
 
