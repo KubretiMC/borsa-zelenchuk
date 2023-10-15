@@ -62,7 +62,7 @@ const AddOfferScreen: React.FC = () => {
 
     useEffect(() => {
         translateProductFilters();
-      }, [productFilters, t]);
+      }, [translateProductFilters]);
     console.log('111111');
     useEffect(() => {
         const { names = [], places = [] } = productFilters;
