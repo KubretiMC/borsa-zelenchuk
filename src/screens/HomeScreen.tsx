@@ -6,7 +6,6 @@ import { RootState } from '../interfaces/interfaces';
 import { fetchProductFilters, logoutUser } from '../redux/actions';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
-import _isEqual from 'lodash/isEqual';
 
 const HomeScreen: React.FC = () => {
   const { t } = useTranslation();
