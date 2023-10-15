@@ -113,7 +113,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
         getAllProductFilters();
       }
     }
-  }, [loggedUser?.id, dispatch, navigate, t]);
+  }, [loggedUser?.id, dispatch, navigate, t, token]);
   
   return (
     <div className="mainWrapper">
