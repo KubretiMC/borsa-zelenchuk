@@ -60,11 +60,7 @@ const AddOfferScreen: React.FC = () => {
         });
     }, [productFilters, t]);
 
-    useEffect(() => {
-        translateProductFilters();
-      }, [translateProductFilters]);
-    console.log('111111');
-    useEffect(() => {
+    const updateOfferValues = useCallback(() => {
         const { names = [], places = [] } = productFilters;
         const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
 
@@ -94,6 +90,14 @@ const AddOfferScreen: React.FC = () => {
         };
         setOfferValues(translatedofferValues);
     }, [productFilters, i18n.language]);
+
+    useEffect(() => {
+        updateOfferValues()
+    }, [updateOfferValues]);
+
+    useEffect(() => {
+        translateProductFilters();
+    }, [translateProductFilters]);
 
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
         const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? bgTranslation : enTranslation, offer.name);
