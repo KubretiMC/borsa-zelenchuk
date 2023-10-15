@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Title from './Title';
 import LanguageSwitcher from './LanguageSwitcher';
-import { fetchProducts, fetchUsers } from '../redux/actions';
+import { fetchProductFilters, fetchProducts, fetchUsers } from '../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { DecodedToken, RootState } from '../interfaces/interfaces';
 import jwtDecode from 'jwt-decode';
@@ -21,8 +21,8 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
   const dispatch = useDispatch();
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });
+  const token = localStorage.getItem('authToken');
 
-  
   useEffect(() => {
     if(!loggedUser?.id) {
       const checkTokenExpiration = () => {
@@ -57,6 +57,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
               },
             });
 
@@ -75,6 +76,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
               },
             });
 
@@ -87,8 +89,28 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
           }
         }
 
+        const getAllProductFilters = async () => {
+          try { 
+            const response = await fetch(`${apiUrl}/productFilters/getProductFilters`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              dispatch(fetchProductFilters(data));
+            };
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        }
+
         getAllUsers();
         getAllProducts();
+        getAllProductFilters();
       }
     }
   }, [loggedUser?.id, dispatch, navigate, t]);

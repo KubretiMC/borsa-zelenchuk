@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -6,13 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenContainer from '../components/ScreenContainer';
 import Row from '../components/Row';
 import Button from '../components/Button';
-import { OfferErrors, OfferValues, RootState, User } from '../interfaces/interfaces';
+import { OfferErrors, OfferValues, ProductFilter, RootState, User } from '../interfaces/interfaces';
 import Modal from '../components/Modal';
 import { useTranslation } from 'react-i18next';
 import Spinner from '../components/Spinner';
+import { findKeyByTranslation } from '../utils/utils';
+import bgTranslation from './../locales/bg.json';
+import enTranslation from './../locales/en.json';
 
 const AddOfferScreen: React.FC = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const productFilters = useSelector((state: RootState) => state.productFilters);
     const loggedUser = useSelector((state: RootState) => state.loggedUser);
 
@@ -22,18 +25,19 @@ const AddOfferScreen: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const { names = [], places = [] } = productFilters;
-    const initialOfferValues: OfferValues = {
-        name: names[0],
+    const [offerValues, setOfferValues] = useState<OfferValues>({
+        name: '',
         cost: undefined,
         availability: undefined,
         minOrder: undefined,
-        place: places[0],
+        place: '',
         image: '',
         additionalInformation: ''
-    };
-
-    const [offerValues, setOfferValues] = useState(initialOfferValues);
+    });
+    const [productFiltersTranslated, setProductFiltersTranslated] = useState<ProductFilter>({
+        names: [],
+        places: [],
+      });
 
     const [errors, setErrors] = useState<Partial<OfferErrors>>({
         cost: '',
@@ -42,11 +46,58 @@ const AddOfferScreen: React.FC = () => {
         image: '',
       });
 
+    useEffect(() => {
+        const { names = [], places = [] } = productFilters;
+        
+        // Translate the values in names and places arrays
+        const translatedNames = names.map(name => t(name));
+        const translatedPlaces = places.map(place => t(place));
+    
+        setProductFiltersTranslated({
+          names: translatedNames,
+          places: translatedPlaces,
+        });
+      }, [productFilters, t]);
+
+    useEffect(() => {
+        const { names = [], places = [] } = productFilters;
+        const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
+
+        // when we change the language, we get the key of the value
+        const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
+        const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
+
+        // initial value is the first from productFilters, after that when we change the language we translate the selected value
+        const offerName = name ? t(originalKeyName) : t(names[0]);
+        const ooferPlace = place ? t(originalKeyPlace) : t(places[0]);
+
+        // initial value is empty, after that we set the last selected value
+        const offerCost = cost ? cost : undefined;
+        const offerAvailability = availability ? availability : undefined;
+        const oferMinOrder = minOrder ? minOrder : undefined;
+        const offerImage = image ? image : '';
+        const offerAdditionalInformation = additionalInformation ? additionalInformation : '';
+
+        const translatedofferValues: OfferValues = {
+            name: offerName,
+            cost: offerCost,
+            availability: offerAvailability,
+            minOrder: oferMinOrder,
+            place: ooferPlace,
+            image: offerImage,
+            additionalInformation: offerAdditionalInformation
+        };
+        setOfferValues(translatedofferValues);
+    }, [productFilters, i18n.language]);
+
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
+        const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? bgTranslation : enTranslation, offer.name);
+        const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? bgTranslation : enTranslation, offer.place);
+        const offerValuesBody = {...offer, name: originalKeyName, place: originalKeyPlace };
+
         if (loggedUser) {
             try {
-                setLoading(true);
-                
+                setLoading(true);   
                 const token = localStorage.getItem('authToken');
                 const apiUrl = process.env.REACT_APP_API_URL;          
                 const response = await fetch(`${apiUrl}/product/addProduct`, {
@@ -55,7 +106,7 @@ const AddOfferScreen: React.FC = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     },
-                    body: JSON.stringify({ product: offer }),
+                    body: JSON.stringify({ product: offerValuesBody }),
                 });
     
                 if (response.ok) {
@@ -144,7 +195,7 @@ const AddOfferScreen: React.FC = () => {
                         value="name"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
-                        options={[...productFilters.names]}
+                        options={[...productFiltersTranslated.names]}
                         type={'select'}
                     />
                     <Row
@@ -176,7 +227,7 @@ const AddOfferScreen: React.FC = () => {
                         value="place"
                         filterValues={offerValues}
                         handleInputChange={handleInputChange}
-                        options={[...productFilters.places]}
+                        options={[...productFiltersTranslated.places]}
                         type={'select'}
                     />
                     <Row

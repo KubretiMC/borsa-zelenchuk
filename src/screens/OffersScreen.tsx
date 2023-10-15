@@ -21,8 +21,6 @@ const OffersScreen: React.FC = () => {
         maxCost: undefined,
     };
 
-    console.log('initialFilterValues', initialFilterValues);
-
     const [filterValues, setFilterValues] = useState(initialFilterValues);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 2;
@@ -44,14 +42,18 @@ const OffersScreen: React.FC = () => {
         setFilterValues(updatedInitialFilterValues);
     }, [t, i18n.language]);
 
-    const filteredProductsList = products.filter((product: Product) => {
-        const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
-        const nameMatch = name === t('ALL') || product.name === name;
-        const placeMatch = place === t('ALL') || product.place === place;
-        const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
-        const notInOffers = !loggedUser?.offers?.includes(product.id);
-        return nameMatch && placeMatch && costMatch && notInOffers;
-    });
+    const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
+    useEffect(() => {
+        const filteredList = products.filter((product: Product) => {
+            const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
+            const nameMatch = name === t('ALL') || product.name === name;
+            const placeMatch = place === t('ALL') || product.place === place;
+            const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
+            const notInOffers = !loggedUser?.offers?.includes(product.id);
+            return nameMatch && placeMatch && costMatch && notInOffers;
+        });
+        setFilteredProductsList(filteredList);
+    }, [])
 
     // to fix sliced products
     // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);

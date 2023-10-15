@@ -5,6 +5,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const ADD_PRODUCT_LOGGED_USER = 'ADD_PRODUCT_LOGGED_USER';
 export const FINISH_PRODUCT = 'FINISH_PRODUCT';
+export const FETCH_PRODUCT_FILTERS ='FETCH_PRODUCT_FILTERS';
 
 export const fetchUsers = (users: User[], userId: string) => ({
   type: FETCH_USERS,
@@ -30,4 +31,9 @@ export const addProductLoggedUser = (loggedUser: User, productId: string) => ({
 export const finishProduct = (productId: string) => ({
   type: FINISH_PRODUCT,
   payload: { productId },
+});
+
+export const fetchProductFilters = (productFilters: any) => ({
+  type: FETCH_PRODUCT_FILTERS,
+  payload: { productFilters },
 });
