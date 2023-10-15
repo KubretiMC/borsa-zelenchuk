@@ -146,17 +146,54 @@ const AddOfferScreen: React.FC = () => {
         
         if (selectedFile) {
             const reader = new FileReader();
-            reader.onload = () => {
-                setOfferValues({
-                ...offerValues,
-                // image: reader.result as string,
-                image: "https://trud.bg/public/images/articles/2015-05/image__4754527--4754232_3580228130795270688_big.jpg"
-                });
+        
+            reader.onload = (e) => {
+                const image = new Image();
+                image.src = e.target?.result as string;
+            
+                image.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 800;
+                    const maxHeight = 600;
+            
+                    let width = image.width;
+                    let height = image.height;
+            
+                    if (width > maxWidth || height > maxHeight) {
+                        const aspectRatio = width / height;
+                
+                        if (width > maxWidth) {
+                            width = maxWidth;
+                            height = width / aspectRatio;
+                        }
+                
+                        if (height > maxHeight) {
+                            height = maxHeight;
+                            width = height * aspectRatio;
+                        }
+                    }
+            
+                    canvas.width = width;
+                    canvas.height = height;
+            
+                    const ctx = canvas.getContext('2d');
+            
+                    if (ctx) {
+                        ctx.drawImage(image, 0, 0, width, height);
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                
+                        setOfferValues({
+                            ...offerValues,
+                            image: compressedDataUrl,
+                        });
+                    }
+                };
             };
+        
             reader.readAsDataURL(selectedFile);
         }
     };
-
+      
     const validateForm = () => {
         const newErrors : Partial<OfferErrors> = {};
         if (!offerValues.cost || isNaN(offerValues.cost as number)) {
