@@ -23,6 +23,9 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
     });
   };
 
+  const translatedNames = productFilters.names.map(name => t(name));
+  const translatedPlaces = productFilters.places.map(place => t(place));
+
   return (
     <div className="grid grid-cols-1 gap-4 mt-5">
       <Row
@@ -30,7 +33,7 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
         value="name"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={[t('ALL'), ...productFilters.names]}
+        options={[t('ALL'), ...translatedNames]}
         type={'select'}
       />
       <Row
@@ -38,7 +41,7 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
         value="place"
         filterValues={filterValues}
         handleInputChange={handleInputChange}
-        options={[t('ALL'), ...productFilters.places]}
+        options={[t('ALL'), ...translatedPlaces]}
         type={'select'}
       />
       <Row

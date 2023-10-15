@@ -6,6 +6,9 @@ import { FilterValues, Product, RootState } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import OffersList from '../components/OffersList';
 import { useTranslation } from 'react-i18next';
+import { findKeyByTranslation } from '../utils/utils';
+import bgTranslation from './../locales/bg.json';
+import enTranslation from './../locales/en.json';
 
 const OffersScreen: React.FC = () => {
     const { t, i18n } = useTranslation();
@@ -33,27 +36,39 @@ const OffersScreen: React.FC = () => {
     }, [filterValues])
 
     useEffect(() => {
-        const updatedInitialFilterValues: FilterValues = {
-            name: t('ALL'),
-            place: t('ALL'),
-            minCost: undefined,
-            maxCost: undefined,
+        const { name, place, minCost, maxCost } = filterValues;
+        const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
+        const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
+
+        // if there is value, translate it, if there is not - set initial one
+        const updatedFilterValueName = name ? t(originalKeyName) : t('ALL');
+        const updatedFilterValuePlace = place ? t(originalKeyPlace) : t('ALL');
+
+        // if there is value, use it, if there is not - set initial one
+        const updatedFilterMinCost = minCost ? minCost : undefined;
+        const updatedFilterMaxCost = maxCost ? maxCost : undefined;
+
+        const updatedFilterValues: FilterValues = {
+            name: updatedFilterValueName,
+            place: updatedFilterValuePlace,
+            minCost: updatedFilterMinCost,
+            maxCost: updatedFilterMaxCost,
         };
-        setFilterValues(updatedInitialFilterValues);
+        setFilterValues(updatedFilterValues);
     }, [t, i18n.language]);
 
     const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
     useEffect(() => {
         const filteredList = products.filter((product: Product) => {
             const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
-            const nameMatch = name === t('ALL') || product.name === name;
-            const placeMatch = place === t('ALL') || product.place === place;
+            const nameMatch = name === t('ALL') || t(product.name) === name;
+            const placeMatch = place === t('ALL') || t(product.place) === place;
             const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
             const notInOffers = !loggedUser?.offers?.includes(product.id);
             return nameMatch && placeMatch && costMatch && notInOffers;
         });
         setFilteredProductsList(filteredList);
-    }, [])
+    }, [filterValues])
 
     // to fix sliced products
     // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
@@ -61,7 +76,7 @@ const OffersScreen: React.FC = () => {
     const offersList = filteredProductsList
         .filter((product: Product) => !product.reserved) 
         .map((product: Product) => (
-            <Offer key={product.id} id={product.id} name={product.name} place={product.place} cost={product.cost} image={product.image} />
+            <Offer key={product.id} id={product.id} name={t(product.name)} place={t(product.place)} cost={product.cost} image={product.image} />
         ));
 
     return (
