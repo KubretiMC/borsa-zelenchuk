@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -46,19 +46,24 @@ const AddOfferScreen: React.FC = () => {
         image: '',
       });
 
-    useEffect(() => {
+      
+    const translateProductFilters = useCallback(() => {
         const { names = [], places = [] } = productFilters;
-        
+    
         // Translate the values in names and places arrays
         const translatedNames = names.map(name => t(name));
         const translatedPlaces = places.map(place => t(place));
     
         setProductFiltersTranslated({
-          names: translatedNames,
-          places: translatedPlaces,
+        names: translatedNames,
+        places: translatedPlaces,
         });
-      }, [productFilters, t]);
+    }, [productFilters, t]);
 
+    useEffect(() => {
+        translateProductFilters();
+      }, [productFilters, t]);
+    console.log('111111');
     useEffect(() => {
         const { names = [], places = [] } = productFilters;
         const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
