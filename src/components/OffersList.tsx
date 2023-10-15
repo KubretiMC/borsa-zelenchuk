@@ -12,6 +12,7 @@ interface OffersListProps {
 }
 
 const OffersList: React.FC<OffersListProps> = ({ offersList, lastPage, currentPage, setCurrentPage }) => {
+  console.log('4444',offersList);
   const { t } = useTranslation();
 
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });

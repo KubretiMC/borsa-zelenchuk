@@ -18,6 +18,8 @@ interface ScreenContainerProps {
 
 const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, backButton }) => {
   const { t } = useTranslation();
+  const state = useSelector((state: RootState) => state);
+  console.log('state', state);
   const loggedUser = useSelector((state: RootState) => state.loggedUser);
   const token = localStorage.getItem('authToken');
   const [modalData, setModalData] = useState<{ isOpen: boolean; text: string }>({ isOpen: false, text: '' });

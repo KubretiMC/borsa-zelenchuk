@@ -80,6 +80,7 @@ const OffersScreen: React.FC = () => {
     // to fix sliced products
     // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
     // console.log('slicedProducts', slicedProducts);
+    console.log('zzzz', filteredProductsList);
     const offersList = filteredProductsList
         .filter((product: Product) => !product.reserved) 
         .map((product: Product) => (
