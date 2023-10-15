@@ -17,25 +17,22 @@ const OffersScreen: React.FC = () => {
     const products = useSelector((state: RootState) => state.products);
     const productFilters = useSelector((state: RootState) => state.productFilters);
 
-    const initialFilterValues: FilterValues = {
+    const [filterValues, setFilterValues] = useState<FilterValues>({
         name: t('ALL'),
         place: t('ALL'),
         minCost: undefined,
         maxCost: undefined,
-    };
+    });
 
-    const [filterValues, setFilterValues] = useState(initialFilterValues);
+    const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 2;
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
+    
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [filterValues])
-
-    useEffect(() => {
+    const updateFilterValues = () => {
         const { name, place, minCost, maxCost } = filterValues;
         const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
         const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
@@ -48,18 +45,15 @@ const OffersScreen: React.FC = () => {
         const updatedFilterMinCost = minCost ? minCost : undefined;
         const updatedFilterMaxCost = maxCost ? maxCost : undefined;
 
-        const updatedFilterValues: FilterValues = {
+        return {
             name: updatedFilterValueName,
             place: updatedFilterValuePlace,
             minCost: updatedFilterMinCost,
             maxCost: updatedFilterMaxCost,
         };
-        setFilterValues(updatedFilterValues);
-    }, [t, i18n.language, filterValues]);
+    }
 
-    const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
-
-    const filterProducts = () => {
+    const getFilteredProducts = () => {
         const filteredList = products.filter((product: Product) => {
             const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
             const nameMatch = name === t('ALL') || t(product.name) === name;
@@ -72,9 +66,19 @@ const OffersScreen: React.FC = () => {
     }
 
     useEffect(() => {
-        const filteredList = filterProducts();
+        const filteredList = getFilteredProducts();
         setFilteredProductsList(filteredList);
     }, [filterValues, loggedUser?.offers, products])
+
+    useEffect(() => {
+        const updatedFilterValues: FilterValues = updateFilterValues();
+        setFilterValues(updatedFilterValues);
+    }, [filterValues, t, i18n.language]);
+
+    
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filterValues])
 
     // to fix sliced products
     // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
