@@ -88,6 +88,7 @@ const AddOfferScreen: React.FC = () => {
             additionalInformation: offerAdditionalInformation
         };
         setOfferValues(translatedofferValues);
+        console.log('111');
     }, [productFilters, i18n.language]);
 
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
