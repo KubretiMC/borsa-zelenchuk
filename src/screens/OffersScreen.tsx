@@ -68,12 +68,12 @@ const OffersScreen: React.FC = () => {
     useEffect(() => {
         const filteredList = getFilteredProducts();
         setFilteredProductsList(filteredList);
-    }, [filterValues, loggedUser?.offers, products])
+    }, [getFilteredProducts])
 
     useEffect(() => {
         const updatedFilterValues: FilterValues = updateFilterValues();
         setFilterValues(updatedFilterValues);
-    }, [filterValues, t, i18n.language]);
+    }, [updateFilterValues]);
 
     
     useEffect(() => {

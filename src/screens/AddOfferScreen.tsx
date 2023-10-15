@@ -46,20 +46,7 @@ const AddOfferScreen: React.FC = () => {
         image: '',
       });
 
-    useEffect(() => {
-        const { names = [], places = [] } = productFilters;
-        
-        // Translate the values in names and places arrays
-        const translatedNames = names.map(name => t(name));
-        const translatedPlaces = places.map(place => t(place));
-    
-        setProductFiltersTranslated({
-          names: translatedNames,
-          places: translatedPlaces,
-        });
-      }, [productFilters, t]);
-
-    useEffect(() => {
+    const translateOfferValues = () => {
         const { names = [], places = [] } = productFilters;
         const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
 
@@ -78,7 +65,7 @@ const AddOfferScreen: React.FC = () => {
         const offerImage = image ? image : '';
         const offerAdditionalInformation = additionalInformation ? additionalInformation : '';
 
-        const translatedofferValues: OfferValues = {
+        return {
             name: offerName,
             cost: offerCost,
             availability: offerAvailability,
@@ -87,8 +74,25 @@ const AddOfferScreen: React.FC = () => {
             image: offerImage,
             additionalInformation: offerAdditionalInformation
         };
+    }
+
+    useEffect(() => {
+        const translatedofferValues: OfferValues = translateOfferValues()
         setOfferValues(translatedofferValues);
-    }, [productFilters, i18n.language]);
+    }, [translateOfferValues]);
+
+    useEffect(() => {
+        const { names = [], places = [] } = productFilters;
+        
+        // Translate the values in names and places arrays
+        const translatedNames = names.map(name => t(name));
+        const translatedPlaces = places.map(place => t(place));
+    
+        setProductFiltersTranslated({
+          names: translatedNames,
+          places: translatedPlaces,
+        });
+      }, [productFilters, t]);
 
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
         const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? bgTranslation : enTranslation, offer.name);
