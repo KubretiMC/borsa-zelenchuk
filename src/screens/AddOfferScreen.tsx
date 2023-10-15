@@ -80,7 +80,7 @@ const AddOfferScreen: React.FC = () => {
 
         const translatedofferValues: OfferValues = translateOfferValues()
         setOfferValues(translatedofferValues);
-    }, []);
+    }, [i18n.language, offerValues, productFilters, t]);
 
     useEffect(() => {
         const { names = [], places = [] } = productFilters;
