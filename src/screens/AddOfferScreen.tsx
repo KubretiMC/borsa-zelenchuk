@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -94,6 +94,14 @@ const AddOfferScreen: React.FC = () => {
     useEffect(() => {
         updateOfferValues()
     }, [updateOfferValues]);
+
+    const offerValuesRef = useRef(offerValues);
+    const tRef = useRef(t);
+    console.log('111');
+    useEffect(() => {
+        offerValuesRef.current = offerValues;
+        tRef.current = t;
+    }, [offerValues, t]);
 
     useEffect(() => {
         translateProductFilters();
