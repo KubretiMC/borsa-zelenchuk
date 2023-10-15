@@ -88,7 +88,8 @@ const AddOfferScreen: React.FC = () => {
             additionalInformation: offerAdditionalInformation
         };
         setOfferValues(translatedofferValues);
-        console.log('111');
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productFilters, i18n.language]);
 
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
