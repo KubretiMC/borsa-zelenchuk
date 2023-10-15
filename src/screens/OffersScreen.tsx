@@ -55,10 +55,11 @@ const OffersScreen: React.FC = () => {
             maxCost: updatedFilterMaxCost,
         };
         setFilterValues(updatedFilterValues);
-    }, [t, i18n.language]);
+    }, [t, i18n.language, filterValues]);
 
     const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
-    useEffect(() => {
+
+    const filterProducts = () => {
         const filteredList = products.filter((product: Product) => {
             const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
             const nameMatch = name === t('ALL') || t(product.name) === name;
@@ -67,8 +68,13 @@ const OffersScreen: React.FC = () => {
             const notInOffers = !loggedUser?.offers?.includes(product.id);
             return nameMatch && placeMatch && costMatch && notInOffers;
         });
+        return filteredList;
+    }
+
+    useEffect(() => {
+        const filteredList = filterProducts();
         setFilteredProductsList(filteredList);
-    }, [filterValues])
+    }, [filterValues, loggedUser?.offers, products])
 
     // to fix sliced products
     // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
