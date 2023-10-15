@@ -13,6 +13,12 @@ export interface UserErrors {
   phoneNumber: string;
 }
 
+export interface PasswordChangeErrors {
+  password: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}
+
 export interface OfferValues {
   name: string,
   cost?: number,
