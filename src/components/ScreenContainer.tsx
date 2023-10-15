@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DecodedToken, RootState } from '../interfaces/interfaces';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router';
-import { fetchProducts, fetchUsers } from '../redux/actions';
+import { fetchProductFilters, fetchProducts, fetchUsers } from '../redux/actions';
 import Modal from './Modal';
 import { useTranslation } from 'react-i18next';
 
@@ -98,8 +98,28 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
           }
         }
 
+        const getAllProductFilters = async () => {
+          try { 
+            const response = await fetch(`${apiUrl}/productFilters/getProductFilters`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              dispatch(fetchProductFilters(data));
+            };
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        }
+
         getAllUsers();
         getAllProducts();
+        getAllProductFilters();
       }
     }
   }, [loggedUser, dispatch, navigate, t, token]);
