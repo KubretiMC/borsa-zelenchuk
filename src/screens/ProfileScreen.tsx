@@ -127,7 +127,7 @@ const ProfileScreen: React.FC = () => {
       <Offer 
         key={product.id} 
         id={product.id} 
-        name={product.name} 
+        name={t(product.name)} 
         place={product.place} 
         cost={product.reserved ? product.reservedCost : product.cost * product.availability} 
         image={product.image} 
@@ -146,7 +146,7 @@ const ProfileScreen: React.FC = () => {
       <Offer 
         key={product.id} 
         id={product.id} 
-        name={product.name} 
+        name={t(product.name)} 
         place={product.place} 
         cost={product.reservedCost} 
         image={product.image} 
@@ -184,12 +184,12 @@ const ProfileScreen: React.FC = () => {
           </div>
           <div>
             <Collapsible 
-              trigger="Моите резервации" 
+              trigger={t('MY_RESERVATIONS')} 
               triggerClassName="collapsible flex"
               openedClassName="collapsible text-left" 
             >
               <div>
-                {userReservations.length !==0 ?
+                {userReservations.length !== 0 ?
                 userReservations :
                 <div className='mt-24'>
                     <label className='text-3xl font-bold'>{t('RESERVATIONS_NOT_MADE')}</label>

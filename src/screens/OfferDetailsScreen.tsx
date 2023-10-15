@@ -44,11 +44,11 @@ const OfferDetailsScreen = () => {
     <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
       {selectedProduct ? (
         <div className='mt-2'>
-          <ProductHeader name={name} image={image} />
+          <ProductHeader name={t(name)} image={image} />
           <div className="grid grid-cols-1 gap-4 mt-5">
             <Row
               label={t('STOCK')}
-              value={name}
+              value={t(name)}
               type={'label'}
             />
             <Row
@@ -58,7 +58,7 @@ const OfferDetailsScreen = () => {
             />
             <Row
               label={t('PLACE')}
-              value={place}
+              value={t(place)}
               type={'label'}
             />
             <Row

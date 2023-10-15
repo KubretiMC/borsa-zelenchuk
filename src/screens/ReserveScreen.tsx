@@ -91,7 +91,7 @@ const ReserveScreen = () => {
         {loading && (
           <Spinner />
         )}
-        <ProductHeader name={name} image={image} />
+        <ProductHeader name={t(name)} image={image} />
         <RangeSlider value={orderQuantity} setValue={setOrderQuantity} min={minOrder} max={availability} />
         <Row
           label={t('COST')}

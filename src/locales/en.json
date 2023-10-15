@@ -28,6 +28,7 @@
     "MIN_COST": "Minimum Cost",
     "MY_OFFERS": "My Offers",
     "MY_PROFILE": "My Profile",
+    "MY_RESERVATIONS": "My reservations",
     "NAME": "Name",
     "NUMBER": "Number",
     "OFFER_ADD": "Add Offer",
@@ -69,5 +70,10 @@
     "WATERMELON": "Watermelon",
     "CHERRY": "Cherry",
     "PEACH": "Peach",
-    "STRAWBERRY": "Strawberry"
+    "STRAWBERRY": "Strawberry",
+
+    "OGNYANOVO": "Ognyanovo",
+    "MALO_KONARE": "Malo Konare",
+    "DINKATA": "Dinkata",
+    "MOKRISHTE": "Mokrishte"
 }

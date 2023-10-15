@@ -2,6 +2,7 @@ import { Product, RootState, User } from '../interfaces/interfaces';
 import { 
   ADD_PRODUCT_LOGGED_USER, 
   FETCH_PRODUCTS, 
+  FETCH_PRODUCT_FILTERS, 
   FETCH_USERS, 
   FINISH_PRODUCT, 
   LOGOUT_USER, 
@@ -11,8 +12,8 @@ const initialState: RootState = {
     users: [],
     products: [],
     productFilters: {
-        names: ['Диня', 'Череша', 'Праскова', 'Ягода'],
-        places: ['Огняново', 'Мало Конаре', 'Динката', 'Мокрище'],
+      names: [],
+      places: [],
     }
 };
 
@@ -68,7 +69,12 @@ const rootReducer = (state: RootState = initialState, action: any): RootState =>
         ...state,
         products: updatedProductsFinishProduct,
       };
-
+    case FETCH_PRODUCT_FILTERS:
+      const { productFilters = {} } = action.payload;
+      return {
+        ...state,
+        productFilters: productFilters,
+      };
     default:
       return state;
   }
