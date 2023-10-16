@@ -47,7 +47,6 @@ const Row: React.FC<RowProps> = ({ label, value, filterValues, handleInputChange
             value={filterValues?.[value] ?? ''}
             onChange={handleInputChange}
           />
-          // error && <p className="flex text-left text-red-500">{error}</p>
         )}
          {error && <p className="flex text-left text-red-500">{error}</p>}
       </div>

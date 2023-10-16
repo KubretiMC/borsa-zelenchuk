@@ -10,18 +10,29 @@ interface FilterProps {
     names: string[];
     places: string[];
   };
+  resetPage: () => void,
 }
 
-const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productFilters }) => {
+const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productFilters, resetPage }) => {
   const { t } = useTranslation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    let newValue;
+    if (e.target.type === 'number') {
+        newValue = parseFloat(value);
+        if (isNaN(newValue) || newValue < 0) {
+            newValue = 0;
+        }
+    } else {
+        newValue = value;
+    }
+    resetPage();
     setFilterValues({
       ...filterValues,
-      [name]: value !== '' ? value : undefined,
+      [name]: newValue.toString(),
     });
-  };
+  };  
 
   const translatedNames = productFilters.names.map(name => t(name));
   const translatedPlaces = productFilters.places.map(place => t(place));

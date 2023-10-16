@@ -113,7 +113,16 @@ const AddOfferScreen: React.FC = () => {
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        const newValue =  e.target.type === 'number' ? parseFloat(value) : value;
+        let newValue;
+
+        if (e.target.type === 'number') {
+            newValue = parseFloat(value);
+            if (isNaN(newValue) || newValue < 0) {
+                newValue = 0;
+            }
+        } else {
+            newValue = value;
+        }
         setOfferValues({
           ...offerValues,
           [name]: newValue,
