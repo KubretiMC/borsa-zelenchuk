@@ -24,7 +24,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ textColor }) => {
   };
 
   return (
-    <div className="absolute top-0 right-0 mt-4 mr-4">
+    <div className="absolute top-0 right-0 mt-2 mr-2">
         <label className="flex items-center space-x-2 text-white">
         <span className={textColor}>EN</span>
         <Switch
@@ -33,7 +33,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ textColor }) => {
             uncheckedIcon={false}
             checkedIcon={false}
             height={20}
-            width={40}
+            width={35}
             handleDiameter={20}
             offColor="#888"
             onColor="#3498db"
