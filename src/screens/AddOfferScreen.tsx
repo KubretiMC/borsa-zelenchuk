@@ -71,7 +71,7 @@ const AddOfferScreen: React.FC = () => {
             image: '',
             additionalInformation: ''
         });
-    }, [i18n.language, productFilters]);
+    }, [i18n.language, productFilters, t]);
 
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
         const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? bgTranslation : enTranslation, offer.name);
