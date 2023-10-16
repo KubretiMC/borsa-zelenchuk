@@ -14,6 +14,7 @@ const OffersScreen: React.FC = () => {
     const products = useSelector((state: RootState) => state.products);
     const productFilters = useSelector((state: RootState) => state.productFilters);
 
+    const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
     const [filterValues, setFilterValues] = useState<FilterValues>({
         name: t('ALL'),
         place: t('ALL'),
@@ -37,9 +38,6 @@ const OffersScreen: React.FC = () => {
         setCurrentPage(1);
     }, [t, i18n.language]);
 
-    console.log('filterValues', filterValues);
-
-    const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
     useEffect(() => {
         const filterProducts = () => {
             const filteredList = products.filter((product: Product) => {

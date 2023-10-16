@@ -30,8 +30,6 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({ subtitle, children, b
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('1111111111111', loggedUser);
-    console.log('2222222222222', loggedUserRef.current); 
     if (!_isEqual(loggedUserRef.current, loggedUser)) {
       if(loggedUser) {
         loggedUserRef.current = loggedUser; 
