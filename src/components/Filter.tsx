@@ -17,11 +17,17 @@ const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productF
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    let numericValue = parseFloat(value);
+  
+    if (isNaN(numericValue) || numericValue < 0) {
+      numericValue = 0;
+    }
+  
     setFilterValues({
       ...filterValues,
-      [name]: value !== '' ? value : undefined,
+      [name]: numericValue.toString(),
     });
-  };
+  };  
 
   const translatedNames = productFilters.names.map(name => t(name));
   const translatedPlaces = productFilters.places.map(place => t(place));
