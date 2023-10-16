@@ -60,39 +60,18 @@ const AddOfferScreen: React.FC = () => {
       }, [productFilters, t]);
 
     useEffect(() => {
-        const translateOfferValues = () => {
-            const { names = [], places = [] } = productFilters;
-            const { name, cost, place, availability, minOrder, image, additionalInformation} = offerValues;
-
-            // when we change the language, we get the key of the value
-            const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
-            const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
-
-            // initial value is the first from productFilters, after that when we change the language we translate the selected value
-            const offerName = name ? t(originalKeyName) : t(names[0]);
-            const ooferPlace = place ? t(originalKeyPlace) : t(places[0]);
-
-            // initial value is empty, after that we set the last selected value
-            const offerCost = cost ? cost : undefined;
-            const offerAvailability = availability ? availability : undefined;
-            const oferMinOrder = minOrder ? minOrder : undefined;
-            const offerImage = image ? image : '';
-            const offerAdditionalInformation = additionalInformation ? additionalInformation : '';
-
-            const translatedofferValues: OfferValues = {
-                name: offerName,
-                cost: offerCost,
-                availability: offerAvailability,
-                minOrder: oferMinOrder,
-                place: ooferPlace,
-                image: offerImage,
-                additionalInformation: offerAdditionalInformation
-            };
-            setOfferValues(translatedofferValues);
-        };
-        translateOfferValues()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productFilters, i18n.language]);
+        const { names = [], places = [] } = productFilters;
+        // reset and translate offerValues when changing language
+        setOfferValues({
+            name: t(names[0]),
+            cost: undefined,
+            availability: undefined,
+            minOrder: undefined,
+            place: t(places[0]),
+            image: '',
+            additionalInformation: ''
+        });
+    }, [i18n.language, productFilters, t]);
 
     const handleAddOfferClick = async (offer: OfferValues, loggedUser?: User) => {
         const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? bgTranslation : enTranslation, offer.name);
@@ -230,15 +209,15 @@ const AddOfferScreen: React.FC = () => {
         setErrors(newErrors);
 
         return Object.keys(newErrors).length === 0;
-      };
+    };
 
-      const handleSubmit = (e: any) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
       
         if (validateForm()) {
           handleAddOfferClick(offerValues, loggedUser);
         }
-      };
+    };
 
     return (
         <ScreenContainer subtitle={loggedUser?.username || ''} backButton>

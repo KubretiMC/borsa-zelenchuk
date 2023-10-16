@@ -113,7 +113,6 @@ const OfferDetailsScreen = () => {
               label={t('NAME')}
               value={username}
               type={'label'}
-              onClick={() => console.log('ffff')}
             />
             <Row
               label={t('NUMBER')}
