@@ -68,7 +68,7 @@ const OffersScreen: React.FC = () => {
                 const { name = '', place = '', minCost = 0, maxCost = 0 } = filterValues;
                 const nameMatch = name === t('ALL') || t(product.name) === name;
                 const placeMatch = place === t('ALL') || t(product.place) === place;
-                const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0);
+                const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0) || (minCost <= product.cost && maxCost === 0);
                 const notInOffers = !loggedUser?.offers?.includes(product.id);
                 return nameMatch && placeMatch && costMatch && notInOffers;
             });
