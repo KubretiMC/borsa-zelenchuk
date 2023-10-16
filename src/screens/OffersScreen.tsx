@@ -6,9 +6,6 @@ import { FilterValues, Product, RootState } from '../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import OffersList from '../components/OffersList';
 import { useTranslation } from 'react-i18next';
-import { findKeyByTranslation } from '../utils/utils';
-import bgTranslation from './../locales/bg.json';
-import enTranslation from './../locales/en.json';
 
 const OffersScreen: React.FC = () => {
     const { t, i18n } = useTranslation();
@@ -17,14 +14,12 @@ const OffersScreen: React.FC = () => {
     const products = useSelector((state: RootState) => state.products);
     const productFilters = useSelector((state: RootState) => state.productFilters);
 
-    const initialFilterValues: FilterValues = {
+    const [filterValues, setFilterValues] = useState<FilterValues>({
         name: t('ALL'),
         place: t('ALL'),
         minCost: undefined,
         maxCost: undefined,
-    };
-
-    const [filterValues, setFilterValues] = useState(initialFilterValues);
+    });
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 2;
 
@@ -32,34 +27,17 @@ const OffersScreen: React.FC = () => {
     const endIndex = startIndex + itemsPerPage;
 
     useEffect(() => {
+        // reset and translate filterValues and reset pages when changing language
+        setFilterValues({
+            name: t('ALL'),
+            place: t('ALL'),
+            minCost: undefined,
+            maxCost: undefined,
+        });
         setCurrentPage(1);
-    }, [filterValues])
-
-    useEffect(() => {
-        const translateFilterValues = () => {
-            const { name, place, minCost, maxCost } = filterValues;
-            const originalKeyName = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, name) as string;
-            const originalKeyPlace = findKeyByTranslation(i18n.language === 'bg' ? enTranslation : bgTranslation, place) as string;
-
-            // if there is value, translate it, if there is not - set initial one
-            const updatedFilterValueName = name ? t(originalKeyName) : t('ALL');
-            const updatedFilterValuePlace = place ? t(originalKeyPlace) : t('ALL');
-
-            // if there is value, use it, if there is not - set initial one
-            const updatedFilterMinCost = minCost ? minCost : undefined;
-            const updatedFilterMaxCost = maxCost ? maxCost : undefined;
-
-            const updatedFilterValues: FilterValues = {
-                name: updatedFilterValueName,
-                place: updatedFilterValuePlace,
-                minCost: updatedFilterMinCost,
-                maxCost: updatedFilterMaxCost,
-            };
-            setFilterValues(updatedFilterValues);
-        }
-        translateFilterValues();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [t, i18n.language]);
+
+    console.log('filterValues', filterValues);
 
     const [filteredProductsList, setFilteredProductsList] = useState<Product[]>([]);
     useEffect(() => {
