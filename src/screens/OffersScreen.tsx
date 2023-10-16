@@ -46,18 +46,17 @@ const OffersScreen: React.FC = () => {
                 const placeMatch = place === t('ALL') || t(product.place) === place;
                 const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0) || (minCost <= product.cost && maxCost === 0);
                 const notInOffers = !loggedUser?.offers?.includes(product.id);
-                return nameMatch && placeMatch && costMatch && notInOffers;
+                const notReserved = !product.reserved;
+                return nameMatch && placeMatch && costMatch && notInOffers && notReserved;
             });
             setFilteredProductsList(filteredList);
         };
         filterProducts();
     }, [filterValues, t, products, loggedUser?.offers])
     
-    // to fix sliced products
-    // const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
-    // console.log('slicedProducts', slicedProducts);
-    console.log('zzzz', filteredProductsList);
-    const offersList = filteredProductsList
+
+    const slicedProducts = filteredProductsList.slice(startIndex, endIndex);
+    const offersList = slicedProducts
         .filter((product: Product) => !product.reserved) 
         .map((product: Product) => (
             <Offer key={product.id} id={product.id} name={t(product.name)} place={t(product.place)} cost={product.cost} image={product.image} />
@@ -65,7 +64,7 @@ const OffersScreen: React.FC = () => {
 
     return (
         <ScreenContainer subtitle={loggedUser?.username || ''} backButton>
-            <Filter filterValues={filterValues} setFilterValues={setFilterValues} productFilters={productFilters} />
+            <Filter filterValues={filterValues} setFilterValues={setFilterValues} productFilters={productFilters} resetPage={() => setCurrentPage(1)}/>
             <OffersList 
                 offersList={offersList} 
                 lastPage={endIndex >= filteredProductsList.length} 

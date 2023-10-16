@@ -10,22 +10,27 @@ interface FilterProps {
     names: string[];
     places: string[];
   };
+  resetPage: () => void,
 }
 
-const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productFilters }) => {
+const Filter: React.FC<FilterProps> = ({ filterValues, setFilterValues, productFilters, resetPage }) => {
   const { t } = useTranslation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    let numericValue = parseFloat(value);
-  
-    if (isNaN(numericValue) || numericValue < 0) {
-      numericValue = 0;
+    let newValue;
+    if (e.target.type === 'number') {
+        newValue = parseFloat(value);
+        if (isNaN(newValue) || newValue < 0) {
+            newValue = 0;
+        }
+    } else {
+        newValue = value;
     }
-  
+    resetPage();
     setFilterValues({
       ...filterValues,
-      [name]: numericValue.toString(),
+      [name]: newValue.toString(),
     });
   };  
 
