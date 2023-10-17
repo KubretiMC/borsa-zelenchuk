@@ -1,5 +1,9 @@
 # BorsaZelenchuk
-BorsaZelenchuk is a React TypeScript app. It’s an online fruit and vegetable market where users can create accounts and interact with the products. It uses Tailwind for styling and redux for state management. It can run in browsers but for best user experience it uses Cordova to also run as an application on a phone. Its mobile version can also be tested on PC from the device toolbar. 
+__BorsaZelenchuk__ is a React TypeScript app. It’s an online fruit and vegetable market where users can create accounts and interact with the products. 
+
+It uses Tailwind for styling and redux for state management. 
+
+It can run in browsers but for best user experience it uses Cordova to also run as an application on a phone. Its mobile version can also be tested on PC from the device toolbar. 
 
 ## Deployment
 
