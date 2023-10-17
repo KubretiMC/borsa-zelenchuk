@@ -47,7 +47,8 @@ const OffersScreen: React.FC = () => {
                 const costMatch = (minCost <= product.cost && maxCost >= product.cost) || (minCost === 0 && maxCost === 0) || (minCost <= product.cost && maxCost === 0);
                 const notInOffers = !loggedUser?.offers?.includes(product.id);
                 const notReserved = !product.reserved;
-                return nameMatch && placeMatch && costMatch && notInOffers && notReserved;
+                const notFinished = !product.finished;
+                return nameMatch && placeMatch && costMatch && notInOffers && notReserved && notFinished;
             });
             setFilteredProductsList(filteredList);
         };
