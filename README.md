@@ -1,5 +1,9 @@
 # BorsaZelenchuk
-BorsaZelenchuk is a React TypeScript app. It’s an online fruit and vegetable market where users can create accounts and interact with the products. It uses Tailwind for styling. It can run in browsers but for best user experience it uses Cordova to also run as an application on a phone. Its mobile version can also be tested on PC from the device toolbar. 
+BorsaZelenchuk is a React TypeScript app. It’s an online fruit and vegetable market where users can create accounts and interact with the products. It uses Tailwind for styling and redux for state management. It can run in browsers but for best user experience it uses Cordova to also run as an application on a phone. Its mobile version can also be tested on PC from the device toolbar. 
+
+## Deployment
+
+This app is hosted on Firebase. The deployed version of BorsaZelenchuk is accessible at [https://borsazelenchuk.web.app/](https://borsazelenchuk.web.app/).
 
 ## Features
 
@@ -31,3 +35,10 @@ Your app is ready to be deployed!
 Sets up the Cordova project. It creates the Cordova project, adds the Android platform, copies build files, and builds the Android app.
 ### `npm cordova-run-android`
 This script runs the Android app. If the Cordova project directory does not exist, it prompts you to run the setup script first.
+
+
+## Backend Repository
+
+If you're interested in the backend code, you can find it in the [backend repository](https://github.com/KubretiMC/borsa-zelenchuk--backend).
+
+
