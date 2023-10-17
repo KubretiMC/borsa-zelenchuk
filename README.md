@@ -4,6 +4,10 @@ BorsaZelenchuk is a React TypeScript app. It’s an online fruit and vegetable m
 ## Deployment
 
 This app is hosted on Firebase. The deployed version of BorsaZelenchuk is accessible at [https://borsazelenchuk.web.app/](https://borsazelenchuk.web.app/).
+### Note 
+The backend is on  [https://render.com/](https://render.com/)
+
+Render spins down after 15 minutes of inactivity, so the first request after starting the app takes a while, but subsequent requests are faster. 
 
 ## Features
 
